@@ -178,6 +178,97 @@
   <p>Escolha o sistema da loja criado nos módulos anteriores e produza uma mini especificação: <strong>escopo</strong>, <strong>3 user stories</strong>, <strong>diagrama de caso de uso</strong>, <strong>arquitetura simples</strong>, <strong>plano de testes</strong> e uma política para <strong>logs, PII e exclusão de dados</strong>.</p>
 </section>
 
+<section class="section quiz-section" data-quiz>
+  <h2>Quiz de revisão</h2>
+  <p>Teste seus conhecimentos sobre os principais conceitos deste módulo.</p>
+
+  <div data-question data-answer="B">
+    <h3>1. O que a ideia de evolução do software indica sobre o ciclo de vida após a entrega?</h3>
+    <button class="btn" type="button" data-option="A">A) A entrega encerra o ciclo de vida e elimina a necessidade de manutenção.</button>
+    <button class="btn" type="button" data-option="B">B) A entrega inicia uma nova etapa, que pode envolver manutenção, correções e novas funcionalidades.</button>
+    <button class="btn" type="button" data-option="C">C) A evolução ocorre somente quando o sistema precisa trocar sua interface.</button>
+    <button class="btn" type="button" data-option="D">D) A evolução permite mudanças sem considerar custos ou efeitos no produto.</button>
+  </div>
+
+  <div data-question data-answer="D">
+    <h3>2. Uma biblioteca marcada como “deprecated” deve ser entendida como:</h3>
+    <button class="btn" type="button" data-option="A">A) Uma biblioteca que deixou de existir imediatamente e não pode ser analisada.</button>
+    <button class="btn" type="button" data-option="B">B) Uma biblioteca que não possui qualquer relação com riscos ou atualizações.</button>
+    <button class="btn" type="button" data-option="C">C) Uma biblioteca que deve ser mantida indefinidamente por ser a mais antiga.</button>
+    <button class="btn" type="button" data-option="D">D) Um recurso ainda disponível, mas desaconselhado e sujeito a ser removido no futuro.</button>
+  </div>
+
+  <div data-question data-answer="A">
+    <h3>3. Por que dependências desatualizadas exigem acompanhamento e atualização?</h3>
+    <button class="btn" type="button" data-option="A">A) Porque podem apresentar vulnerabilidades, perda de suporte ou alternativas mais seguras.</button>
+    <button class="btn" type="button" data-option="B">B) Porque toda atualização elimina a necessidade de testar o sistema.</button>
+    <button class="btn" type="button" data-option="C">C) Porque uma dependência antiga sempre impede o sistema de ser executado.</button>
+    <button class="btn" type="button" data-option="D">D) Porque a versão mais nova deve ser adotada sem avaliar impactos.</button>
+  </div>
+
+  <div data-question data-answer="C">
+    <h3>4. Qual alternativa diferencia corretamente Hard Delete e Soft Delete?</h3>
+    <button class="btn" type="button" data-option="A">A) Hard Delete marca o registro como inativo, enquanto Soft Delete o remove definitivamente.</button>
+    <button class="btn" type="button" data-option="B">B) Hard Delete e Soft Delete mantêm sempre o registro completo no armazenamento.</button>
+    <button class="btn" type="button" data-option="C">C) Hard Delete remove definitivamente o registro, enquanto Soft Delete o mantém marcado como excluído ou inativo.</button>
+    <button class="btn" type="button" data-option="D">D) Hard Delete é usado apenas em logs, enquanto Soft Delete é usado apenas em bibliotecas.</button>
+  </div>
+
+  <div data-question data-answer="B">
+    <h3>5. Qual prática relaciona corretamente logs, retenção e auditoria?</h3>
+    <button class="btn" type="button" data-option="A">A) Apagar todos os registros imediatamente para evitar qualquer histórico.</button>
+    <button class="btn" type="button" data-option="B">B) Registrar eventos relevantes, mantê-los pelo tempo definido e permitir consulta para rastreabilidade.</button>
+    <button class="btn" type="button" data-option="C">C) Usar logs como substitutos dos dados de negócio sem regras de retenção.</button>
+    <button class="btn" type="button" data-option="D">D) Preservar qualquer informação indefinidamente, sem considerar finalidade ou auditoria.</button>
+  </div>
+
+  <div data-question data-answer="A">
+    <h3>6. Qual relação entre PII, LGPD e NDA está de acordo com o módulo?</h3>
+    <button class="btn" type="button" data-option="A">A) PII pode identificar uma pessoa, LGPD trata da proteção de dados pessoais e NDA protege informações não públicas.</button>
+    <button class="btn" type="button" data-option="B">B) PII é uma técnica de exclusão, LGPD é um formato de arquivo e NDA é um tipo de banco.</button>
+    <button class="btn" type="button" data-option="C">C) PII identifica somente empresas, LGPD trata apenas de interfaces e NDA substitui auditorias.</button>
+    <button class="btn" type="button" data-option="D">D) PII, LGPD e NDA são nomes diferentes para o mesmo tipo de informação.</button>
+  </div>
+
+  <div data-question data-answer="D">
+    <h3>7. Que problema pode ocorrer quando a codificação de caracteres é inadequada?</h3>
+    <button class="btn" type="button" data-option="A">A) O sistema passa a registrar automaticamente todos os eventos para auditoria.</button>
+    <button class="btn" type="button" data-option="B">B) O sistema transforma qualquer dependência em uma versão recomendada.</button>
+    <button class="btn" type="button" data-option="C">C) O sistema garante que textos em diferentes configurações regionais sejam sempre iguais.</button>
+    <button class="btn" type="button" data-option="D">D) Caracteres como “ação”, “ç” e “ã” podem aparecer corrompidos no armazenamento ou processamento.</button>
+  </div>
+
+  <div data-question data-answer="C">
+    <h3>8. O que caracteriza um software Off-the-Shelf ou COTS?</h3>
+    <button class="btn" type="button" data-option="A">A) Um software desenvolvido exclusivamente para uma única organização.</button>
+    <button class="btn" type="button" data-option="B">B) Um software usado somente como protótipo antes de ser descartado.</button>
+    <button class="btn" type="button" data-option="C">C) Um software pronto para uso e comercializado para vários clientes.</button>
+    <button class="btn" type="button" data-option="D">D) Um software que não pode passar por testes antes de sua distribuição.</button>
+  </div>
+
+  <div data-question data-answer="A">
+    <h3>9. Em um sistema que precisa explicar quem alterou um dado e quando, qual conjunto contribui para a rastreabilidade?</h3>
+    <button class="btn" type="button" data-option="A">A) Eventos registrados, histórico preservado, retenção definida e auditoria.</button>
+    <button class="btn" type="button" data-option="B">B) Exclusão imediata de todos os registros e ausência de logs.</button>
+    <button class="btn" type="button" data-option="C">C) Apenas a troca da codificação de caracteres do sistema.</button>
+    <button class="btn" type="button" data-option="D">D) Somente a escolha de um software pronto para uso.</button>
+  </div>
+
+  <div data-question data-answer="B">
+    <h3>10. No estudo de caso “Em Queda Livre: O Caso da Boeing”, qual análise está alinhada à proposta do módulo?</h3>
+    <button class="btn" type="button" data-option="A">A) Avaliar apenas a aparência do produto, sem relacioná-la a riscos ou decisões.</button>
+    <button class="btn" type="button" data-option="B">B) Relacionar requisitos, stakeholders, validação, riscos e decisões de engenharia às consequências de falhas de processo.</button>
+    <button class="btn" type="button" data-option="C">C) Considerar que a entrega torna desnecessária a comunicação entre as partes interessadas.</button>
+    <button class="btn" type="button" data-option="D">D) Substituir a análise de engenharia por uma comparação entre bibliotecas de software.</button>
+  </div>
+
+  <p>
+    <button class="btn primary" type="button" data-quiz-submit>Finalizar quiz</button>
+    <button class="btn" type="button" data-quiz-reset>Refazer quiz</button>
+  </p>
+  <p data-quiz-result aria-live="polite"></p>
+</section>
+
     <div class="module-footer">
       <a class="btn" href="../index.html">← Voltar ao início</a>
       <a class="btn" href="modulo-4.html">← Módulo anterior</a>
