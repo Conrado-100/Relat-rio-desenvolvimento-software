@@ -101,6 +101,12 @@
     return load().modules[String(moduleId)] || null;
   }
 
+  function areAllModulesComplete() {
+    const state = load();
+    return Array.from({ length: MODULE_COUNT }, (_, index) => String(index + 1))
+      .every(id => clamp(state.modules[id]?.percent) === 100);
+  }
+
   function markStarted(moduleId) {
     const state = load();
     const id = String(moduleId);
@@ -320,6 +326,26 @@
           ? 'Continuar módulo <span aria-hidden="true">→</span>'
           : 'Começar módulo <span aria-hidden="true">→</span>';
     });
+
+    const finalStage = document.getElementById("finalStageCard");
+    const finalStageLink = document.getElementById("finalStageLink");
+    const finalStageIcon = document.getElementById("finalStageIcon");
+    const finalStageDescription = document.getElementById("finalStageDescription");
+    const finalStageUnlocked = areAllModulesComplete();
+
+    if (finalStage) finalStage.dataset.status = finalStageUnlocked ? "unlocked" : "locked";
+    if (finalStageIcon) finalStageIcon.textContent = finalStageUnlocked ? "🔓" : "🔒";
+    if (finalStageDescription) {
+      finalStageDescription.textContent = finalStageUnlocked
+        ? "Todos os módulos foram concluídos. A avaliação final está disponível."
+        : "Conclua os 5 módulos com 100% de progresso para desbloquear esta etapa.";
+    }
+    if (finalStageLink) {
+      finalStageLink.textContent = finalStageUnlocked ? "Acessar avaliação →" : "Etapa bloqueada";
+      finalStageLink.setAttribute("aria-disabled", String(!finalStageUnlocked));
+      finalStageLink.tabIndex = finalStageUnlocked ? 0 : -1;
+      finalStageLink.classList.toggle("is-disabled", !finalStageUnlocked);
+    }
   }
 
   function setupHome() {
@@ -330,6 +356,14 @@
       card.dataset.progressBound = "true";
       card.addEventListener("click", () => markStarted(card.dataset.module));
     });
+
+    const finalStageLink = document.getElementById("finalStageLink");
+    if (finalStageLink && finalStageLink.dataset.progressBound !== "true") {
+      finalStageLink.dataset.progressBound = "true";
+      finalStageLink.addEventListener("click", event => {
+        if (!areAllModulesComplete()) event.preventDefault();
+      });
+    }
 
     const resetButton = document.getElementById("resetProgress");
     if (resetButton && resetButton.dataset.progressBound !== "true") {
@@ -368,6 +402,7 @@
     save,
     reset,
     getModule,
+    areAllModulesComplete,
     markStarted,
     setLesson,
     calculateModuleFromPage,

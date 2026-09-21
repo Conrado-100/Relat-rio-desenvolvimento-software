@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Simulado final do curso de Engenharia de Software.">
+  <meta name="theme-color" content="#1769aa">
+  <title>Questões Finais | Engenharia de Software</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .final-intro { margin-bottom: 18px; }
+    .final-question { margin: 0 0 18px; padding: 20px; border: 1px solid #dbe6ed; border-radius: 15px; background: #fbfdfe; }
+    .final-question:last-child { margin-bottom: 0; }
+    .final-question-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .final-question-number { flex: 0 0 auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #eaf5fc; color: #155d91; font-weight: 900; }
+    .final-question h3 { margin: 2px 0 0; color: #124a78; font-size: 1.06rem; line-height: 1.45; }
+    .final-type { display: inline-block; margin-bottom: 12px; padding: 4px 8px; border: 1px solid #cfe3f1; border-radius: 999px; color: #155d91; background: #eef7fd; font-size: .74rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+    .final-options { display: grid; gap: 9px; }
+    .final-option { width: 100%; padding: 12px 14px; border: 1px solid #c8d9e3; border-radius: 10px; background: #fff; color: #243746; cursor: pointer; text-align: left; line-height: 1.5; }
+    .final-option:hover { border-color: #8fb9d1; background: #f5fbff; }
+    .final-option.is-selected { border-color: #1769aa; background: #eef7fd; box-shadow: 0 0 0 2px rgba(23, 105, 170, .15); }
+    .final-option.is-correct { border-color: #45a66d; background: #f3fbf7; color: #17633f; }
+    .final-option.is-incorrect { border-color: #a63a3a; background: #fdeeee; color: #8d3030; }
+    .final-answer { display: block; width: 100%; min-height: 180px; box-sizing: border-box; resize: vertical; padding: 14px; border: 1px solid #c8d9e3; border-radius: 10px; background: #fff; color: #243746; font: inherit; font-size: 16px; line-height: 1.6; overflow-y: auto; }
+    .final-answer:focus { border-color: #1769aa; outline: 3px solid rgba(33, 128, 196, .18); }
+    .final-answer-label { display: block; margin: 0 0 7px; color: #155d91; font-weight: 800; }
+    .final-help { margin: 0 0 9px; color: #718694; font-size: .84rem; }
+    .final-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 22px; }
+    .final-result { flex: 1 1 260px; margin: 0; color: #155d91; font-weight: 800; }
+    .final-result-summary { display: grid; gap: 4px; margin: 0; }
+    .final-feedback { margin-top: 16px; padding: 15px; border: 1px solid #c8d9e3; border-radius: 11px; background: #f8fbfd; }
+    .final-feedback.correct { border-color: #45a66d; background: #f3fbf7; }
+    .final-feedback.incorrect { border-color: #a63a3a; background: #fdeeee; }
+    .final-feedback.unanswered { border-color: #d6a229; background: #fffaf0; }
+    .final-feedback h4 { margin: 0 0 8px; color: #155d91; }
+    .final-feedback p { margin: 5px 0; }
+    .final-feedback-points { display: grid; gap: 4px; margin: 8px 0 0; padding: 0; list-style: none; }
+    .final-feedback-points li::before { display: inline-block; width: 1.4em; font-weight: 900; }
+    .final-feedback-points li.is-found::before { content: "✓"; color: #16734a; }
+    .final-feedback-points li.is-missing::before { content: "✗"; color: #a63a3a; }
+    .final-expected { margin-top: 12px !important; padding-top: 12px; border-top: 1px solid #dbe6ed; }
+    .final-answer-key { margin-top: 18px; }
+    .final-key-item { padding: 15px 0; border-top: 1px solid #dbe6ed; }
+    .final-key-item:first-child { border-top: 0; padding-top: 0; }
+    .final-key-item h3 { margin: 0 0 7px; }
+    .final-key-item p { margin: 5px 0 0; }
+    .final-key-points { margin: 7px 0 0; padding-left: 22px; }
+    @media (max-width: 600px) {
+      .final-question { padding: 15px; }
+      .final-question-header { gap: 9px; }
+      .final-question h3 { font-size: 1rem; }
+      .final-actions .btn { width: 100%; justify-content: center; }
+    }
+    html[data-theme="dark"] .final-question { background: #1e303b; border-color: #30434f; }
+    html[data-theme="dark"] .final-question-number { background: #22475b; color: #c8e8f8; }
+    html[data-theme="dark"] .final-type { background: #19384a; border-color: #3c718c; color: #c8e8f8; }
+    html[data-theme="dark"] .final-option,
+    html[data-theme="dark"] .final-answer { background: #182630; border-color: #46606e; color: #e7eef3; }
+    html[data-theme="dark"] .final-option:hover,
+    html[data-theme="dark"] .final-option.is-selected { background: #294452; }
+    html[data-theme="dark"] .final-option.is-correct { background: #173d2b; border-color: #63d28d; color: #c2f5d4; }
+    html[data-theme="dark"] .final-option.is-incorrect { background: #4b2427; border-color: #f17a82; color: #ffd1d5; }
+    html[data-theme="dark"] .final-answer-label,
+    html[data-theme="dark"] .final-feedback h4,
+    html[data-theme="dark"] .final-result { color: #c8e8f8; }
+    html[data-theme="dark"] .final-help { color: #b7c7d1; }
+    html[data-theme="dark"] .final-feedback { background: #1e303b; border-color: #46606e; }
+    html[data-theme="dark"] .final-feedback.correct { background: #173d2b; border-color: #63d28d; }
+    html[data-theme="dark"] .final-feedback.incorrect { background: #4b2427; border-color: #f17a82; }
+    html[data-theme="dark"] .final-feedback.unanswered { background: #40391d; border-color: #c7a83e; }
+    html[data-theme="dark"] .final-key-item { border-color: #30434f; }
+  </style>
+</head>
+<body>
+  <div class="module-page">
+    <main class="module-shell">
+      <div class="module-nav" aria-label="Navegação do curso">
+        <a href="../index.html">← Início do curso</a>
+      </div>
+
+      <header class="module-header">
+        <div class="eyebrow">Etapa final do curso</div>
+        <h1>Questões Finais</h1>
+        <p class="module-lead">Esta é a avaliação final do curso de Engenharia de Software. Responda às 20 questões antes de consultar o gabarito.</p>
+        <div class="module-meta">
+          <span class="pill">10 objetivas</span>
+          <span class="pill">10 discursivas</span>
+          <span class="pill">Acesso após 100% dos cinco módulos</span>
+        </div>
+      </header>
+
+      <section class="section" id="finalAccessMessage" hidden aria-live="polite">
+        <h2>Avaliação bloqueada</h2>
+        <p>É necessário concluir os cinco módulos com 100% de progresso antes de acessar a avaliação final.</p>
+        <a class="btn primary" href="../index.html">Voltar à página inicial</a>
+      </section>
+
+      <section class="section" id="finalAssessmentContent" hidden>
+        <div class="final-intro">
+          <h2>Simulado final</h2>
+          <p>As questões objetivas serão corrigidas automaticamente. As discursivas recebem uma avaliação automática por pontos essenciais.</p>
+        </div>
+        <div id="finalQuestions" aria-live="polite"></div>
+
+        <div class="final-actions">
+          <button class="btn primary" id="finalGradeButton" type="button">Corrigir questões objetivas</button>
+          <button class="btn" id="finalResetButton" type="button">Refazer simulado</button>
+          <div class="final-result" id="finalResult" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section final-answer-key" id="finalAnswerKey" hidden>
+        <h2>Gabarito e respostas esperadas</h2>
+        <p>O gabarito abaixo corresponde às questões objetivas e apresenta referências para a avaliação das respostas discursivas.</p>
+        <div id="finalAnswerKeyItems"></div>
+      </section>
+
+      <div class="module-footer">
+        <a class="btn" href="../index.html">← Voltar à página inicial</a>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/progress.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      const finalQuestions = [
+        {
+          id: 1, subject: "Software e Engenharia de Software", type: "objective",
+          prompt: "Durante a análise de um projeto, uma equipe afirma que o software deve ser entendido apenas como o código executável, enquanto a documentação seria um elemento externo ao produto. Considerando a definição apresentada no material, qual interpretação é mais adequada?",
+          options: {
+            A: "Software corresponde ao programa executável, enquanto documentação pertence exclusivamente à fase de manutenção.",
+            B: "Software corresponde ao programa e à documentação associada, formando um produto com determinada funcionalidade.",
+            C: "Software corresponde principalmente à documentação, enquanto o programa representa sua implementação operacional.",
+            D: "Software corresponde ao código e aos testes executados, enquanto documentação pertence ao processo de especificação.",
+            E: "Software corresponde ao programa desenvolvido, enquanto requisitos e documentação pertencem exclusivamente ao cliente."
+          },
+          answer: "B", explanation: "Software inclui o programa, a documentação associada e uma determinada funcionalidade."
+        },
+        {
+          id: 2, subject: "Software e Engenharia de Software", type: "discursive",
+          prompt: "Explique por que Engenharia de Software não deve ser confundida simplesmente com programação. Relacione sua resposta às atividades envolvidas na produção de software apresentadas no material.",
+          expected: "A resposta deve explicar que programação é parte do desenvolvimento, enquanto Engenharia de Software possui uma visão mais ampla da produção de software. Deve mencionar aspectos como especificação, desenvolvimento, validação e evolução, além de requisitos, pessoas, documentação e manutenção.",
+          essentialPoints: [
+            { label: "Programação é apenas parte do processo", groups: [["programacao", "programar", "codificacao"], ["parte", "etapa", "atividade"], ["processo", "producao", "engenharia"]] },
+            { label: "Especificação ou requisitos", groups: [["especificacao", "especificar", "requisitos", "necessidades"]] },
+            { label: "Desenvolvimento", groups: [["desenvolvimento", "desenvolver", "implementacao", "implementar"]] },
+            { label: "Validação", groups: [["validacao", "validar", "verificar", "testar"], ["resultado", "software", "produto"]] },
+            { label: "Evolução ou manutenção", groups: [["evolucao", "evoluir", "manutencao", "manter", "corrigir"], ["software", "sistema", "produto"]] }
+          ]
+        },
+        {
+          id: 3, subject: "Processo de Software", type: "objective",
+          prompt: "Uma equipe precisa organizar um projeto de software e deseja utilizar uma estrutura geral que contemple a identificação do que deve ser construído, sua implementação, a verificação do resultado e as mudanças posteriores. Qual conjunto corresponde às atividades gerais apresentadas nos slides?",
+          options: {
+            A: "Entrevista, design, programação e implantação.", B: "Planejamento, codificação, documentação e manutenção.", C: "Especificação, desenvolvimento, validação e evolução.", D: "Requisitos, prototipação, programação e publicação.", E: "Análise, arquitetura, implementação e documentação."
+          },
+          answer: "C", explanation: "As quatro atividades gerais são especificação, desenvolvimento, validação e evolução."
+        },
+        {
+          id: 4, subject: "Processo de Software", type: "discursive",
+          prompt: "Explique o que caracteriza um processo de software e por que não existe necessariamente um único processo adequado para todos os tipos de software. Dê um exemplo de fator que pode influenciar essa escolha.",
+          expected: "O aluno deve explicar que processo de software é um conjunto de atividades relacionadas que levam à produção de um software. Deve destacar que diferentes softwares possuem objetivos, usuários e contextos diferentes.",
+          essentialPoints: [
+            { label: "Conjunto de atividades relacionadas", groups: [["conjunto", "sequencia", "grupo"], ["atividades", "etapas", "tarefas"], ["relacionadas", "organizadas", "processo"]] },
+            { label: "Produção do software", groups: [["producao", "produzir", "desenvolvimento", "criar"], ["software", "sistema", "produto"]] },
+            { label: "Não existe método universal", groups: [["nao existe", "nao ha", "nao e universal", "depende", "varia"] , ["processo", "metodo", "modelo"]] },
+            { label: "Influência do contexto, objetivo ou usuários", groups: [["contexto", "objetivo", "finalidade", "usuarios", "necessidades"], ["influencia", "depende", "considerar", "adequado"]] },
+            { label: "Exemplo coerente de fator", groups: [["por exemplo", "exemplo", "como"], ["contexto", "objetivo", "usuarios", "tamanho", "risco", "requisitos"]] }
+          ]
+        },
+        {
+          id: 5, subject: "Modelos de Processo", type: "objective",
+          prompt: "Uma empresa está desenvolvendo um sistema cujos requisitos podem sofrer mudanças frequentes. A equipe pretende trabalhar com versões sucessivas, utilizando protótipos e feedback dos usuários durante o desenvolvimento. Considerando os modelos apresentados nos slides, qual abordagem é mais compatível com esse cenário?",
+          options: {
+            A: "Modelo em Cascata, pois concentra o feedback somente depois da conclusão das fases.", B: "Modelo Incremental, pois alterna desenvolvimento e validação e facilita o feedback dos usuários.", C: "Integração e Configuração, pois substitui versões sucessivas por componentes reutilizáveis.", D: "Modelo em Cascata, pois mudanças frequentes exigem um planejamento mais rígido das fases.", E: "RUP isoladamente, pois o modelo incremental não considera mudanças nos requisitos."
+          },
+          answer: "B", explanation: "O Modelo Incremental trabalha com versões sucessivas e favorece feedback e ajustes durante o desenvolvimento."
+        },
+        {
+          id: 6, subject: "Modelos de Processo", type: "discursive",
+          prompt: "Compare o Modelo em Cascata e o Desenvolvimento Incremental considerando a organização das etapas, o feedback dos usuários e a maneira como mudanças nos requisitos podem ser tratadas.",
+          expected: "A resposta deve comparar os dois modelos. O Cascata trabalha com fases e planejamento prévio, enquanto o Incremental trabalha com versões sucessivas e feedback dos usuários.",
+          essentialPoints: [
+            { label: "Cascata trabalha com fases e planejamento", groups: [["cascata"], ["fases", "etapas"], ["planejamento", "sequencial", "previsao"]] },
+            { label: "Cascata envolve documentos ou etapas definidas", groups: [["cascata"], ["documentos", "documentacao", "etapas", "requisitos"]] },
+            { label: "Incremental trabalha com versões ou protótipo", groups: [["incremental"], ["versoes", "iteracoes", "incrementos", "prototipo"]] },
+            { label: "Feedback dos usuários", groups: [["feedback", "retorno", "opiniao"], ["usuarios", "cliente", "pessoas"]] },
+            { label: "Incremental lida melhor com mudanças nos requisitos", groups: [["incremental"], ["mudancas", "alteracoes", "mudam"], ["requisitos", "necessidades"], ["adapt", "flex", "melhor", "facilita"]] }
+          ]
+        },
+        {
+          id: 7, subject: "Especificação e Requisitos", type: "objective",
+          prompt: "Durante a fase inicial de um projeto, a equipe realiza entrevistas e analisa as necessidades das pessoas interessadas no sistema para produzir um documento que represente o que deverá ser desenvolvido. De acordo com o material, essa atividade corresponde principalmente à:",
+          options: {
+            A: "Validação de software, pois o objetivo central é verificar o comportamento do produto.", B: "Evolução de software, pois requisitos são modificados continuamente nessa etapa.", C: "Especificação de software, pois busca identificar necessidades e produzir requisitos adequados aos stakeholders.", D: "Implementação de software, pois entrevistas fazem parte diretamente da programação.", E: "Integração e configuração, pois o levantamento determina quais componentes serão reutilizados."
+          },
+          answer: "C", explanation: "A especificação identifica necessidades e produz requisitos adequados aos stakeholders."
+        },
+        {
+          id: 8, subject: "Especificação e Requisitos", type: "discursive",
+          prompt: "Imagine que uma pequena loja queira desenvolver um sistema de controle de vendas. Explique como a especificação de software poderia ajudar a equipe antes do início da programação e quais informações deveriam ser levantadas para compreender a necessidade do sistema.",
+          expected: "A especificação ajuda a identificar necessidades antes da implementação e a compreender o que o sistema deve fazer.",
+          essentialPoints: [
+            { label: "Entender a necessidade da loja", groups: [["entender", "compreender", "identificar", "necessidade", "problema"], ["loja", "vendas", "venda"]] },
+            { label: "Identificar stakeholders ou usuários", groups: [["stakeholders", "partes interessadas", "usuarios", "cliente", "vendedor"]] },
+            { label: "Levantar requisitos", groups: [["levantar", "coletar", "identificar", "definir"], ["requisitos", "necessidades", "demandas"]] },
+            { label: "Definir funcionalidades", groups: [["definir", "listar", "descrever"], ["funcionalidades", "funcoes", "recursos", "o sistema deve"]] },
+            { label: "Delimitar escopo", groups: [["escopo", "limite", "abrangencia"], ["delimitar", "definir", "estabelecer"]] },
+            { label: "Verificar viabilidade", groups: [["viabilidade", "viavel", "possivel"], ["verificar", "avaliar", "analisar"]] }
+          ]
+        },
+        {
+          id: 9, subject: "KISS, MVP e Happy Path", type: "objective",
+          prompt: "Uma equipe está desenvolvendo um sistema para uma pequena loja. O grupo decidiu implementar primeiro somente cadastro de produtos, registro de vendas e consulta do estoque, deixando funcionalidades secundárias para versões posteriores. Essa decisão está mais diretamente relacionada ao conceito de:",
+          options: {
+            A: "Happy Path, pois representa o fluxo ideal de utilização do sistema.", B: "KISS, pois determina que todas as funcionalidades devem ser implementadas simultaneamente.", C: "MVP, pois busca uma versão mínima funcional capaz de atender à necessidade principal.", D: "Stakeholder, pois define quais pessoas serão responsáveis pela utilização do sistema.", E: "GUI, pois estabelece quais elementos visuais devem aparecer na primeira versão."
+          },
+          answer: "C", explanation: "MVP é a versão mínima funcional que atende à necessidade principal."
+        },
+        {
+          id: 10, subject: "KISS, MVP e Happy Path", type: "discursive",
+          prompt: "Explique as diferenças entre KISS, MVP e Happy Path. Em seguida, descreva como os três conceitos poderiam aparecer durante o desenvolvimento de um sistema simples de vendas.",
+          expected: "KISS: busca manter a solução simples, evitando complexidade desnecessária. MVP: versão mínima funcional que resolve a necessidade principal. Happy Path: fluxo ideal em que tudo ocorre conforme esperado. O aluno deve aplicar os três conceitos ao exemplo de sistema de vendas.",
+          essentialPoints: [
+            { label: "KISS mantém a solução simples", groups: [["kiss", "simples", "simplicidade"], ["evitar", "reduzir", "sem", "desnecessaria"], ["complexidade", "complicacao"]] },
+            { label: "MVP é uma versão mínima funcional", groups: [["mvp", "minima", "minimo"], ["versao", "primeira"], ["funcional", "funcionar", "funciona"], ["necessidade principal", "principal", "essencial"]] },
+            { label: "Happy Path é o fluxo ideal", groups: [["happy path", "fluxo ideal", "caminho feliz"], ["esperado", "normal", "tudo ocorre", "sem erro"]] },
+            { label: "Aplicação coerente ao sistema de vendas", groups: [["vendas", "venda", "loja"], ["sistema", "produto", "estoque", "cadastrar", "registrar"]] }
+          ]
+        },
+        {
+          id: 11, subject: "Usuário, Stakeholder e Interfaces", type: "objective",
+          prompt: "Uma empresa desenvolve um sistema utilizado pelos vendedores, enquanto o proprietário acompanha relatórios gerenciais e a equipe jurídica acompanha informações relacionadas à conformidade. Considerando as definições estudadas, qual afirmação representa melhor essa situação?",
+          options: {
+            A: "Somente os vendedores são stakeholders porque são os usuários diretos do sistema.", B: "Proprietário e equipe jurídica são usuários porque acompanham informações produzidas pelo sistema.", C: "Os vendedores são usuários e stakeholders, enquanto proprietário e equipe jurídica podem ser stakeholders sem utilizar diretamente o sistema.", D: "Todos são usuários porque qualquer pessoa afetada pelo sistema utiliza suas funcionalidades diretamente.", E: "Proprietário e equipe jurídica não são stakeholders porque não participam da implementação do sistema."
+          },
+          answer: "C", explanation: "Usuário utiliza o sistema; stakeholder é qualquer parte interessada afetada ou influente, mesmo sem uso direto."
+        },
+        {
+          id: 12, subject: "Usuário, Stakeholder e Interfaces", type: "discursive",
+          prompt: "Explique a diferença entre GUI, UI, UX e CMD/Terminal e apresente uma situação prática em que pelo menos dois desses conceitos possam aparecer no mesmo sistema.",
+          expected: "GUI: interface gráfica. UI: elementos e apresentação da interface. UX: experiência, fluxo, facilidade e eficiência de uso. CMD/Terminal: interface textual baseada em comandos. O aluno deve apresentar uma situação prática coerente.",
+          essentialPoints: [
+            { label: "GUI é uma interface gráfica", groups: [["gui", "grafica", "visual", "tela"]], minGroups: 1 },
+            { label: "UI trata dos elementos e da apresentação", groups: [["ui", "interface"], ["elementos", "botoes", "cores", "layout", "apresentacao"]] },
+            { label: "UX trata da experiência, fluxo, facilidade e eficiência", groups: [["ux", "experiencia"], ["fluxo", "facilidade", "eficiencia", "usabilidade"]] },
+            { label: "CMD ou Terminal é uma interface textual", groups: [["cmd", "terminal", "linha de comando", "comandos"], ["textual", "texto", "digit" ]] },
+            { label: "Situação prática coerente com pelo menos duas interfaces", groups: [["sistema", "aplicacao", "vendas", "loja"], ["gui", "ui", "ux", "terminal", "cmd", "comandos"], ["e", "tambem", "alem"]] }
+          ]
+        },
+        {
+          id: 13, subject: "UML, Casos de Uso e Modelagem", type: "objective",
+          prompt: "Uma equipe deseja representar graficamente as interações entre os usuários de um sistema e as funcionalidades que eles utilizam, antes de iniciar a implementação. Considerando o uso de UML no contexto estudado, qual alternativa representa melhor essa finalidade?",
+          options: {
+            A: "Representar exclusivamente a estrutura física dos servidores que executarão o sistema.", B: "Representar as interações entre atores e funcionalidades por meio de um modelo de casos de uso.", C: "Representar somente a aparência visual das telas que serão apresentadas ao usuário.", D: "Representar exclusivamente o código-fonte que será produzido durante o desenvolvimento.", E: "Representar somente os testes executados depois que o sistema estiver concluído."
+          },
+          answer: "B", explanation: "O modelo de casos de uso representa atores, interações e funcionalidades relevantes do sistema."
+        },
+        {
+          id: 14, subject: "UML, Casos de Uso e Modelagem", type: "discursive",
+          prompt: "Considere um sistema de vendas de uma pequena loja. Explique como um diagrama de caso de uso poderia ajudar na compreensão do sistema antes da implementação. Cite pelo menos dois possíveis atores e duas funcionalidades que poderiam aparecer no modelo.",
+          expected: "O aluno deve explicar que o caso de uso ajuda a representar quem interage com o sistema e quais funcionalidades são relevantes para esses atores. Exemplo: atores vendedor e administrador; funcionalidades registrar venda, cadastrar produto, consultar estoque ou emitir relatório.",
+          essentialPoints: [
+            { label: "Representar quem interage com o sistema", groups: [["representar", "mostrar", "identificar"], ["quem", "atores", "ator", "interage", "usuario"]] },
+            { label: "Representar funcionalidades relevantes", groups: [["representar", "mostrar", "identificar"], ["funcionalidades", "funcoes", "acoes", "casos de uso"]] },
+            { label: "Citar dois atores coerentes", terms: ["vendedor", "administrador", "cliente", "gerente"], minTermMatches: 2 },
+            { label: "Citar duas funcionalidades coerentes", terms: ["registrar venda", "cadastrar produto", "consultar estoque", "emitir relatorio"], minTermMatches: 2 }
+          ]
+        },
+        {
+          id: 15, subject: "Agile, Scrum e Prototipação", type: "objective",
+          prompt: "Uma equipe está desenvolvendo um sistema e decide criar uma primeira versão simplificada para apresentar aos usuários, obter feedback e utilizar as observações recebidas para orientar versões posteriores. Essa abordagem está relacionada principalmente ao:",
+          options: {
+            A: "Desenvolvimento Incremental, no qual versões sucessivas permitem obter feedback dos usuários.", B: "Modelo em Cascata, no qual a validação ocorre somente depois de todas as fases concluídas.", C: "Hard Delete, no qual informações antigas são removidas para simplificar o desenvolvimento.", D: "Software COTS, no qual uma solução pronta é distribuída para diferentes clientes.", E: "Encoding, no qual caracteres são convertidos para representação em bits e bytes."
+          },
+          answer: "A", explanation: "Versões sucessivas com feedback dos usuários caracterizam o Desenvolvimento Incremental."
+        },
+        {
+          id: 16, subject: "Agile, Scrum e Prototipação", type: "discursive",
+          prompt: "Explique por que a prototipação pode ser útil durante o desenvolvimento de um software. Relacione sua resposta à obtenção de feedback dos usuários e à redução de mudanças não planejadas.",
+          expected: "O aluno deve explicar que o protótipo permite apresentar uma versão inicial da solução, obter feedback dos usuários e identificar problemas ou necessidades antes de consolidar todo o desenvolvimento.",
+          essentialPoints: [
+            { label: "Protótipo é uma versão inicial", groups: [["prototipo", "versao inicial", "primeira versao"], ["apresentar", "experimentar", "visualizar"]] },
+            { label: "Obter feedback", groups: [["feedback", "retorno", "opiniao"], ["usuarios", "cliente", "pessoas"]] },
+            { label: "Identificar problemas antecipadamente", groups: [["identificar", "encontrar", "detectar"], ["problemas", "erros", "necessidades"], ["antes", "antecip", "inicio"]] },
+            { label: "Reduzir mudanças não planejadas", groups: [["reduzir", "evitar", "diminuir"], ["mudancas", "alteracoes"], ["nao planejadas", "inesperadas", "futuras"]] },
+            { label: "Orientar versões posteriores", groups: [["orientar", "guiar", "direcionar"], ["versoes", "iteracoes", "desenvolvimento"], ["posteriores", "seguintes", "futuras"]] }
+          ]
+        },
+        {
+          id: 17, subject: "Desenvolvimento, Validação e Testes", type: "objective",
+          prompt: "Considere uma equipe que terminou uma funcionalidade e precisa verificar se o software produzido atende ao que foi solicitado pelo cliente. Considerando as atividades gerais do processo de software apresentadas nos slides, essa preocupação está diretamente relacionada à:",
+          options: {
+            A: "Especificação, pois verificar o produto significa definir novamente seus requisitos.", B: "Desenvolvimento, pois validação ocorre durante a implementação do código.", C: "Validação, pois essa atividade está relacionada à verificação do software em relação ao resultado esperado.", D: "Evolução, pois toda verificação representa uma nova funcionalidade.", E: "Integração e configuração, pois testes correspondem ao reaproveitamento de componentes."
+          },
+          answer: "C", explanation: "Validação verifica se o software produzido corresponde ao resultado esperado e ao que foi solicitado."
+        },
+        {
+          id: 18, subject: "Desenvolvimento, Validação e Testes", type: "discursive",
+          prompt: "Explique a relação entre especificação, desenvolvimento e validação. Por que validar o software é importante para verificar se o produto produzido corresponde ao que era esperado?",
+          expected: "Especificação identifica necessidades e define o que deve ser produzido. Desenvolvimento implementa o software. Validação verifica o resultado produzido em relação ao esperado. São atividades diferentes, relacionadas, e o feedback pode levar a ajustes.",
+          essentialPoints: [
+            { label: "São atividades diferentes e relacionadas", groups: [["atividades", "etapas"], ["diferentes", "distintas"], ["relacao", "relacionadas", "juntas"]] },
+            { label: "Especificação orienta o desenvolvimento", groups: [["especificacao", "requisitos"], ["orienta", "define", "determina"], ["desenvolvimento", "implementacao", "construir"]] },
+            { label: "Validação verifica o resultado", groups: [["validacao", "validar"], ["verifica", "confere", "testa", "compara"], ["resultado", "software", "produto"]] },
+            { label: "Feedback pode levar a ajustes", groups: [["feedback", "retorno"], ["ajustes", "corrigir", "mudancas", "melhorias"]] }
+          ]
+        },
+        {
+          id: 19, subject: "Evolução, Manutenção, Segurança e Governança", type: "objective",
+          prompt: "Após a entrega de um sistema, uma biblioteca utilizada pelo projeto passa a ser considerada deprecated e existem preocupações relacionadas a vulnerabilidades e suporte. Considerando o conteúdo estudado, qual atitude é mais adequada?",
+          options: {
+            A: "Manter a dependência indefinidamente, pois deprecated significa que seu funcionamento foi encerrado.", B: "Remover imediatamente todos os dados do sistema, pois bibliotecas obsoletas impedem qualquer manutenção.", C: "Avaliar a situação da dependência, verificar alternativas recomendadas e planejar uma atualização considerando seus impactos.", D: "Substituir toda a arquitetura do sistema, pois uma dependência deprecated exige reconstrução completa do software.", E: "Ignorar a situação enquanto a aplicação continuar funcionando, pois vulnerabilidades não estão relacionadas às dependências."
+          },
+          answer: "C", explanation: "Dependências deprecated exigem avaliação, alternativas recomendadas e atualização planejada considerando impactos."
+        },
+        {
+          id: 20, subject: "Evolução, Manutenção, Segurança e Governança", type: "discursive",
+          prompt: "Explique por que a entrega de um software não representa necessariamente o fim do seu ciclo de vida. Em sua resposta, relacione manutenção, atualização de dependências, segurança, logs ou auditoria e evolução do sistema.",
+          expected: "O aluno deve explicar que o software continua sendo trabalhado após a entrega.",
+          essentialPoints: [
+            { label: "Manutenção ou correção", groups: [["manutencao", "corrigir", "correcao", "consertar"], ["apos", "entrega", "depois", "continua"]] },
+            { label: "Novas funcionalidades", groups: [["novas", "adicionar", "evolucao"], ["funcionalidades", "recursos", "melhorias"]] },
+            { label: "Atualização de dependências", groups: [["atualizar", "atualizacao", "upgrade", "substituir"], ["dependencias", "bibliotecas", "biblioteca"]] },
+            { label: "Segurança", groups: [["seguranca", "vulnerabilidades", "protecao", "riscos"]] },
+            { label: "Logs ou auditoria", groups: [["logs", "auditoria", "registro", "rastreabilidade"], ["acompanhar", "investigar", "historico", "controle"]] },
+            { label: "Evolução contínua", groups: [["evolucao", "evoluir", "ciclo de vida", "continuamente", "continuo"], ["sistema", "software", "produto"]] }
+          ]
+        }
+      ];
+
+      const escapeHtml = value => String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+      function renderQuestions() {
+        const questions = document.getElementById("finalQuestions");
+        questions.innerHTML = finalQuestions.map(question => {
+          const typeLabel = question.type === "objective" ? "Questão objetiva" : "Questão discursiva";
+          const answerArea = question.type === "objective"
+            ? `<div class="final-options" role="group" aria-label="Alternativas da questão ${question.id}">${Object.entries(question.options).map(([letter, text]) => `<button class="final-option" type="button" data-final-option="${letter}" aria-pressed="false"><strong>${letter})</strong> ${escapeHtml(text)}</button>`).join("")}</div>`
+            : `<label class="final-answer-label" for="final-answer-${question.id}">Sua resposta</label><p class="final-help" id="final-help-${question.id}">Avaliação automática por pontos essenciais.</p><textarea class="final-answer" id="final-answer-${question.id}" data-final-answer aria-describedby="final-help-${question.id}" placeholder="Escreva sua resposta..."></textarea><div class="final-feedback" data-final-feedback hidden></div>`;
+
+          return `<article class="final-question" data-final-question="${question.id}" data-final-type="${question.type}" data-final-answer-key="${question.answer || ""}"><span class="final-type">${typeLabel}</span><div class="final-question-header"><span class="final-question-number" aria-hidden="true">${String(question.id).padStart(2, "0")}</span><h3>${escapeHtml(question.prompt)}</h3></div>${answerArea}</article>`;
+        }).join("");
+      }
+
+      function renderAnswerKey() {
+        const answerKey = document.getElementById("finalAnswerKeyItems");
+        answerKey.innerHTML = finalQuestions.map(question => {
+          const answer = question.type === "objective"
+            ? `<p><strong>Resposta correta:</strong> ${question.answer}</p><p>${escapeHtml(question.explanation)}</p>`
+            : `<p><strong>Resposta esperada:</strong> ${escapeHtml(question.expected)}</p><p><strong>Pontos essenciais:</strong></p><ul class="final-key-points">${question.essentialPoints.map(point => `<li>${escapeHtml(point.label)}</li>`).join("")}</ul>`;
+          return `<div class="final-key-item"><h3>Questão ${question.id} — ${question.type === "objective" ? "Objetiva" : "Discursiva"}</h3>${answer}</div>`;
+        }).join("");
+      }
+
+      function setSelectedOption(option) {
+        const question = option.closest("[data-final-question]");
+        question.querySelectorAll("[data-final-option]").forEach(item => {
+          item.classList.remove("is-selected", "is-correct", "is-incorrect");
+          item.setAttribute("aria-pressed", "false");
+          item.removeAttribute("aria-label");
+        });
+        option.classList.add("is-selected");
+        option.setAttribute("aria-pressed", "true");
+      }
+
+      function normalizeAnswer(answer) {
+        return String(answer || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function containsTerm(answer, term) {
+        const normalizedAnswer = ` ${answer} `;
+        const normalizedTerm = normalizeAnswer(term);
+        return normalizedTerm && normalizedAnswer.includes(` ${normalizedTerm} `);
+      }
+
+      function matchesEssentialPoint(answer, point) {
+        if (point.minTermMatches) {
+          const matches = point.terms.filter(term => containsTerm(answer, term));
+          return new Set(matches.map(normalizeAnswer)).size >= point.minTermMatches;
+        }
+        return point.groups.every(group => group.some(term => containsTerm(answer, term)));
+      }
+
+      function evaluateDiscursiveAnswer(answer, essentialPoints) {
+        const normalizedAnswer = normalizeAnswer(answer);
+        const identified = normalizedAnswer.length >= 24
+          ? essentialPoints.map(point => matchesEssentialPoint(normalizedAnswer, point))
+          : essentialPoints.map(() => false);
+        const found = identified.filter(Boolean).length;
+        const coverage = essentialPoints.length ? Math.round((found / essentialPoints.length) * 100) : 0;
+        return {
+          identified,
+          found,
+          coverage,
+          status: coverage >= 70 ? "correct" : "incorrect"
+        };
+      }
+
+      function renderDiscursiveFeedback(question, evaluation, answer) {
+        const container = document.querySelector(`[data-final-question="${question.id}"]`);
+        const feedback = container.querySelector("[data-final-feedback]");
+        const unanswered = !String(answer || "").trim();
+        const status = unanswered ? "unanswered" : evaluation.status;
+        const title = unanswered
+          ? "⚠ Não respondida"
+          : evaluation.status === "correct"
+            ? "✓ Resposta considerada correta"
+            : "✕ Resposta precisa ser revisada";
+        const pointItems = question.essentialPoints.map((point, index) => `<li class="${evaluation.identified[index] ? "is-found" : "is-missing"}">${escapeHtml(point.label)}</li>`).join("");
+
+        feedback.className = `final-feedback ${status}`;
+        feedback.hidden = false;
+        feedback.innerHTML = `<h4>${title}</h4><p><strong>Cobertura:</strong> ${evaluation.coverage}%</p><p><strong>Pontos identificados:</strong> ${evaluation.found} de ${question.essentialPoints.length}</p><ul class="final-feedback-points">${pointItems}</ul><p class="final-expected"><strong>Resposta esperada:</strong> ${escapeHtml(question.expected)}</p>`;
+      }
+
+      function gradeObjectives() {
+        let correct = 0;
+        let answered = 0;
+        finalQuestions.filter(question => question.type === "objective").forEach(question => {
+          const container = document.querySelector(`[data-final-question="${question.id}"]`);
+          const selected = container.querySelector("[data-final-option].is-selected");
+          const correctOption = container.querySelector(`[data-final-option="${question.answer}"]`);
+          container.querySelectorAll("[data-final-option]").forEach(option => option.classList.remove("is-correct", "is-incorrect"));
+          if (!selected) return;
+          answered += 1;
+          if (selected.dataset.finalOption === question.answer) {
+            correct += 1;
+            selected.classList.add("is-correct");
+            selected.setAttribute("aria-label", "Resposta correta.");
+          } else {
+            selected.classList.add("is-incorrect");
+            selected.setAttribute("aria-label", "Resposta incorreta.");
+            correctOption.classList.add("is-correct");
+            correctOption.setAttribute("aria-label", "Resposta correta.");
+          }
+        });
+
+        const objectiveQuestions = finalQuestions.filter(question => question.type === "objective");
+        const discursiveQuestions = finalQuestions.filter(question => question.type === "discursive");
+        let discursiveCorrect = 0;
+        discursiveQuestions.forEach(question => {
+          const answer = document.querySelector(`[data-final-question="${question.id}"] [data-final-answer]`).value;
+          const evaluation = evaluateDiscursiveAnswer(answer, question.essentialPoints);
+          renderDiscursiveFeedback(question, evaluation, answer);
+          if (evaluation.status === "correct" && answer.trim()) discursiveCorrect += 1;
+        });
+
+        const total = objectiveQuestions.length;
+        const totalQuestions = objectiveQuestions.length + discursiveQuestions.length;
+        document.getElementById("finalResult").innerHTML = `<div class="final-result-summary"><span>Objetivas: <strong>${correct}/${total}</strong>${answered < total ? ` (${answered} respondidas)` : ""}</span><span>Discursivas: <strong>${discursiveCorrect}/${discursiveQuestions.length}</strong></span><span>Resultado: <strong>${correct + discursiveCorrect}/${totalQuestions}</strong></span></div>`;
+        document.getElementById("finalAnswerKey").hidden = false;
+      }
+
+      function resizeAnswer(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = `${Math.max(180, textarea.scrollHeight)}px`;
+      }
+
+      function resetAssessment() {
+        document.querySelectorAll("[data-final-type=\"objective\"] [data-final-option]").forEach(option => {
+          option.classList.remove("is-selected", "is-correct", "is-incorrect");
+          option.setAttribute("aria-pressed", "false");
+          option.removeAttribute("aria-label");
+        });
+        document.querySelectorAll("[data-final-answer]").forEach(textarea => {
+          textarea.value = "";
+          resizeAnswer(textarea);
+        });
+        document.querySelectorAll("[data-final-feedback]").forEach(feedback => {
+          feedback.hidden = true;
+          feedback.innerHTML = "";
+        });
+        document.getElementById("finalResult").textContent = "";
+        document.getElementById("finalAnswerKey").hidden = true;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const unlocked = window.CourseProgress.areAllModulesComplete();
+        const message = document.getElementById("finalAccessMessage");
+        const content = document.getElementById("finalAssessmentContent");
+
+        if (!unlocked) {
+          message.hidden = false;
+          return;
+        }
+
+        content.hidden = false;
+        renderQuestions();
+        renderAnswerKey();
+        document.getElementById("finalQuestions").addEventListener("click", event => {
+          const option = event.target.closest("[data-final-option]");
+          if (option) setSelectedOption(option);
+        });
+        document.querySelectorAll("[data-final-answer]").forEach(textarea => {
+          textarea.addEventListener("input", () => resizeAnswer(textarea));
+          resizeAnswer(textarea);
+        });
+        document.getElementById("finalGradeButton").addEventListener("click", gradeObjectives);
+        document.getElementById("finalResetButton").addEventListener("click", resetAssessment);
+      });
+    })();
+  </script>
+</body>
+</html>
