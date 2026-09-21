@@ -1,1 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare modelos de processo, entenda por que requisitos variáveis favorecem abordagens incrementais e aprenda os principais elementos de Agile, Scrum e Story Points.">
+  <meta name="theme-color" content="#1769aa">
+  <title>Processos de Software, Prototipação e Agile | Engenharia de Software</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Proteção temporária dos diagramas enquanto o css/style.css é montado. */
+    .diagram { overflow-x:auto; overflow-y:visible; width:100%; padding:1rem 0; }
+    .diagram svg { display:block; width:100%; min-width:680px; height:auto; overflow:visible; }
+    .diagram svg text, .diagram svg tspan { fill:#111827 !important; color:#111827 !important; font-family:Arial, Helvetica, sans-serif; }
+    .module-page { min-height:100vh; background:#f5f9fc; color:#243746; }
+    .module-shell { max-width:1100px; margin:0 auto; padding:20px; }
+    .module-header { background:#fff; border:1px solid #dbe6ed; border-radius:22px; padding:28px; box-shadow:0 8px 28px rgba(26,60,85,.07); margin-bottom:24px; }
+    .eyebrow { color:#1769aa; font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:.8rem; }
+    .module-header h1 { margin:.35rem 0 .5rem; font-size:clamp(1.8rem,4vw,2.7rem); line-height:1.1; }
+    .module-lead { color:#536978; max-width:850px; font-size:1.05rem; line-height:1.7; margin:0; }
+    .module-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:999px; background:#eef7fd; color:#155d91; border:1px solid #d7eaf8; font-weight:700; font-size:.88rem; }
+    .progress-panel { margin-top:20px; padding:14px 16px; background:#f8fbfd; border:1px solid #dbe6ed; border-radius:14px; }
+    .progress-row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.92rem; font-weight:800; margin-bottom:8px; }
+    .progress-track { height:10px; background:#e6eef3; border-radius:999px; overflow:hidden; }
+    .progress-fill { display:block; height:100%; width:0; background:#2180c4; border-radius:999px; transition:width .25s ease; }
+    .module-nav { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .module-nav a { text-decoration:none; color:#155d91; background:#fff; border:1px solid #dbe6ed; border-radius:10px; padding:9px 12px; font-weight:800; }
+    .module-nav a:hover { background:#eef7fd; }
+    .section { background:#fff; border:1px solid #dbe6ed; border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:0 5px 18px rgba(26,60,85,.04); }
+    .section h2 { margin-top:0; color:#124a78; }
+    .section h3 { color:#155d91; margin-bottom:.4rem; }
+    .section p, .section li { line-height:1.72; }
+    .definition { border-left:4px solid #2180c4; background:#f3f9fd; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .example { border-left:4px solid #45a66d; background:#f3fbf7; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .attention { border-left:4px solid #d6a229; background:#fffaf0; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .step-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:14px; }
+    .step { padding:15px; border:1px solid #dbe6ed; border-radius:14px; background:#fbfdfe; }
+    .step strong { display:block; color:#124a78; margin-bottom:6px; }
+    .checklist { display:grid; gap:9px; margin-top:14px; }
+    .checkitem { display:flex; gap:10px; align-items:flex-start; padding:12px; background:#fbfdfe; border:1px solid #dbe6ed; border-radius:12px; }
+    .checkitem input { margin-top:4px; accent-color:#1769aa; transform:scale(1.1); }
+    .challenge { background:linear-gradient(135deg,#eef7fd,#f7fbfd); border:1px solid #cfe3f1; border-radius:16px; padding:18px; }
+    .module-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin:26px 0 40px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 15px; border-radius:11px; border:1px solid #c8d9e3; background:#fff; color:#155d91; text-decoration:none; font-weight:800; }
+    .btn.primary { background:#1769aa; border-color:#1769aa; color:#fff; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:700px) {
+      .module-shell { padding:12px; }
+      .module-header, .section { padding:18px; border-radius:15px; }
+      .diagram svg { min-width:560px; }
+    }
+  </style>
+</head>
+<body>
+<div class="module-page">
+  <main class="module-shell" data-module="3">
+    <div class="module-nav" aria-label="Navegação do curso">
+      <a href="../index.html">← Início do curso</a>
+      <a href="modulo-1.html">Módulo 1</a>
+      <a href="modulo-2.html">Módulo 2</a>
+      <a href="modulo-3.html">Módulo 3</a>
+      <a href="modulo-4.html">Módulo 4</a>
+      <a href="modulo-5.html">Módulo 5</a>
+    </div>
+    <header class="module-header">
+      <div class="eyebrow">Módulo 3 de 5</div>
+      <h1>Processos de Software, Prototipação e Agile</h1>
+      <p class="module-lead">Compare modelos de processo, entenda por que requisitos variáveis favorecem abordagens incrementais e aprenda os principais elementos de Agile, Scrum e Story Points.</p>
+      <div class="module-meta">
+        <span class="pill">🎯 Escolher e organizar uma estratégia de desenvolvimento</span>
+        <span class="pill" data-module-status>Em andamento</span>
+      </div>
+      <div class="progress-panel" aria-label="Progresso do módulo">
+        <div class="progress-row"><span>Progresso</span><strong data-progress-percent>0%</strong></div>
+        <div class="progress-track"><span class="progress-fill" data-progress-fill></span></div>
+      </div>
+    </header>
 
+<section class="section">
+  <h2>1. O que é ciclo de vida?</h2>
+  <p>Modelos de processo, também chamados de ciclo de vida de desenvolvimento de software, descrevem como as atividades são organizadas ao longo do projeto. O material apresenta Cascata, Desenvolvimento Incremental e Integração/Configuração, e cita o RUP como combinação de elementos dos três.</p>
+</section>
+
+<section class="section">
+  <h2>2. Modelo em Cascata</h2>
+  <p>O modelo em cascata é dividido em fases e pressupõe planejamento antes da programação. O material informa que ele foi criado para o desenvolvimento de sistemas militares e que cada etapa gera documentos aprovados.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="w1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <path d="M80 60 L210 120 L340 180 L470 240 L600 300" fill="none" stroke="#2180c4" stroke-width="5"/>
+      <rect x="35" y="30" width="160" height="55" rx="12" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/><text x="115" y="64" text-anchor="middle" font-size="18" font-weight="700">Requisitos</text>
+      <rect x="165" y="90" width="160" height="55" rx="12" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/><text x="245" y="124" text-anchor="middle" font-size="18" font-weight="700">Projeto</text>
+      <rect x="295" y="150" width="160" height="55" rx="12" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/><text x="375" y="184" text-anchor="middle" font-size="18" font-weight="700">Implementação</text>
+      <rect x="425" y="210" width="160" height="55" rx="12" fill="#f7f4fd" stroke="#8566b6" stroke-width="2"/><text x="505" y="244" text-anchor="middle" font-size="18" font-weight="700">Testes</text>
+      <rect x="555" y="270" width="190" height="55" rx="12" fill="#f8fbfd" stroke="#124a78" stroke-width="2"/><text x="650" y="304" text-anchor="middle" font-size="18" font-weight="700">Entrega / manutenção</text>
+      <path d="M210 120 L205 122 M340 180 L335 182 M470 240 L465 242 M600 300 L595 302" stroke="#1769aa" stroke-width="1" marker-end="url(#w1)"/>
+      <text x="770" y="95" font-size="16" fill="#111827">fases mais sequenciais</text><text x="770" y="118" font-size="14" fill="#111827">• planejamento prévio</text><text x="770" y="139" font-size="14" fill="#111827">• documentação</text><text x="770" y="160" font-size="14" fill="#111827">• feedback entre fases na prática</text>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>3. Desenvolvimento Incremental</h2>
+  <p>Baseia-se em um protótipo inicial que recebe feedback dos usuários. O produto é desenvolvido em várias versões até atingir o resultado esperado. Desenvolvimento e validação se alternam.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 950 300" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="i1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <g>
+        <rect x="35" y="75" width="180" height="100" rx="16" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/><text x="125" y="112" text-anchor="middle" font-size="19" font-weight="700">Protótipo</text><text x="125" y="137" text-anchor="middle" font-size="14">versão inicial</text>
+        <rect x="255" y="75" width="180" height="100" rx="16" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/><text x="345" y="112" text-anchor="middle" font-size="19" font-weight="700">Feedback</text><text x="345" y="137" text-anchor="middle" font-size="14">usuários / cliente</text>
+        <rect x="475" y="75" width="180" height="100" rx="16" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/><text x="565" y="112" text-anchor="middle" font-size="19" font-weight="700">Incremento</text><text x="565" y="137" text-anchor="middle" font-size="14">nova funcionalidade</text>
+        <rect x="695" y="75" width="210" height="100" rx="16" fill="#f7f4fd" stroke="#8566b6" stroke-width="2"/><text x="800" y="112" text-anchor="middle" font-size="19" font-weight="700">Nova validação</text><text x="800" y="137" text-anchor="middle" font-size="14">repetir o ciclo</text>
+      </g>
+      <path d="M215 125 H250" stroke="#1769aa" stroke-width="3" marker-end="url(#i1)"/><path d="M435 125 H470" stroke="#1769aa" stroke-width="3" marker-end="url(#i1)"/><path d="M655 125 H690" stroke="#1769aa" stroke-width="3" marker-end="url(#i1)"/>
+      <path d="M800 195 C800 255 125 255 125 180" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#i1)"/>
+      <text x="470" y="282" text-anchor="middle" font-size="16" font-weight="700">entrega antecipada de valor + menor custo de mudança</text>
+    </svg>
+  </div>
+  <div class="example"><strong>Quando ajuda?</strong> O material destaca que o incremental é mais indicado quando os requisitos mudam constantemente, é muito usado no desenvolvimento ágil e facilita feedback e entrega antecipada de MVP.</div>
+</section>
+
+<section class="section">
+  <h2>4. Prototipação e entrega incremental</h2>
+  <p>Protótipo é uma versão inicial do sistema. Pode ter foco visual, principalmente em GUI, e é encerrado com sua avaliação. Entrega incremental significa liberar pequenas partes do sistema para que sejam usadas e validadas.</p>
+  <div class="step-grid">
+    <div class="step"><strong>Incremento</strong><span>Pode ser uma tela, tabela, funcionalidade ou outro pequeno pedaço do produto.</span></div>
+    <div class="step"><strong>Feedback</strong><span>O uso do incremento produz informação para a próxima versão.</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>5. Integração e configuração</h2>
+  <p>O material destaca que quase todo software reutiliza código existente. Entre os tipos citados estão software standalone, bibliotecas (libraries) e web services.</p>
+</section>
+
+<section class="section">
+  <h2>6. Agile e Scrum</h2>
+  <p>Nas suas anotações, Agile aparece como desenvolvimento incremental e o Scrum como uma forma de organizar o trabalho em ciclos curtos, com backlog, sprint, daily/stand-up e acompanhamento do que será entregue.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 940 330" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="s1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <circle cx="470" cy="165" r="80" fill="#eef7fd" stroke="#2180c4" stroke-width="3"/>
+      <text x="470" y="155" text-anchor="middle" font-size="24" font-weight="700">SPRINT</text><text x="470" y="182" text-anchor="middle" font-size="14">ciclo curto de trabalho</text>
+      <rect x="55" y="40" width="200" height="64" rx="14" fill="#fff" stroke="#dbe6ed" stroke-width="2"/><text x="155" y="67" text-anchor="middle" font-size="17" font-weight="700">Backlog</text><text x="155" y="88" text-anchor="middle" font-size="13">prioridades do produto</text>
+      <rect x="55" y="220" width="200" height="64" rx="14" fill="#fff" stroke="#dbe6ed" stroke-width="2"/><text x="155" y="247" text-anchor="middle" font-size="17" font-weight="700">Planning</text><text x="155" y="268" text-anchor="middle" font-size="13">seleção da sprint</text>
+      <rect x="685" y="40" width="200" height="64" rx="14" fill="#fff" stroke="#dbe6ed" stroke-width="2"/><text x="785" y="67" text-anchor="middle" font-size="17" font-weight="700">Daily / Stand-up</text><text x="785" y="88" text-anchor="middle" font-size="13">sincronização da equipe</text>
+      <rect x="685" y="220" width="200" height="64" rx="14" fill="#fff" stroke="#dbe6ed" stroke-width="2"/><text x="785" y="247" text-anchor="middle" font-size="17" font-weight="700">Review / Retrospectiva</text><text x="785" y="268" text-anchor="middle" font-size="13">aprender e melhorar</text>
+      <path d="M255 75 C325 75 330 115 385 135" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#s1)"/><path d="M255 250 C330 250 330 215 385 195" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#s1)"/><path d="M555 135 C610 115 615 75 680 75" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#s1)"/><path d="M555 195 C610 215 615 250 680 250" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#s1)"/>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>7. Story Points e Fibonacci</h2>
+  <p>Story Points representam uma estimativa relativa do tamanho, complexidade e incerteza de uma demanda. A escala baseada em Fibonacci ajuda a mostrar que grandes itens são mais difíceis de estimar com precisão.</p>
+  <div class="step-grid">
+    <div class="step"><strong>1 SP</strong><span>Tarefa extremamente simples e rápida.</span></div>
+    <div class="step"><strong>2–3 SP</strong><span>Baixa a média complexidade.</span></div>
+    <div class="step"><strong>5–8 SP</strong><span>Demanda moderada, com mais regras ou integrações.</span></div>
+    <div class="step"><strong>13–20 SP</strong><span>Demanda grande, complexa ou com muitas incertezas.</span></div>
+  </div>
+  <div class="attention"><strong>Boa prática das anotações:</strong> quando uma história fica grande demais, quebre-a em partes menores em vez de tentar manter um único bloco enorme.</div>
+</section>
+
+<section class="section">
+  <h2>8. Papéis da equipe</h2>
+  <p>Uma equipe pode incluir funções como front-end, back-end, Product Owner, arquiteto, DBA, UI/UX e DevOps. O importante é entender que o desenvolvimento envolve responsabilidades diferentes e coordenação entre elas.</p>
+</section>
+
+<section class="section">
+  <h2>9. Passo a passo de aprendizagem</h2>
+  <div class="checklist">
+    <label class="checkitem" data-lesson="1"><input type="checkbox"><span><strong>Explique Cascata</strong><br>Diga como as fases são organizadas e por que o planejamento aparece antes da programação.</span></label>
+    <label class="checkitem" data-lesson="2"><input type="checkbox"><span><strong>Explique Incremental</strong><br>Mostre como protótipo, feedback e novas versões se relacionam.</span></label>
+    <label class="checkitem" data-lesson="3"><input type="checkbox"><span><strong>Compare os modelos</strong><br>Identifique qual modelo lida melhor com requisitos que mudam constantemente segundo o material.</span></label>
+    <label class="checkitem" data-lesson="4"><input type="checkbox"><span><strong>Monte uma Sprint</strong><br>Liste backlog, planning, daily e revisão/retrospectiva em ordem de trabalho.</span></label>
+    <label class="checkitem" data-lesson="5"><input type="checkbox"><span><strong>Estime uma demanda</strong><br>Escolha Story Points para três tarefas e justifique a diferença relativa.</span></label>
+    <label class="checkitem" data-lesson="6"><input type="checkbox"><span><strong>Mapeie papéis</strong><br>Distribua front, back, PO, DBA, UI/UX, arquiteto e DevOps em um projeto.</span></label>
+  </div>
+</section>
+
+<section class="section challenge">
+  <h2>Desafio prático</h2>
+  <p>Pegue o sistema da loja do módulo anterior. Divida o MVP em <strong>3 incrementos</strong>, crie uma sprint de 2 semanas com pelo menos <strong>5 histórias</strong> e estime cada uma em Story Points.</p>
+</section>
+
+    <div class="module-footer">
+      <a class="btn" href="../index.html">← Voltar ao início</a>
+      <a class="btn" href="modulo-2.html">← Módulo anterior</a>
+      <a class="btn primary" href="modulo-4.html">Próximo: Desenvolvimento & Testes →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/progress.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CourseProgress) CourseProgress.setupPage(3);
+  });
+</script>
+</body>
+</html>
