@@ -217,7 +217,7 @@
 
   function setupPage(moduleId) {
     const id = String(moduleId);
-    if (!document.querySelector("[data-module-page]")) return;
+    if (!document.querySelector(".module-shell[data-module]")) return;
 
     hydratePage(id);
 
@@ -382,21 +382,21 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     setupHome();
-    const page = document.querySelector("[data-module-page][data-module]");
+    const page = document.querySelector(".module-shell[data-module]");
     if (page) setupPage(page.dataset.module);
     renderHome();
   });
 
   window.addEventListener("courseprogress:changed", () => {
     renderHome();
-    const page = document.querySelector("[data-module-page][data-module]");
+    const page = document.querySelector(".module-shell[data-module]");
     if (page) renderPageProgress(page.dataset.module);
   });
 
   window.addEventListener("storage", event => {
     if (event.key === STORAGE_KEY) {
       renderHome();
-      const page = document.querySelector("[data-module-page][data-module]");
+      const page = document.querySelector(".module-shell[data-module]");
       if (page) renderPageProgress(page.dataset.module);
     }
   });
