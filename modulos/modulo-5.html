@@ -1,1 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Feche o curso entendendo o que acontece depois da entrega: manutenção, dependências, vulnerabilidades, exclusão de dados, privacidade, logs e software pronto para uso.">
+  <meta name="theme-color" content="#1769aa">
+  <title>Evolução, Manutenção, Segurança e Governança | Engenharia de Software</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Proteção temporária dos diagramas enquanto o css/style.css é montado. */
+    .diagram { overflow-x:auto; overflow-y:visible; width:100%; padding:1rem 0; }
+    .diagram svg { display:block; width:100%; min-width:680px; height:auto; overflow:visible; }
+    .diagram svg text, .diagram svg tspan { fill:#111827 !important; color:#111827 !important; font-family:Arial, Helvetica, sans-serif; }
+    .module-page { min-height:100vh; background:#f5f9fc; color:#243746; }
+    .module-shell { max-width:1100px; margin:0 auto; padding:20px; }
+    .module-header { background:#fff; border:1px solid #dbe6ed; border-radius:22px; padding:28px; box-shadow:0 8px 28px rgba(26,60,85,.07); margin-bottom:24px; }
+    .eyebrow { color:#1769aa; font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:.8rem; }
+    .module-header h1 { margin:.35rem 0 .5rem; font-size:clamp(1.8rem,4vw,2.7rem); line-height:1.1; }
+    .module-lead { color:#536978; max-width:850px; font-size:1.05rem; line-height:1.7; margin:0; }
+    .module-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:999px; background:#eef7fd; color:#155d91; border:1px solid #d7eaf8; font-weight:700; font-size:.88rem; }
+    .progress-panel { margin-top:20px; padding:14px 16px; background:#f8fbfd; border:1px solid #dbe6ed; border-radius:14px; }
+    .progress-row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.92rem; font-weight:800; margin-bottom:8px; }
+    .progress-track { height:10px; background:#e6eef3; border-radius:999px; overflow:hidden; }
+    .progress-fill { display:block; height:100%; width:0; background:#2180c4; border-radius:999px; transition:width .25s ease; }
+    .module-nav { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .module-nav a { text-decoration:none; color:#155d91; background:#fff; border:1px solid #dbe6ed; border-radius:10px; padding:9px 12px; font-weight:800; }
+    .module-nav a:hover { background:#eef7fd; }
+    .section { background:#fff; border:1px solid #dbe6ed; border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:0 5px 18px rgba(26,60,85,.04); }
+    .section h2 { margin-top:0; color:#124a78; }
+    .section h3 { color:#155d91; margin-bottom:.4rem; }
+    .section p, .section li { line-height:1.72; }
+    .definition { border-left:4px solid #2180c4; background:#f3f9fd; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .example { border-left:4px solid #45a66d; background:#f3fbf7; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .attention { border-left:4px solid #d6a229; background:#fffaf0; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .step-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:14px; }
+    .step { padding:15px; border:1px solid #dbe6ed; border-radius:14px; background:#fbfdfe; }
+    .step strong { display:block; color:#124a78; margin-bottom:6px; }
+    .checklist { display:grid; gap:9px; margin-top:14px; }
+    .checkitem { display:flex; gap:10px; align-items:flex-start; padding:12px; background:#fbfdfe; border:1px solid #dbe6ed; border-radius:12px; }
+    .checkitem input { margin-top:4px; accent-color:#1769aa; transform:scale(1.1); }
+    .challenge { background:linear-gradient(135deg,#eef7fd,#f7fbfd); border:1px solid #cfe3f1; border-radius:16px; padding:18px; }
+    .module-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin:26px 0 40px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 15px; border-radius:11px; border:1px solid #c8d9e3; background:#fff; color:#155d91; text-decoration:none; font-weight:800; }
+    .btn.primary { background:#1769aa; border-color:#1769aa; color:#fff; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:700px) {
+      .module-shell { padding:12px; }
+      .module-header, .section { padding:18px; border-radius:15px; }
+      .diagram svg { min-width:560px; }
+    }
+  </style>
+</head>
+<body>
+<div class="module-page">
+  <main class="module-shell" data-module="5">
+    <div class="module-nav" aria-label="Navegação do curso">
+      <a href="../index.html">← Início do curso</a>
+      <a href="modulo-1.html">Módulo 1</a>
+      <a href="modulo-2.html">Módulo 2</a>
+      <a href="modulo-3.html">Módulo 3</a>
+      <a href="modulo-4.html">Módulo 4</a>
+      <a href="modulo-5.html">Módulo 5</a>
+    </div>
+    <header class="module-header">
+      <div class="eyebrow">Módulo 5 de 5</div>
+      <h1>Evolução, Manutenção, Segurança e Governança</h1>
+      <p class="module-lead">Feche o curso entendendo o que acontece depois da entrega: manutenção, dependências, vulnerabilidades, exclusão de dados, privacidade, logs e software pronto para uso.</p>
+      <div class="module-meta">
+        <span class="pill">🎯 Pensar no software como um produto que continua vivo</span>
+        <span class="pill" data-module-status>Em andamento</span>
+      </div>
+      <div class="progress-panel" aria-label="Progresso do módulo">
+        <div class="progress-row"><span>Progresso</span><strong data-progress-percent>0%</strong></div>
+        <div class="progress-track"><span class="progress-fill" data-progress-fill></span></div>
+      </div>
+    </header>
 
+<section class="section">
+  <h2>1. Evolução do software</h2>
+  <p>Depois que o software é entregue, o trabalho continua. Evolução envolve manutenção, correções e adição de novas funcionalidades. O material destaca que mudanças têm custo e que prototipação ajuda a reduzir mudanças não planejadas.</p>
+  <div class="definition"><strong>Regra mental:</strong> software não termina na entrega. A entrega é o começo de uma nova etapa do ciclo de vida.</div>
+</section>
+
+<section class="section">
+  <h2>2. Bibliotecas, dependências e Deprecated</h2>
+  <p>Bibliotecas podem se tornar obsoletas ou ser marcadas como <strong>deprecated</strong>. Suas anotações relacionam isso à descoberta de vulnerabilidades e à necessidade de acompanhar a evolução das dependências.</p>
+  <h3>O que “deprecated” significa?</h3>
+  <p>Em geral, indica que uma API, função ou recurso ainda pode existir, mas não é mais a opção recomendada e pode ser removida no futuro. O estudo desse termo deve considerar: por que foi marcado, qual é a alternativa indicada e quais impactos existem para a atualização.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 930 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="d1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <rect x="30" y="75" width="185" height="90" rx="16" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/><text x="122" y="112" text-anchor="middle" font-size="19" font-weight="700">Dependência</text><text x="122" y="138" text-anchor="middle" font-size="14">biblioteca / API</text>
+      <rect x="260" y="75" width="185" height="90" rx="16" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/><text x="352" y="112" text-anchor="middle" font-size="19" font-weight="700">Deprecated</text><text x="352" y="138" text-anchor="middle" font-size="14">uso desencorajado</text>
+      <rect x="490" y="75" width="185" height="90" rx="16" fill="#fdeeee" stroke="#a63a3a" stroke-width="2"/><text x="582" y="112" text-anchor="middle" font-size="19" font-weight="700">Risco</text><text x="582" y="138" text-anchor="middle" font-size="14">vulnerabilidade / suporte</text>
+      <rect x="720" y="75" width="180" height="90" rx="16" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/><text x="810" y="112" text-anchor="middle" font-size="19" font-weight="700">Atualização</text><text x="810" y="138" text-anchor="middle" font-size="14">alternativa segura</text>
+      <path d="M215 120 H255" stroke="#1769aa" stroke-width="3" marker-end="url(#d1)"/><path d="M445 120 H485" stroke="#1769aa" stroke-width="3" marker-end="url(#d1)"/><path d="M675 120 H715" stroke="#1769aa" stroke-width="3" marker-end="url(#d1)"/>
+      <text x="465" y="220" text-anchor="middle" font-size="15" font-weight="700">monitorar dependências • revisar versões • testar atualização</text>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>3. Hard Delete x Soft Delete</h2>
+  <p><strong>Hard Delete</strong> remove o registro definitivamente. <strong>Soft Delete</strong> mantém o registro e marca que ele foi excluído, por exemplo com uma coluna <code>deleted_at</code> ou um status.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 940 320" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="60" width="380" height="205" rx="18" fill="#fffaf0" stroke="#d6a229" stroke-width="3"/>
+      <text x="230" y="95" text-anchor="middle" font-size="22" font-weight="700">HARD DELETE</text>
+      <text x="70" y="135" font-size="16">DELETE</text><text x="70" y="163" font-size="14">registro sai do armazenamento</text><text x="70" y="191" font-size="14">histórico pode ser perdido</text><text x="70" y="219" font-size="14">recuperação depende de backup</text>
+      <rect x="520" y="60" width="380" height="205" rx="18" fill="#f3fbf7" stroke="#45a66d" stroke-width="3"/>
+      <text x="710" y="95" text-anchor="middle" font-size="22" font-weight="700">SOFT DELETE</text>
+      <text x="550" y="135" font-size="16">UPDATE</text><text x="550" y="163" font-size="14">registro continua armazenado</text><text x="550" y="191" font-size="14">marca deleted_at / inativo</text><text x="550" y="219" font-size="14">histórico pode ser preservado</text>
+      <text x="470" y="294" text-anchor="middle" font-size="15" font-weight="700">a escolha depende da finalidade, auditoria e regras de retenção</text>
+    </svg>
+  </div>
+  <div class="attention"><strong>Sobre logs:</strong> suas anotações tratam logs de forma diferente de dados de negócio. A ideia indicada é retenção automatizada por tempo, em vez de usar indiscriminadamente soft delete.</div>
+</section>
+
+<section class="section">
+  <h2>4. PII, LGPD e NDA</h2>
+  <div class="step-grid">
+    <div class="step"><strong>PII</strong><span>Personally Identifiable Information: dado que pode identificar uma pessoa direta ou indiretamente. Exemplos citados: CPF, RG e e-mail.</span></div>
+    <div class="step"><strong>LGPD</strong><span>Lei Geral de Proteção de Dados, relacionada ao tratamento e proteção de dados pessoais no Brasil.</span></div>
+    <div class="step"><strong>NDA</strong><span>Non-Disclosure Agreement: acordo de confidencialidade para proteger informações não públicas.</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>5. Encoding</h2>
+  <p>Encoding é a codificação de caracteres em sequências de bits e bytes para armazenamento e processamento. Esse assunto aparece nas anotações junto da diferença prática entre configurações como <strong>pt-BR</strong> e <strong>pt-PT</strong>.</p>
+  <div class="example"><strong>Exemplo:</strong> um sistema pode precisar exibir corretamente “ação”, “ç”, “ã” e outros caracteres. Uma codificação inadequada pode produzir textos corrompidos.</div>
+</section>
+
+<section class="section">
+  <h2>6. Software Off-the-Shelf / COTS</h2>
+  <p>Off-the-shelf, ou Commercial Off-The-Shelf (COTS), é software pronto para uso e comercializado para vários clientes. Nas suas anotações aparecem exemplos como Microsoft 365, Google Workspace, Salesforce e Shopify.</p>
+  <p>Nesse contexto, o teste beta pode envolver um grupo menor de pessoas utilizando a solução antes de uma distribuição mais ampla.</p>
+</section>
+
+<section class="section">
+  <h2>7. Auditoria e histórico</h2>
+  <p>Quando decisões precisam ser rastreadas, o sistema deve preservar informações relevantes sobre eventos, alterações e acessos. Isso se conecta a logs, histórico, retenção e auditoria.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 920 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="g1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <rect x="35" y="80" width="180" height="95" rx="16" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/><text x="125" y="118" text-anchor="middle" font-size="19" font-weight="700">Evento</text><text x="125" y="144" text-anchor="middle" font-size="14">login • venda • erro</text>
+      <rect x="260" y="80" width="180" height="95" rx="16" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/><text x="350" y="118" text-anchor="middle" font-size="19" font-weight="700">Log</text><text x="350" y="144" text-anchor="middle" font-size="14">registro do evento</text>
+      <rect x="485" y="80" width="180" height="95" rx="16" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/><text x="575" y="118" text-anchor="middle" font-size="19" font-weight="700">Retenção</text><text x="575" y="144" text-anchor="middle" font-size="14">guardar por tempo definido</text>
+      <rect x="710" y="80" width="180" height="95" rx="16" fill="#f7f4fd" stroke="#8566b6" stroke-width="2"/><text x="800" y="118" text-anchor="middle" font-size="19" font-weight="700">Auditoria</text><text x="800" y="144" text-anchor="middle" font-size="14">consulta e rastreabilidade</text>
+      <path d="M215 127 H255" stroke="#1769aa" stroke-width="3" marker-end="url(#g1)"/><path d="M440 127 H480" stroke="#1769aa" stroke-width="3" marker-end="url(#g1)"/><path d="M665 127 H705" stroke="#1769aa" stroke-width="3" marker-end="url(#g1)"/>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>8. Estudo de caso: “Em Queda Livre: O Caso da Boeing”</h2>
+  <p>Use o documentário citado nas anotações para relacionar decisões de engenharia com requisitos, validação, segurança, comunicação e consequências de falhas de processo.</p>
+  <div class="attention"><strong>Forma de estudar:</strong> não assista apenas para memorizar fatos. Para cada situação, pergunte: qual era o requisito? Quem era o stakeholder? Como ocorreu a validação? Que risco existia? Que decisão poderia ter sido documentada ou testada de outra forma?</div>
+</section>
+
+<section class="section">
+  <h2>9. Passo a passo de aprendizagem</h2>
+  <div class="checklist">
+    <label class="checkitem" data-lesson="1"><input type="checkbox"><span><strong>Explique evolução</strong><br>Diferencie manutenção, correção e adição de funcionalidade.</span></label>
+    <label class="checkitem" data-lesson="2"><input type="checkbox"><span><strong>Entenda deprecated</strong><br>Explique por que uma dependência pode ser desaconselhada e como planejar uma atualização.</span></label>
+    <label class="checkitem" data-lesson="3"><input type="checkbox"><span><strong>Escolha a exclusão</strong><br>Diga quando a análise pode considerar hard delete ou soft delete.</span></label>
+    <label class="checkitem" data-lesson="4"><input type="checkbox"><span><strong>Reconheça dados pessoais</strong><br>Identifique PII em um conjunto de dados fictício.</span></label>
+    <label class="checkitem" data-lesson="5"><input type="checkbox"><span><strong>Explique encoding</strong><br>Diga por que codificação de caracteres importa para o sistema.</span></label>
+    <label class="checkitem" data-lesson="6"><input type="checkbox"><span><strong>Pense em auditoria</strong><br>Defina quais eventos precisam ser registrados e por quanto tempo.</span></label>
+    <label class="checkitem" data-lesson="7"><input type="checkbox"><span><strong>Analise o estudo de caso</strong><br>Relacione o documentário às etapas de Engenharia de Software.</span></label>
+  </div>
+</section>
+
+<section class="section challenge">
+  <h2>Desafio final do curso</h2>
+  <p>Escolha o sistema da loja criado nos módulos anteriores e produza uma mini especificação: <strong>escopo</strong>, <strong>3 user stories</strong>, <strong>diagrama de caso de uso</strong>, <strong>arquitetura simples</strong>, <strong>plano de testes</strong> e uma política para <strong>logs, PII e exclusão de dados</strong>.</p>
+</section>
+
+    <div class="module-footer">
+      <a class="btn" href="../index.html">← Voltar ao início</a>
+      <a class="btn" href="modulo-4.html">← Módulo anterior</a>
+      <a class="btn primary" href="../index.html">Concluir trilha →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/progress.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CourseProgress) CourseProgress.setupPage(5);
+  });
+</script>
+</body>
+</html>
