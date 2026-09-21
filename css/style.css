@@ -1257,7 +1257,7 @@ img { max-width: 100%; }
 .module-page .diagram svg {
   display: block;
   width: 100%;
-  min-width: 720px;
+  min-width: 0;
   max-width: none;
   height: auto;
   overflow: visible;
@@ -1265,11 +1265,27 @@ img { max-width: 100%; }
 
 .module-page .diagram svg text,
 .module-page .diagram svg tspan {
-  fill: #111827 !important;
-  color: #111827 !important;
+  fill: #243746 !important;
+  color: #243746 !important;
   font-family: Arial, Helvetica, sans-serif;
   paint-order: stroke;
   stroke: transparent;
+}
+
+html[data-theme="dark"] .module-page .diagram svg text,
+html[data-theme="dark"] .module-page .diagram svg tspan {
+  fill: #e7eef3 !important;
+  color: #e7eef3 !important;
+}
+
+html[data-theme="dark"] .module-page .diagram svg [fill="#eef7fd"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#f3fbf7"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#fffaf0"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#f7f4fd"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#f8fbfd"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#fdeeee"],
+html[data-theme="dark"] .module-page .diagram svg [fill="#fff"] {
+  fill: #1e303b !important;
 }
 
 .module-page .diagram svg foreignObject {
@@ -1287,7 +1303,6 @@ img { max-width: 100%; }
   .module-page .module-shell { padding: 12px; }
   .module-page .module-header,
   .module-page .section { padding: 18px; border-radius: 15px; }
-  .module-page .diagram svg { min-width: 620px; }
   .module-page .module-footer { flex-direction: column; }
   .module-page .module-footer .btn { justify-content: center; }
 }

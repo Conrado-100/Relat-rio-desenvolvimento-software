@@ -8,10 +8,6 @@
   <title>Processos de Software, Prototipação e Agile | Engenharia de Software</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    /* Proteção temporária dos diagramas enquanto o css/style.css é montado. */
-    .diagram { overflow-x:auto; overflow-y:visible; width:100%; padding:1rem 0; }
-    .diagram svg { display:block; width:100%; min-width:680px; height:auto; overflow:visible; }
-    .diagram svg text, .diagram svg tspan { fill:#111827 !important; color:#111827 !important; font-family:Arial, Helvetica, sans-serif; }
     .module-page { min-height:100vh; background:#f5f9fc; color:#243746; }
     .module-shell { max-width:1100px; margin:0 auto; padding:20px; }
     .module-header { background:#fff; border:1px solid #dbe6ed; border-radius:22px; padding:28px; box-shadow:0 8px 28px rgba(26,60,85,.07); margin-bottom:24px; }
@@ -48,7 +44,6 @@
     @media (max-width:700px) {
       .module-shell { padding:12px; }
       .module-header, .section { padding:18px; border-radius:15px; }
-      .diagram svg { min-width:560px; }
     }
   </style>
 </head>
@@ -86,7 +81,7 @@
   <h2>2. Modelo em Cascata</h2>
   <p>O modelo em cascata é dividido em fases e pressupõe planejamento antes da programação. O material informa que ele foi criado para o desenvolvimento de sistemas militares e que cada etapa gera documentos aprovados.</p>
   <div class="diagram">
-    <svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg">
       <defs><marker id="w1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
       <path d="M80 60 L210 120 L340 180 L470 240 L600 300" fill="none" stroke="#2180c4" stroke-width="5"/>
       <rect x="35" y="30" width="160" height="55" rx="12" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/><text x="115" y="64" text-anchor="middle" font-size="18" font-weight="700">Requisitos</text>
