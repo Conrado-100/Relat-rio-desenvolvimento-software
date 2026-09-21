@@ -1,1 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aprenda a transformar necessidades em requisitos claros, validáveis e representáveis em modelos como casos de uso UML.">
+  <meta name="theme-color" content="#1769aa">
+  <title>Engenharia de Requisitos e Modelagem | Engenharia de Software</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Proteção temporária dos diagramas enquanto o css/style.css é montado. */
+    .diagram { overflow-x:auto; overflow-y:visible; width:100%; padding:1rem 0; }
+    .diagram svg { display:block; width:100%; min-width:680px; height:auto; overflow:visible; }
+    .diagram svg text, .diagram svg tspan { fill:#111827 !important; color:#111827 !important; font-family:Arial, Helvetica, sans-serif; }
+    .module-page { min-height:100vh; background:#f5f9fc; color:#243746; }
+    .module-shell { max-width:1100px; margin:0 auto; padding:20px; }
+    .module-header { background:#fff; border:1px solid #dbe6ed; border-radius:22px; padding:28px; box-shadow:0 8px 28px rgba(26,60,85,.07); margin-bottom:24px; }
+    .eyebrow { color:#1769aa; font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:.8rem; }
+    .module-header h1 { margin:.35rem 0 .5rem; font-size:clamp(1.8rem,4vw,2.7rem); line-height:1.1; }
+    .module-lead { color:#536978; max-width:850px; font-size:1.05rem; line-height:1.7; margin:0; }
+    .module-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:999px; background:#eef7fd; color:#155d91; border:1px solid #d7eaf8; font-weight:700; font-size:.88rem; }
+    .progress-panel { margin-top:20px; padding:14px 16px; background:#f8fbfd; border:1px solid #dbe6ed; border-radius:14px; }
+    .progress-row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.92rem; font-weight:800; margin-bottom:8px; }
+    .progress-track { height:10px; background:#e6eef3; border-radius:999px; overflow:hidden; }
+    .progress-fill { display:block; height:100%; width:0; background:#2180c4; border-radius:999px; transition:width .25s ease; }
+    .module-nav { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .module-nav a { text-decoration:none; color:#155d91; background:#fff; border:1px solid #dbe6ed; border-radius:10px; padding:9px 12px; font-weight:800; }
+    .module-nav a:hover { background:#eef7fd; }
+    .section { background:#fff; border:1px solid #dbe6ed; border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:0 5px 18px rgba(26,60,85,.04); }
+    .section h2 { margin-top:0; color:#124a78; }
+    .section h3 { color:#155d91; margin-bottom:.4rem; }
+    .section p, .section li { line-height:1.72; }
+    .definition { border-left:4px solid #2180c4; background:#f3f9fd; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .example { border-left:4px solid #45a66d; background:#f3fbf7; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .attention { border-left:4px solid #d6a229; background:#fffaf0; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .step-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:14px; }
+    .step { padding:15px; border:1px solid #dbe6ed; border-radius:14px; background:#fbfdfe; }
+    .step strong { display:block; color:#124a78; margin-bottom:6px; }
+    .checklist { display:grid; gap:9px; margin-top:14px; }
+    .checkitem { display:flex; gap:10px; align-items:flex-start; padding:12px; background:#fbfdfe; border:1px solid #dbe6ed; border-radius:12px; }
+    .checkitem input { margin-top:4px; accent-color:#1769aa; transform:scale(1.1); }
+    .challenge { background:linear-gradient(135deg,#eef7fd,#f7fbfd); border:1px solid #cfe3f1; border-radius:16px; padding:18px; }
+    .module-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin:26px 0 40px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 15px; border-radius:11px; border:1px solid #c8d9e3; background:#fff; color:#155d91; text-decoration:none; font-weight:800; }
+    .btn.primary { background:#1769aa; border-color:#1769aa; color:#fff; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:700px) {
+      .module-shell { padding:12px; }
+      .module-header, .section { padding:18px; border-radius:15px; }
+      .diagram svg { min-width:560px; }
+    }
+  </style>
+</head>
+<body>
+<div class="module-page">
+  <main class="module-shell" data-module="2">
+    <div class="module-nav" aria-label="Navegação do curso">
+      <a href="../index.html">← Início do curso</a>
+      <a href="modulo-1.html">Módulo 1</a>
+      <a href="modulo-2.html">Módulo 2</a>
+      <a href="modulo-3.html">Módulo 3</a>
+      <a href="modulo-4.html">Módulo 4</a>
+      <a href="modulo-5.html">Módulo 5</a>
+    </div>
+    <header class="module-header">
+      <div class="eyebrow">Módulo 2 de 5</div>
+      <h1>Engenharia de Requisitos e Modelagem</h1>
+      <p class="module-lead">Aprenda a transformar necessidades em requisitos claros, validáveis e representáveis em modelos como casos de uso UML.</p>
+      <div class="module-meta">
+        <span class="pill">🎯 Saber descobrir e documentar o que o sistema precisa fazer</span>
+        <span class="pill" data-module-status>Em andamento</span>
+      </div>
+      <div class="progress-panel" aria-label="Progresso do módulo">
+        <div class="progress-row"><span>Progresso</span><strong data-progress-percent>0%</strong></div>
+        <div class="progress-track"><span class="progress-fill" data-progress-fill></span></div>
+      </div>
+    </header>
 
+<section class="section">
+  <h2>1. O que é engenharia de requisitos?</h2>
+  <div class="definition"><strong>Definição do material:</strong> é o processo de identificação das necessidades do sistema a ser desenvolvido, também chamado em alguns contextos de levantamento de requisitos.</div>
+  <p>O resultado esperado é um conjunto de requisitos que represente as necessidades dos stakeholders e que também funcione como estudo de viabilidade do sistema.</p>
+</section>
+
+<section class="section">
+  <h2>2. Elicitação e análise</h2>
+  <p><strong>Elicitar</strong> significa descobrir e extrair informações. Na prática, isso envolve conversar com cliente e usuários, observar processos, levantar restrições, fazer perguntas e usar protótipos para conferir se o entendimento está correto.</p>
+  <div class="step-grid">
+    <div class="step"><strong>1 — Preparar</strong><span>Defina o objetivo da conversa e tenha uma ideia inicial do problema.</span></div>
+    <div class="step"><strong>2 — Entrevistar</strong><span>Converse, pergunte e peça exemplos concretos de uso.</span></div>
+    <div class="step"><strong>3 — Modelar</strong><span>Transforme as respostas em fluxos, requisitos e protótipos.</span></div>
+    <div class="step"><strong>4 — Validar</strong><span>Mostre o entendimento ao cliente e corrija divergências.</span></div>
+  </div>
+  <div class="attention"><strong>Aprendizagem importante:</strong> a entrevista pode acontecer várias vezes. Requisitos são refinados conforme novas informações aparecem.</div>
+</section>
+
+<section class="section">
+  <h2>3. O fluxo de requisitos</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 960 330" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="r1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <rect x="25" y="110" width="175" height="90" rx="14" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/>
+      <rect x="230" y="110" width="175" height="90" rx="14" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/>
+      <rect x="435" y="110" width="175" height="90" rx="14" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/>
+      <rect x="640" y="110" width="295" height="90" rx="14" fill="#f7f4fd" stroke="#8566b6" stroke-width="2"/>
+      <text x="112" y="145" text-anchor="middle" font-size="19" font-weight="700">Elicitação</text><text x="112" y="170" text-anchor="middle" font-size="14">descobrir necessidades</text>
+      <text x="317" y="145" text-anchor="middle" font-size="19" font-weight="700">Análise</text><text x="317" y="170" text-anchor="middle" font-size="14">organizar e confrontar</text>
+      <text x="522" y="145" text-anchor="middle" font-size="19" font-weight="700">Especificação</text><text x="522" y="170" text-anchor="middle" font-size="14">formalizar e documentar</text>
+      <text x="787" y="145" text-anchor="middle" font-size="19" font-weight="700">Validação de requisitos</text><text x="787" y="170" text-anchor="middle" font-size="14">detectar e corrigir erros</text>
+      <path d="M200 155 H225" stroke="#1769aa" stroke-width="3" marker-end="url(#r1)"/><path d="M405 155 H430" stroke="#1769aa" stroke-width="3" marker-end="url(#r1)"/><path d="M610 155 H635" stroke="#1769aa" stroke-width="3" marker-end="url(#r1)"/>
+      <path d="M787 213 C787 285 112 285 112 210" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#r1)"/>
+      <text x="470" y="314" text-anchor="middle" font-size="16" font-weight="700">feedback com cliente → refinamento → nova validação</text>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>4. Especificação de requisitos</h2>
+  <p>É a etapa em que as necessidades levantadas são formalizadas e documentadas de forma clara, técnica e sem ambiguidades.</p>
+  <div class="step-grid">
+    <div class="step"><strong>Requisito de usuário</strong><span>Expressa a necessidade do ponto de vista de quem usa ou solicita o sistema.</span></div>
+    <div class="step"><strong>Requisito do sistema</strong><span>Descreve com mais detalhe o comportamento ou restrição que deve ser implementado.</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>5. UML e casos de uso</h2>
+  <p>O diagrama de casos de uso representa interações entre atores e funcionalidades do sistema. A ideia essencial das suas anotações é: <strong>tudo dentro do quadrado representa o sistema</strong>; os atores ficam fora e interagem com casos de uso dentro da fronteira desenhada.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg">
+      <rect x="240" y="35" width="690" height="290" rx="18" fill="#f8fbfd" stroke="#124a78" stroke-width="3"/>
+      <text x="585" y="65" text-anchor="middle" font-size="20" font-weight="700">SISTEMA — fronteira do sistema</text>
+      <circle cx="90" cy="125" r="22" fill="#fff" stroke="#111827" stroke-width="3"/><line x1="90" y1="147" x2="90" y2="205" stroke="#111827" stroke-width="3"/><line x1="90" y1="165" x2="58" y2="187" stroke="#111827" stroke-width="3"/><line x1="90" y1="165" x2="122" y2="187" stroke="#111827" stroke-width="3"/><line x1="90" y1="205" x2="62" y2="250" stroke="#111827" stroke-width="3"/><line x1="90" y1="205" x2="118" y2="250" stroke="#111827" stroke-width="3"/>
+      <text x="90" y="278" text-anchor="middle" font-size="18" font-weight="700">Usuário</text>
+      <ellipse cx="430" cy="130" rx="135" ry="42" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/>
+      <ellipse cx="720" cy="130" rx="145" ry="42" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/>
+      <ellipse cx="575" cy="250" rx="150" ry="42" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/>
+      <text x="430" y="125" text-anchor="middle" font-size="17" font-weight="700">Realizar login</text><text x="430" y="146" text-anchor="middle" font-size="13">caso de uso</text>
+      <text x="720" y="125" text-anchor="middle" font-size="17" font-weight="700">Cadastrar usuário</text><text x="720" y="146" text-anchor="middle" font-size="13">caso de uso</text>
+      <text x="575" y="245" text-anchor="middle" font-size="17" font-weight="700">Consultar pedido</text><text x="575" y="266" text-anchor="middle" font-size="13">caso de uso</text>
+      <line x1="112" y1="185" x2="330" y2="145" stroke="#111827" stroke-width="2"/><line x1="112" y1="195" x2="570" y2="251" stroke="#111827" stroke-width="2"/>
+      <text x="580" y="347" text-anchor="middle" font-size="16" font-weight="700">Atores fora • casos de uso dentro</text>
+    </svg>
+  </div>
+  <div class="attention"><strong>Fronteira ≠ escopo:</strong> a fronteira do caso de uso representa visualmente o limite do sistema no diagrama. Escopo é o conjunto de coisas que o projeto ou produto inclui/exclui.</div>
+</section>
+
+<section class="section">
+  <h2>6. User Stories e MVP</h2>
+  <p>Uma user story pode organizar a necessidade no formato “Como <strong>[papel]</strong>, quero <strong>[objetivo]</strong>, para <strong>[benefício]</strong>”. O MVP ajuda a escolher quais histórias são críticas para resolver o problema principal.</p>
+  <div class="example"><strong>Exemplo:</strong> Como cliente, quero acompanhar meu pedido para saber quando ele será entregue.</div>
+</section>
+
+<section class="section">
+  <h2>7. Passo a passo de aprendizagem</h2>
+  <div class="checklist">
+    <label class="checkitem" data-lesson="1"><input type="checkbox"><span><strong>Prepare uma entrevista</strong><br>Defina objetivo, perfil dos participantes e exemplos que você quer validar.</span></label>
+    <label class="checkitem" data-lesson="2"><input type="checkbox"><span><strong>Faça a elicitação</strong><br>Liste necessidades, regras, exceções e restrições.</span></label>
+    <label class="checkitem" data-lesson="3"><input type="checkbox"><span><strong>Analise conflitos</strong><br>Procure requisitos que se contradizem, são vagos ou incompletos.</span></label>
+    <label class="checkitem" data-lesson="4"><input type="checkbox"><span><strong>Especifique</strong><br>Transforme necessidades em requisitos claros de usuário e de sistema.</span></label>
+    <label class="checkitem" data-lesson="5"><input type="checkbox"><span><strong>Modele um caso de uso</strong><br>Identifique atores, fronteira e funcionalidades.</span></label>
+    <label class="checkitem" data-lesson="6"><input type="checkbox"><span><strong>Valide com o cliente</strong><br>Apresente o resultado e ajuste o que foi entendido incorretamente.</span></label>
+  </div>
+</section>
+
+<section class="section challenge">
+  <h2>Desafio prático</h2>
+  <p>Para uma loja virtual, crie: <strong>3 requisitos de usuário</strong>, <strong>3 requisitos de sistema</strong>, <strong>2 atores</strong> e <strong>4 casos de uso</strong>. Depois desenhe a fronteira do sistema e confira se o modelo faz sentido para o cliente.</p>
+</section>
+
+    <div class="module-footer">
+      <a class="btn" href="../index.html">← Voltar ao início</a>
+      <a class="btn" href="modulo-1.html">← Módulo anterior</a>
+      <a class="btn primary" href="modulo-3.html">Próximo: Processos & Agile →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/progress.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CourseProgress) CourseProgress.setupPage(2);
+  });
+</script>
+</body>
+</html>
