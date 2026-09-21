@@ -1,230 +1,405 @@
 (() => {
-  'use strict';
+  "use strict";
 
-  const STORAGE_KEY = 'curso-engenharia-software-progress-v2';
+  /*
+    Controle central do progresso do curso.
+
+    Estrutura salva:
+    {
+      version: 3,
+      modules: {
+        "1": {
+          started: true/false,
+          completed: true/false,
+          percent: 0-100,
+          startedAt: "...",
+          completedAt: "...",
+          lessonsCompleted: ["1", "2", ...]
+        },
+        ...
+      }
+    }
+  */
+
+  const STORAGE_KEY = "curso-engenharia-software-progress-v3";
+  const LEGACY_KEYS = ["curso-engenharia-software-progress-v2"];
   const MODULE_COUNT = 5;
 
   function createDefaultProgress() {
+    const modules = {};
+
+    for (let i = 1; i <= MODULE_COUNT; i += 1) {
+      modules[String(i)] = {
+        started: false,
+        completed: false,
+        percent: 0,
+        startedAt: null,
+        completedAt: null,
+        lessonsCompleted: []
+      };
+    }
+
     return {
-      modules: Object.fromEntries(
-        Array.from({ length: MODULE_COUNT }, (_, index) => {
-          const id = String(index + 1);
-          return [id, {
-            started: false,
-            completed: false,
-            percent: 0,
-            startedAt: null,
-            completedAt: null,
-            lessonsCompleted: []
-          }];
-        })
-      )
+      version: 3,
+      modules
     };
   }
 
-  function clone(value) {
-    return JSON.parse(JSON.stringify(value));
+  function clamp(value) {
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+      return 0;
+    }
+
+    return Math.max(0, Math.min(100, Math.round(number)));
   }
 
-  function normalizeModule(base, saved = {}) {
-    const lessonsCompleted = Array.isArray(saved.lessonsCompleted)
-      ? [...new Set(saved.lessonsCompleted.map(String))]
-      : [];
+  function normalizeModule(base, saved) {
+    const source = saved && typeof saved === "object" ? saved : {};
 
     return {
       ...base,
-      ...saved,
-      started: Boolean(saved.started),
-      completed: Boolean(saved.completed),
-      percent: Math.max(0, Math.min(100, Number(saved.percent) || 0)),
-      startedAt: saved.startedAt || null,
-      completedAt: saved.completedAt || null,
-      lessonsCompleted
+      ...source,
+      started: Boolean(source.started),
+      completed: Boolean(source.completed),
+      percent: clamp(source.percent),
+      startedAt: source.startedAt || null,
+      completedAt: source.completedAt || null,
+      lessonsCompleted: Array.isArray(source.lessonsCompleted)
+        ? [...new Set(source.lessonsCompleted.map(String))]
+        : []
     };
   }
 
-  function load() {
-    const defaults = createDefaultProgress();
+  function normalizeProgress(saved) {
+    const state = createDefaultProgress();
 
+    if (!saved || typeof saved !== "object") {
+      return state;
+    }
+
+    for (let i = 1; i <= MODULE_COUNT; i += 1) {
+      const id = String(i);
+      const savedModule =
+        saved.modules?.[id] ??
+        saved.modules?.[i] ??
+        {};
+
+      state.modules[id] = normalizeModule(
+        state.modules[id],
+        savedModule
+      );
+    }
+
+    return state;
+  }
+
+  function readStorage(key) {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (!saved || !saved.modules) return defaults;
+      const raw = localStorage.getItem(key);
 
-      for (let i = 1; i <= MODULE_COUNT; i += 1) {
-        const id = String(i);
-        defaults.modules[id] = normalizeModule(defaults.modules[id], saved.modules[id] ?? saved.modules[i]);
+      if (!raw) {
+        return null;
       }
 
-      return defaults;
+      return JSON.parse(raw);
     } catch (error) {
-      console.warn('Não foi possível ler o progresso salvo.', error);
-      return defaults;
+      console.warn(`Não foi possível ler ${key}.`, error);
+      return null;
     }
   }
 
-  function save(progress) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-    window.dispatchEvent(new CustomEvent('courseprogress:changed', { detail: progress }));
+  function load() {
+    const current = readStorage(STORAGE_KEY);
+
+    if (current) {
+      return normalizeProgress(current);
+    }
+
+    for (const legacyKey of LEGACY_KEYS) {
+      const legacy = readStorage(legacyKey);
+
+      if (!legacy) {
+        continue;
+      }
+
+      const migrated = normalizeProgress(legacy);
+
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(migrated)
+        );
+      } catch (error) {
+        console.warn(
+          "Não foi possível salvar a migração do progresso.",
+          error
+        );
+      }
+
+      return migrated;
+    }
+
+    return createDefaultProgress();
   }
 
-  function updateModule(moduleId, patch) {
-    const progress = load();
-    const id = String(moduleId);
-    if (!progress.modules[id]) return progress;
+  function save(progress) {
+    const normalized = normalizeProgress(progress);
 
-    progress.modules[id] = normalizeModule(progress.modules[id], patch);
-    save(progress);
-    return progress;
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(normalized)
+      );
+    } catch (error) {
+      console.warn(
+        "Não foi possível salvar o progresso.",
+        error
+      );
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("courseprogress:changed", {
+        detail: normalized
+      })
+    );
+
+    return normalized;
+  }
+
+  function getModule(moduleId) {
+    const id = String(moduleId);
+    const state = load();
+
+    return state.modules[id] || null;
   }
 
   function markStarted(moduleId) {
-    const progress = load();
     const id = String(moduleId);
-    const module = progress.modules[id];
-    if (!module) return progress;
+    const state = load();
+    const module = state.modules[id];
+
+    if (!module) {
+      return state;
+    }
 
     if (!module.started) {
       module.started = true;
       module.startedAt = new Date().toISOString();
-      save(progress);
+      save(state);
     }
 
-    return progress;
+    return state;
+  }
+
+  function getLessonInputs() {
+    return Array.from(
+      document.querySelectorAll(
+        "[data-lesson] input[type='checkbox']"
+      )
+    ).map(input => ({
+      input,
+      lessonId: input.closest("[data-lesson]")?.dataset.lesson
+    })).filter(item => item.lessonId);
   }
 
   function calculateModuleFromPage(moduleId) {
-    const progress = load();
     const id = String(moduleId);
-    const module = progress.modules[id];
-    if (!module) return progress;
+    const state = load();
+    const module = state.modules[id];
 
-    const boxes = [...document.querySelectorAll('[data-lesson] input[type="checkbox"], [data-lesson]')]
-      .filter(element => element.matches('input[type="checkbox"], [data-lesson]'));
-
-    const lessonElements = boxes.filter(element => element.matches('input[type="checkbox"]'));
-    const containers = boxes.filter(element => !element.matches('input[type="checkbox"]'));
-
-    let inputs = lessonElements;
-    if (!inputs.length && containers.length) {
-      inputs = containers
-        .map(container => container.querySelector('input[type="checkbox"]'))
-        .filter(Boolean);
+    if (!module) {
+      return state;
     }
 
-    const checkedIds = inputs
-      .filter(input => input.checked)
-      .map(input => String(input.closest('[data-lesson]')?.dataset.lesson || input.dataset.lesson))
-      .filter(Boolean);
+    const lessons = getLessonInputs();
+    const total = lessons.length;
 
-    const total = inputs.length;
-    const percent = total ? Math.round((checkedIds.length / total) * 100) : 0;
+    const completedLessons = lessons
+      .filter(item => item.input.checked)
+      .map(item => String(item.lessonId));
 
-    module.lessonsCompleted = [...new Set(checkedIds)];
-    module.started = module.started || total > 0;
-    if (module.started && !module.startedAt) module.startedAt = new Date().toISOString();
-    module.percent = percent;
-    module.completed = total > 0 && percent === 100;
-    module.completedAt = module.completed
-      ? (module.completedAt || new Date().toISOString())
-      : null;
+    module.lessonsCompleted = [
+      ...new Set(completedLessons)
+    ];
 
-    save(progress);
-    return progress;
+    if (total === 0) {
+      module.percent = 0;
+      module.completed = false;
+    } else {
+      module.started = true;
+
+      if (!module.startedAt) {
+        module.startedAt = new Date().toISOString();
+      }
+
+      module.percent = Math.round(
+        (completedLessons.length / total) * 100
+      );
+
+      module.completed = completedLessons.length === total;
+
+      module.completedAt = module.completed
+        ? (module.completedAt || new Date().toISOString())
+        : null;
+    }
+
+    return save(state);
   }
 
   function setLesson(moduleId, lessonId, completed) {
-    const progress = load();
     const id = String(moduleId);
-    const module = progress.modules[id];
-    if (!module) return progress;
+    const state = load();
+    const module = state.modules[id];
 
-    const set = new Set(module.lessonsCompleted || []);
-    completed ? set.add(String(lessonId)) : set.delete(String(lessonId));
-    module.lessonsCompleted = [...set];
+    if (!module) {
+      return state;
+    }
 
-    save(progress);
-    return calculateModuleFromPage(id);
-  }
+    const lessons = new Set(
+      module.lessonsCompleted || []
+    );
 
-  function syncFromPage(moduleId) {
-    return calculateModuleFromPage(moduleId);
+    if (completed) {
+      lessons.add(String(lessonId));
+    } else {
+      lessons.delete(String(lessonId));
+    }
+
+    module.lessonsCompleted = [...lessons];
+    module.started = true;
+
+    if (!module.startedAt) {
+      module.startedAt = new Date().toISOString();
+    }
+
+    return save(state);
   }
 
   function hydratePage(moduleId) {
     const id = String(moduleId);
-    const progress = markStarted(id);
-    const completed = new Set(progress.modules[id]?.lessonsCompleted || []);
 
-    document.querySelectorAll('[data-lesson]').forEach(container => {
-      const input = container.matches('input[type="checkbox"]')
-        ? container
-        : container.querySelector('input[type="checkbox"]');
-      if (input) input.checked = completed.has(String(container.dataset.lesson));
+    markStarted(id);
+
+    const module = getModule(id);
+
+    if (!module) {
+      return;
+    }
+
+    const completedLessons = new Set(
+      module.lessonsCompleted || []
+    );
+
+    getLessonInputs().forEach(({ input, lessonId }) => {
+      input.checked = completedLessons.has(
+        String(lessonId)
+      );
     });
-
-    return syncFromPage(id);
   }
 
   function renderPageProgress(moduleId) {
-    const progress = load();
-    const id = String(moduleId);
-    const module = progress.modules[id];
-    if (!module) return;
+    const module = getModule(moduleId);
 
-    const percent = Number(module.percent) || 0;
+    if (!module) {
+      return;
+    }
 
-    document.querySelectorAll('[data-progress-fill]').forEach(element => {
-      element.style.width = `${percent}%`;
-      element.setAttribute('aria-valuenow', String(percent));
-    });
+    const percent = clamp(module.percent);
 
-    document.querySelectorAll('[data-progress-percent]').forEach(element => {
-      element.textContent = `${percent}%`;
-    });
+    document
+      .querySelectorAll("[data-progress-fill]")
+      .forEach(element => {
+        element.style.width = `${percent}%`;
+        element.setAttribute(
+          "aria-valuenow",
+          String(percent)
+        );
+      });
 
-    document.querySelectorAll('[data-module-status]').forEach(element => {
-      element.textContent = module.completed
-        ? 'Concluído'
-        : module.started
-          ? 'Em andamento'
-          : 'Não iniciado';
-    });
+    document
+      .querySelectorAll("[data-progress-percent]")
+      .forEach(element => {
+        element.textContent = `${percent}%`;
+      });
 
-    document.querySelectorAll('[data-module-page]').forEach(element => {
-      element.dataset.status = module.completed
-        ? 'complete'
-        : module.started
-          ? 'started'
-          : 'not-started';
-    });
+    document
+      .querySelectorAll("[data-module-status]")
+      .forEach(element => {
+        element.textContent = module.completed
+          ? "Concluído"
+          : module.started
+            ? "Em andamento"
+            : "Não iniciado";
+      });
+
+    document
+      .querySelectorAll("[data-module-page], [data-module]")
+      .forEach(element => {
+        if (
+          element.matches(".module-card") ||
+          !element.dataset.module
+        ) {
+          return;
+        }
+
+        element.dataset.status = module.completed
+          ? "complete"
+          : module.started
+            ? "started"
+            : "not-started";
+      });
   }
 
   function setupPage(moduleId) {
+    const page = document.querySelector(
+      "[data-module][data-module-page], main[data-module]"
+    );
+
+    if (!page) {
+      return;
+    }
+
     const id = String(moduleId);
+
     hydratePage(id);
 
-    document.querySelectorAll('[data-lesson]').forEach(container => {
-      const input = container.matches('input[type="checkbox"]')
-        ? container
-        : container.querySelector('input[type="checkbox"]');
+    getLessonInputs().forEach(({ input, lessonId }) => {
+      if (input.dataset.progressBound === "true") {
+        return;
+      }
 
-      if (!input) return;
-      input.addEventListener('change', () => {
-        setLesson(id, container.dataset.lesson, input.checked);
+      input.dataset.progressBound = "true";
+
+      input.addEventListener("change", () => {
+        setLesson(id, lessonId, input.checked);
+        calculateModuleFromPage(id);
         renderPageProgress(id);
       });
     });
 
+    calculateModuleFromPage(id);
     renderPageProgress(id);
   }
 
   function getSummary() {
-    const progress = load();
-    const modules = Object.values(progress.modules);
-    const started = modules.filter(module => module.started).length;
-    const completed = modules.filter(module => module.completed).length;
+    const state = load();
+    const modules = Object.values(state.modules);
+
+    const started = modules.filter(
+      module => module.started
+    ).length;
+
+    const completed = modules.filter(
+      module => module.completed
+    ).length;
+
     const overall = Math.round(
-      modules.reduce((sum, module) => sum + Number(module.percent || 0), 0) / MODULE_COUNT
+      modules.reduce(
+        (sum, module) => sum + clamp(module.percent),
+        0
+      ) / MODULE_COUNT
     );
 
     return {
@@ -236,15 +411,37 @@
   }
 
   function getLastStarted() {
-    const progress = load();
-    return Object.entries(progress.modules)
+    const state = load();
+
+    return Object.entries(state.modules)
       .filter(([, module]) => module.started)
-      .sort(([, a], [, b]) => new Date(b.startedAt || 0) - new Date(a.startedAt || 0))[0] || null;
+      .sort(
+        ([, a], [, b]) =>
+          new Date(b.startedAt || 0) -
+          new Date(a.startedAt || 0)
+      )[0] || null;
   }
 
   function reset() {
-    localStorage.removeItem(STORAGE_KEY);
-    window.dispatchEvent(new CustomEvent('courseprogress:changed', { detail: createDefaultProgress() }));
+    const clean = createDefaultProgress();
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(clean)
+      );
+    } catch (error) {
+      console.warn(
+        "Não foi possível zerar o progresso.",
+        error
+      );
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("courseprogress:changed", {
+        detail: clean
+      })
+    );
   }
 
   window.CourseProgress = {
@@ -253,14 +450,24 @@
     load,
     save,
     reset,
-    updateModule,
+    getModule,
     markStarted,
     setLesson,
-    syncFromPage,
+    calculateModuleFromPage,
     hydratePage,
     renderPageProgress,
     setupPage,
     getSummary,
     getLastStarted
   };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const page = document.querySelector(
+      "[data-module][data-module-page], main[data-module]"
+    );
+
+    if (page) {
+      setupPage(page.dataset.module);
+    }
+  });
 })();
