@@ -7,43 +7,43 @@
 <title>Engenharia de Software — Curso Interativo</title>
 <style>
 :root{
-  --bg:#0b1020; --panel:#11182b; --panel2:#151f36; --card:#17233c; --text:#edf2ff; --muted:#aab6d3;
-  --accent:#63a4ff; --accent2:#7c5cff; --green:#3ddc97; --yellow:#ffd166; --red:#ff6b7a;
-  --line:#273552; --shadow:0 18px 50px rgba(0,0,0,.25); --radius:18px;
+  --bg:#f4f7fb; --panel:#ffffff; --panel2:#f8fafc; --card:#ffffff; --text:#243b53; --muted:#61758a;
+  --accent:#2f80ed; --accent2:#56b4d8; --green:#2e9b63; --yellow:#e6a23c; --red:#d9534f;
+  --line:#d9e2ec; --shadow:0 10px 30px rgba(36,59,83,.08); --radius:16px;
 }
 *{box-sizing:border-box;scroll-behavior:smooth}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#09101f,#0c1325 45%,#0a1020);color:var(--text);line-height:1.65}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#f7f9fc 0%,#f4f7fb 45%,#eef3f8 100%);color:var(--text);line-height:1.65}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 .container{width:min(1400px,calc(100% - 32px));margin:auto}
-.topbar{position:sticky;top:0;z-index:20;background:rgba(9,16,31,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(99,164,255,.12)}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .topbar-inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
-.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 9px 28px rgba(99,164,255,.25)}
+.logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;box-shadow:0 7px 20px rgba(47,128,237,.18)}
 .progress-wrap{min-width:300px;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.9rem}
-.progress{height:9px;background:#202c47;border-radius:999px;overflow:hidden;flex:1}.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.25s}
+.progress{height:9px;background:#e8eef5;border-radius:999px;overflow:hidden;flex:1}.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.25s}
 .layout{display:grid;grid-template-columns:285px 1fr;gap:24px;padding:28px 0 70px}
-.sidebar{position:sticky;top:94px;height:max-content;background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.sidebar{position:sticky;top:94px;height:max-content;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
 .sidebar h3{margin:6px 0 10px;font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;color:#8190b4}
-.nav{display:grid;gap:7px}.nav a{padding:10px 11px;border-radius:12px;color:var(--muted);font-size:.93rem}.nav a:hover,.nav a.active{background:#1c2a48;color:var(--text)}
-.nav a .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#445579;margin-right:9px}.nav a.done .dot{background:var(--green)}
-main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at 10% 10%,rgba(99,164,255,.17),transparent 35%),radial-gradient(circle at 90% 20%,rgba(124,92,255,.15),transparent 30%),var(--panel);box-shadow:var(--shadow)}
-.eyebrow{color:#8db8ff;font-weight:700;text-transform:uppercase;letter-spacing:.13em;font-size:.78rem}.hero h1{font-size:clamp(2rem,4vw,4rem);line-height:1.05;margin:10px 0 15px;max-width:900px}.hero p{max-width:900px;color:var(--muted);font-size:1.06rem}
-.hero-grid{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:15px}.metric strong{display:block;font-size:1.4rem}.metric span{font-size:.85rem;color:var(--muted)}
+.nav{display:grid;gap:7px}.nav a{padding:10px 11px;border-radius:10px;color:var(--muted);font-size:.93rem}.nav a:hover,.nav a.active{background:#edf5ff;color:#174a86}
+.nav a .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#b5c2d0;margin-right:9px}.nav a.done .dot{background:var(--green)}
+main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#ffffff,#f1f7ff);box-shadow:var(--shadow)}
+.eyebrow{color:#2f80ed;font-weight:700;text-transform:uppercase;letter-spacing:.13em;font-size:.78rem}.hero h1{font-size:clamp(2rem,4vw,4rem);line-height:1.05;margin:10px 0 15px;max-width:900px}.hero p{max-width:900px;color:var(--muted);font-size:1.06rem}
+.hero-grid{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.course-counter{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.course-counter .counter{padding:9px 12px;border-radius:10px;background:#edf5ff;color:#275680;border:1px solid #d5e6f8;font-size:.82rem}.course-counter strong{color:#1d5d94}.metric{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.metric strong{display:block;font-size:1.4rem}.metric span{font-size:.85rem;color:var(--muted)}
 .section{margin-top:28px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:14px}.section-title h2{margin:0;font-size:1.65rem}.section-title p{margin:0;color:var(--muted);max-width:750px}
-.modules{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.module-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}.module-card:hover{transform:translateY(-3px);border-color:#4b6eab}.module-number{font-weight:900;color:#88b1ff;font-size:.78rem}.module-card h3{margin:7px 0 7px;font-size:1rem}.module-card p{color:var(--muted);font-size:.84rem;margin:0 0 12px}.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#0f1930;color:#b9c7e6;padding:5px 9px;border-radius:999px;font-size:.76rem}.module-card.completed:after{content:'✓';position:absolute;top:10px;right:11px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(61,220,151,.16);color:var(--green);font-weight:900}
-.lesson{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow);margin-top:18px}.lesson-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.lesson h3{font-size:1.35rem;margin:4px 0 8px}.lesson .summary{color:var(--muted)}
-.btn{border:1px solid var(--line);background:#14203a;color:var(--text);padding:9px 12px;border-radius:12px;cursor:pointer}.btn:hover{border-color:#5f83c4}.btn.primary{background:linear-gradient(135deg,#3c7ee7,#6f52ef);border-color:transparent}.btn.success{background:rgba(61,220,151,.12);color:#8df2c6;border-color:rgba(61,220,151,.3)}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:17px}.card h4{margin:0 0 7px}.card p{margin:0;color:var(--muted)}
-.concept{border-left:4px solid var(--accent);padding:13px 15px;background:#0e1830;border-radius:0 14px 14px 0;margin:13px 0}.concept strong{display:block;margin-bottom:3px}.muted{color:var(--muted)}
-.steps{counter-reset:step;display:grid;gap:11px}.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}.step:before{counter-increment:step;content:counter(step);display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#2d68ca,#6b4eea);font-weight:800}.step strong{display:block}.step p{margin:4px 0 0;color:var(--muted)}
-.checklist{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#101a2f}.check input{margin-top:5px;accent-color:var(--accent)}
-.callout{padding:15px;border-radius:15px;border:1px solid rgba(255,209,102,.25);background:rgba(255,209,102,.07)}
-.diagram{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#091120;padding:12px}.diagram svg{display:block;margin:auto;max-width:100%;height:auto}.caption{text-align:center;color:#8190b4;font-size:.8rem;margin-top:8px}
-.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px}.table th,.table td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.table th{color:#bed0f2;background:#111c32}.table td{color:#c8d2e8}
-.quiz{border:1px dashed #3f5680}.q{margin-bottom:18px}.q:last-child{margin-bottom:0}.q-title{font-weight:700;margin-bottom:9px}.option{display:block;margin:7px 0;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#101a2f;cursor:pointer}.option:hover{border-color:#587db7}.result{margin-top:12px;padding:10px 12px;border-radius:12px;background:#101c34;display:none}.result.show{display:block}
-.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0a1120;border:1px solid var(--line);padding:2px 7px;border-radius:6px;color:#dbe6ff}
-.footer{margin-top:35px;padding:22px;border-top:1px solid var(--line);color:#8190b4;font-size:.88rem}.source-note{font-size:.78rem;color:#7483a5}
+.modules{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.module-card{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;box-shadow:0 5px 18px rgba(36,59,83,.05)}.module-card:hover{transform:translateY(-3px);border-color:#a8c9ef;box-shadow:0 10px 24px rgba(36,59,83,.09)}.module-card.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,128,237,.10),0 10px 24px rgba(36,59,83,.08)}.module-card.completed{border-color:#8ac9a6}.module-number{font-weight:900;color:#2f80ed;font-size:.76rem;letter-spacing:.04em}.module-card h3{margin:7px 0 7px;font-size:1rem;color:#23405e}.module-card p{color:var(--muted);font-size:.84rem;margin:0 0 12px}.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid #cdd9e6;background:#f5f8fb;color:#4d647b;padding:5px 9px;border-radius:999px;font-size:.76rem}.module-status{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #edf1f5;font-size:.76rem;color:var(--muted)}.module-progress-track{height:6px;border-radius:999px;background:#e8eef5;margin-top:9px;overflow:hidden}.module-progress-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.25s}.start-hint{margin-top:10px;color:#2f80ed;font-weight:700;font-size:.77rem}.module-status strong{color:#2e5e8c}.module-card.completed:after{content:'✓';position:absolute;top:10px;right:11px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#e5f6ec;color:var(--green);font-weight:900}
+.lesson{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin-top:18px}.lesson-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.lesson h3{font-size:1.35rem;margin:4px 0 8px}.lesson .summary{color:var(--muted)}
+.btn{border:1px solid #cbd7e3;background:#fff;color:#2c4c69;padding:9px 12px;border-radius:10px;cursor:pointer}.btn:hover{border-color:#95b9df;background:#f7fbff}.btn.primary{background:linear-gradient(135deg,#2f80ed,#4ea5dc);color:#fff;border-color:transparent}.btn.success{background:#e9f7ef;color:#26744a;border-color:#a8d8bb}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:17px}.card h4{margin:0 0 7px}.card p{margin:0;color:var(--muted)}
+.concept{border-left:4px solid var(--accent);padding:13px 15px;background:#f3f8fe;border-radius:0 14px 14px 0;margin:13px 0}.concept strong{display:block;margin-bottom:3px}.muted{color:var(--muted)}
+.steps{counter-reset:step;display:grid;gap:11px}.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}.step:before{counter-increment:step;content:counter(step);display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#e7f1ff;color:#2f80ed;font-weight:800}.step strong{display:block}.step p{margin:4px 0 0;color:var(--muted)}
+.checklist{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe}.check input{margin-top:5px;accent-color:var(--accent)}
+.callout{padding:15px;border-radius:12px;border:1px solid #eedcae;background:#fff9e9}
+.diagram{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fbfdff;padding:12px}.diagram svg{display:block;margin:auto;max-width:100%;height:auto}.caption{text-align:center;color:#8190b4;font-size:.8rem;margin-top:8px}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px}.table th,.table td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.table th{color:#244b6f;background:#eef5fb}.table td{color:#526b83}
+.quiz{border:1px dashed #3f5680}.q{margin-bottom:18px}.q:last-child{margin-bottom:0}.q-title{font-weight:700;margin-bottom:9px}.option{display:block;margin:7px 0;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.option:hover{border-color:#9dc0e8;background:#f7fbff}.result{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f4f8fc;display:none}.result.show{display:block}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f2f5f8;border:1px solid var(--line);padding:2px 7px;border-radius:6px;color:#dbe6ff}
+.footer{margin-top:35px;padding:22px;border-top:1px solid var(--line);color:#74879a;font-size:.88rem}.source-note{font-size:.78rem;color:#7483a5}
 @media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:auto}.nav{grid-template-columns:repeat(2,1fr)}.modules{grid-template-columns:repeat(2,1fr)}.hero-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.container{width:min(100% - 18px,1400px)}.topbar-inner{height:auto;padding:10px 0;flex-wrap:wrap}.progress-wrap{min-width:0;width:100%}.grid-2,.grid-3{grid-template-columns:1fr}.modules{grid-template-columns:1fr}.nav{grid-template-columns:1fr}.hero{padding:20px}.lesson{padding:18px}}
 </style>
@@ -75,6 +75,17 @@ main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:2
   </aside>
 
   <main>
+    <section class="section">
+      <div class="section-title"><div><h2>Mapa de aprendizagem</h2><p>A ideia é avançar do “o que é?” para o “como fazer?” e, no final, para o “como manter e proteger?”.</p></div></div>
+      <div class="modules">
+        <a class="module-card" data-module="1" href="#modulo1" onclick="startModule(1)"><div class="module-number">MÓDULO 01</div><h3>Fundamentos</h3><p>Software, engenharia, processo, stakeholders, MVP, KISS e interfaces.</p><span class="tag">Base</span><div class="module-status"><span data-status>Não iniciado</span><strong data-count>0/6 itens</strong></div><div class="module-progress-track"><span data-progress></span></div><div class="start-hint" data-start>Começar módulo →</div></a>
+        <a class="module-card" data-module="2" href="#modulo2" onclick="startModule(2)"><div class="module-number">MÓDULO 02</div><h3>Requisitos & UML</h3><p>Elicitação, análise, especificação, validação, casos de uso e user stories.</p><span class="tag">Descoberta</span><div class="module-status"><span data-status>Não iniciado</span><strong data-count>0/5 itens</strong></div><div class="module-progress-track"><span data-progress></span></div><div class="start-hint" data-start>Começar módulo →</div></a>
+        <a class="module-card" data-module="3" href="#modulo3" onclick="startModule(3)"><div class="module-number">MÓDULO 03</div><h3>Processos & Agile</h3><p>Cascata, incremental, prototipação, Scrum, backlog, sprints e Story Points.</p><span class="tag">Planejamento</span><div class="module-status"><span data-status>Não iniciado</span><strong data-count>0/5 itens</strong></div><div class="module-progress-track"><span data-progress></span></div><div class="start-hint" data-start>Começar módulo →</div></a>
+        <a class="module-card" data-module="4" href="#modulo4" onclick="startModule(4)"><div class="module-number">MÓDULO 04</div><h3>Desenvolvimento & Testes</h3><p>Stack, arquitetura, boas práticas, Git, testes, mocks e performance.</p><span class="tag">Construção</span><div class="module-status"><span data-status>Não iniciado</span><strong data-count>0/6 itens</strong></div><div class="module-progress-track"><span data-progress></span></div><div class="start-hint" data-start>Começar módulo →</div></a>
+        <a class="module-card" data-module="5" href="#modulo5" onclick="startModule(5)"><div class="module-number">MÓDULO 05</div><h3>Evolução & Segurança</h3><p>Manutenção, deprecated, vulnerabilidades, dados, LGPD, logs e auditoria.</p><span class="tag">Avançado</span><div class="module-status"><span data-status>Não iniciado</span><strong data-count>0/7 itens</strong></div><div class="module-progress-track"><span data-progress></span></div><div class="start-hint" data-start>Começar módulo →</div></a>
+      </div>
+    </section>
+
     <section id="inicio" class="hero">
       <div class="eyebrow">Trilha progressiva • 5 módulos</div>
       <h1>Engenharia de Software do zero à evolução do sistema</h1>
@@ -85,18 +96,9 @@ main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:2
         <div class="metric"><strong>8</strong><span>diagramas práticos</span></div>
         <div class="metric"><strong>100%</strong><span>offline • sem dependências</span></div>
       </div>
+      <div class="course-counter"><div class="counter" id="moduleCounter"><strong>0/5</strong> módulos concluídos</div><div class="counter" id="itemCounter"><strong>0/29</strong> itens de checklist concluídos</div><div class="counter" id="startedCounter"><strong>0/5</strong> módulos iniciados</div></div>
     </section>
 
-    <section class="section">
-      <div class="section-title"><div><h2>Mapa de aprendizagem</h2><p>A ideia é avançar do “o que é?” para o “como fazer?” e, no final, para o “como manter e proteger?”.</p></div></div>
-      <div class="modules">
-        <a class="module-card" href="#modulo1"><div class="module-number">MÓDULO 01</div><h3>Fundamentos</h3><p>Software, engenharia, processo, stakeholders, MVP, KISS e interfaces.</p><span class="tag">Base</span></a>
-        <a class="module-card" href="#modulo2"><div class="module-number">MÓDULO 02</div><h3>Requisitos & UML</h3><p>Elicitação, análise, especificação, validação, casos de uso e user stories.</p><span class="tag">Descoberta</span></a>
-        <a class="module-card" href="#modulo3"><div class="module-number">MÓDULO 03</div><h3>Processos & Agile</h3><p>Cascata, incremental, prototipação, Scrum, backlog, sprints e Story Points.</p><span class="tag">Planejamento</span></a>
-        <a class="module-card" href="#modulo4"><div class="module-number">MÓDULO 04</div><h3>Desenvolvimento & Testes</h3><p>Stack, arquitetura, boas práticas, Git, testes, mocks e performance.</p><span class="tag">Construção</span></a>
-        <a class="module-card" href="#modulo5"><div class="module-number">MÓDULO 05</div><h3>Evolução & Segurança</h3><p>Manutenção, deprecated, vulnerabilidades, dados, LGPD, logs e auditoria.</p><span class="tag">Avançado</span></a>
-      </div>
-    </section>
 
     <section id="modulo1" class="section">
       <div class="section-title"><div><h2>01 · Fundamentos de Engenharia de Software</h2><p>Comece entendendo o produto e o processo antes de falar de ferramentas.</p></div><button class="btn primary" onclick="completeModule(1)">Marcar módulo concluído</button></div>
@@ -622,16 +624,46 @@ main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:2
   </main>
 </div>
 <script>
-const KEY='eng-soft-course-progress-v1';
-const state=JSON.parse(localStorage.getItem(KEY)||'{"modules":{},"checks":{}}');
-function save(){localStorage.setItem(KEY,JSON.stringify(state));updateProgress()}
-function completeModule(n){state.modules[n]=!state.modules[n];save();renderModuleState();}
-function renderModuleState(){document.querySelectorAll('.module-card').forEach((el,i)=>el.classList.toggle('completed',!!state.modules[i+1]));document.querySelectorAll('[onclick^="completeModule"]').forEach(btn=>{const m=Number(btn.getAttribute('onclick').match(/\d+/)[0]);btn.textContent=state.modules[m]?'✓ Módulo concluído':'Marcar módulo concluído';btn.classList.toggle('success',!!state.modules[m]);btn.classList.toggle('primary',!state.modules[m]);});document.querySelectorAll('#sideNav a').forEach((a,i)=>{if(i>=1&&i<=5){const done=!!state.modules[i];a.classList.toggle('done',done)}})}
-function bindChecks(){document.querySelectorAll('.checklist[data-check-group]').forEach(group=>{const key=group.dataset.checkGroup;group.querySelectorAll('input[type=checkbox]').forEach((cb,i)=>{const id=key+'-'+i;cb.checked=!!state.checks[id];cb.addEventListener('change',()=>{state.checks[id]=cb.checked;save();});});});}
-function updateProgress(){const totalModules=5;let doneModules=Object.values(state.modules).filter(Boolean).length;let checks=document.querySelectorAll('.checklist[data-check-group] input[type=checkbox]');let checked=Array.from(checks).filter(c=>c.checked).length;let totalChecks=checks.length;const pct=Math.round(((doneModules/totalModules)*0.5)+((totalChecks?checked/totalChecks:0)*0.5)*100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=pct+'% concluído';}
-function gradeQuiz(){const ans={q1:'a',q2:'b',q3:'b',q4:'b',q5:'c'};let score=0;Object.keys(ans).forEach(q=>{const chosen=document.querySelector('input[name="'+q+'"]:checked');if(chosen&&chosen.value===ans[q])score++;});const box=document.getElementById('quizResult');box.classList.add('show');box.innerHTML='<b>Resultado: '+score+'/5.</b> '+(score===5?'Excelente. Você fechou a revisão com 100%.':score>=3?'Boa base. Revise os conceitos das questões que errou.':'Volte aos módulos 1–5 e refaça as checklists antes de tentar novamente.');}
+const KEY='eng-soft-course-progress-v2';
+const defaultState={modules:{},checks:{},started:{},lastModule:null};
+let state;
+try{state={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')};state.modules=state.modules||{};state.checks=state.checks||{};state.started=state.started||{}}
+catch(e){state={...defaultState};}
+const moduleMap={1:'m1',2:'m2',3:'m3',4:'m4',5:'m5'};
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll();}
+function startModule(n){state.started[n]=true;state.lastModule=n;save();setTimeout(()=>{const target=document.getElementById('modulo'+n);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});} },80);}
+function completeModule(n){state.modules[n]=!state.modules[n];state.started[n]=true;save();}
+function getModuleCounts(n){const group=document.querySelector('.checklist[data-check-group="'+moduleMap[n]+'"]');if(!group)return {checked:0,total:0,pct:0};const boxes=[...group.querySelectorAll('input[type=checkbox]')];const checked=boxes.filter(c=>c.checked).length;const total=boxes.length;return {checked,total,pct:total?Math.round((checked/total)*100):0};}
+function renderModuleState(){
+  document.querySelectorAll('.module-card[data-module]').forEach(el=>{
+    const n=Number(el.dataset.module);const c=getModuleCounts(n);const done=!!state.modules[n];const started=!!state.started[n]||done||c.checked>0;
+    el.classList.toggle('completed',done);el.classList.toggle('active',state.lastModule===n&&!done);
+    const status=el.querySelector('[data-status]');const count=el.querySelector('[data-count]');const bar=el.querySelector('[data-progress]');const hint=el.querySelector('[data-start]');
+    if(status)status.textContent=done?'Concluído':started?'Em andamento':'Não iniciado';
+    if(count)count.textContent=c.checked+'/'+c.total+' itens';
+    if(bar)bar.style.width=c.pct+'%';
+    if(hint)hint.textContent=done?'✓ Rever módulo':started?'Continuar módulo →':'Começar módulo →';
+  });
+  document.querySelectorAll('[onclick^="completeModule"]').forEach(btn=>{const m=Number(btn.getAttribute('onclick').match(/\d+/)[0]);const done=!!state.modules[m];btn.textContent=done?'✓ Módulo concluído':'Marcar módulo concluído';btn.classList.toggle('success',done);btn.classList.toggle('primary',!done);});
+  document.querySelectorAll('#sideNav a').forEach((a,i)=>{if(i>=1&&i<=5){const done=!!state.modules[i];const started=!!state.started[i]||getModuleCounts(i).checked>0;a.classList.toggle('done',done);a.classList.toggle('active',started&&!done);}});
+}
+function bindChecks(){document.querySelectorAll('.checklist[data-check-group]').forEach(group=>{const key=group.dataset.checkGroup;group.querySelectorAll('input[type=checkbox]').forEach((cb,i)=>{const id=key+'-'+i;cb.checked=!!state.checks[id];cb.addEventListener('change',()=>{state.checks[id]=cb.checked;const m=Number(key.slice(1));state.started[m]=true;save();});});});}
+function updateProgress(){
+  const totalModules=5;const doneModules=Object.values(state.modules).filter(Boolean).length;const startedModules=Object.values(state.started).filter(Boolean).length;
+  const checks=document.querySelectorAll('.checklist[data-check-group] input[type=checkbox]');const checked=[...checks].filter(c=>c.checked).length;const totalChecks=checks.length;
+  const pct=Math.round(((doneModules/totalModules)*0.55)+((totalChecks?checked/totalChecks:0)*0.45)*100);
+  document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=pct+'% concluído';
+  const mc=document.getElementById('moduleCounter');if(mc)mc.innerHTML='<strong>'+doneModules+'/'+totalModules+'</strong> módulos concluídos';
+  const ic=document.getElementById('itemCounter');if(ic)ic.innerHTML='<strong>'+checked+'/'+totalChecks+'</strong> itens de checklist concluídos';
+  const sc=document.getElementById('startedCounter');if(sc)sc.innerHTML='<strong>'+startedModules+'/'+totalModules+'</strong> módulos iniciados';
+}
+function renderAll(){renderModuleState();updateProgress();}
+function gradeQuiz(){const ans={q1:'a',q2:'b',q3:'b',q4:'b',q5:'c'};let score=0;Object.keys(ans).forEach(q=>{const chosen=document.querySelector('input[name="'+q+'"]:checked');if(chosen&&chosen.value===ans[q])score++;});const box=document.getElementById('quizResult');box.classList.add('show');box.innerHTML='<b>Resultado: '+score+'/5.</b> '+(score===5?'Revisão concluída com 100%.':score>=3?'Boa base. Revise os conceitos das questões que errou.':'Volte aos módulos e refaça as checklists antes de tentar novamente.');}
 function resetProgress(){if(confirm('Resetar o progresso salvo nesta página?')){localStorage.removeItem(KEY);location.reload();}}
-bindChecks();renderModuleState();updateProgress();
-</script>
+// Destaca o módulo correspondente enquanto o estudante navega pela página.
+const moduleSections=[1,2,3,4,5].map(n=>document.getElementById('modulo'+n)).filter(Boolean);
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const n=Number(entry.target.id.replace('modulo',''));state.lastModule=n;renderModuleState();}})},{rootMargin:'-25% 0px -55% 0px',threshold:0});
+moduleSections.forEach(section=>observer.observe(section));
+bindChecks();renderAll();</script>
 </body>
 </html>
