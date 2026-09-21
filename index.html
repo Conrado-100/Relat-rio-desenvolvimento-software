@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Curso completo e progressivo de Engenharia de Software baseado nas anotações e materiais fornecidos.">
+<title>Engenharia de Software — Curso Interativo</title>
+<style>
+:root{
+  --bg:#0b1020; --panel:#11182b; --panel2:#151f36; --card:#17233c; --text:#edf2ff; --muted:#aab6d3;
+  --accent:#63a4ff; --accent2:#7c5cff; --green:#3ddc97; --yellow:#ffd166; --red:#ff6b7a;
+  --line:#273552; --shadow:0 18px 50px rgba(0,0,0,.25); --radius:18px;
+}
+*{box-sizing:border-box;scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#09101f,#0c1325 45%,#0a1020);color:var(--text);line-height:1.65}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.container{width:min(1400px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(9,16,31,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(99,164,255,.12)}
+.topbar-inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 9px 28px rgba(99,164,255,.25)}
+.progress-wrap{min-width:300px;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.9rem}
+.progress{height:9px;background:#202c47;border-radius:999px;overflow:hidden;flex:1}.progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.25s}
+.layout{display:grid;grid-template-columns:285px 1fr;gap:24px;padding:28px 0 70px}
+.sidebar{position:sticky;top:94px;height:max-content;background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.sidebar h3{margin:6px 0 10px;font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;color:#8190b4}
+.nav{display:grid;gap:7px}.nav a{padding:10px 11px;border-radius:12px;color:var(--muted);font-size:.93rem}.nav a:hover,.nav a.active{background:#1c2a48;color:var(--text)}
+.nav a .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#445579;margin-right:9px}.nav a.done .dot{background:var(--green)}
+main{min-width:0}.hero{padding:30px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at 10% 10%,rgba(99,164,255,.17),transparent 35%),radial-gradient(circle at 90% 20%,rgba(124,92,255,.15),transparent 30%),var(--panel);box-shadow:var(--shadow)}
+.eyebrow{color:#8db8ff;font-weight:700;text-transform:uppercase;letter-spacing:.13em;font-size:.78rem}.hero h1{font-size:clamp(2rem,4vw,4rem);line-height:1.05;margin:10px 0 15px;max-width:900px}.hero p{max-width:900px;color:var(--muted);font-size:1.06rem}
+.hero-grid{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:15px}.metric strong{display:block;font-size:1.4rem}.metric span{font-size:.85rem;color:var(--muted)}
+.section{margin-top:28px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:14px}.section-title h2{margin:0;font-size:1.65rem}.section-title p{margin:0;color:var(--muted);max-width:750px}
+.modules{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.module-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}.module-card:hover{transform:translateY(-3px);border-color:#4b6eab}.module-number{font-weight:900;color:#88b1ff;font-size:.78rem}.module-card h3{margin:7px 0 7px;font-size:1rem}.module-card p{color:var(--muted);font-size:.84rem;margin:0 0 12px}.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#0f1930;color:#b9c7e6;padding:5px 9px;border-radius:999px;font-size:.76rem}.module-card.completed:after{content:'✓';position:absolute;top:10px;right:11px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(61,220,151,.16);color:var(--green);font-weight:900}
+.lesson{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow);margin-top:18px}.lesson-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.lesson h3{font-size:1.35rem;margin:4px 0 8px}.lesson .summary{color:var(--muted)}
+.btn{border:1px solid var(--line);background:#14203a;color:var(--text);padding:9px 12px;border-radius:12px;cursor:pointer}.btn:hover{border-color:#5f83c4}.btn.primary{background:linear-gradient(135deg,#3c7ee7,#6f52ef);border-color:transparent}.btn.success{background:rgba(61,220,151,.12);color:#8df2c6;border-color:rgba(61,220,151,.3)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:17px}.card h4{margin:0 0 7px}.card p{margin:0;color:var(--muted)}
+.concept{border-left:4px solid var(--accent);padding:13px 15px;background:#0e1830;border-radius:0 14px 14px 0;margin:13px 0}.concept strong{display:block;margin-bottom:3px}.muted{color:var(--muted)}
+.steps{counter-reset:step;display:grid;gap:11px}.step{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}.step:before{counter-increment:step;content:counter(step);display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#2d68ca,#6b4eea);font-weight:800}.step strong{display:block}.step p{margin:4px 0 0;color:var(--muted)}
+.checklist{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#101a2f}.check input{margin-top:5px;accent-color:var(--accent)}
+.callout{padding:15px;border-radius:15px;border:1px solid rgba(255,209,102,.25);background:rgba(255,209,102,.07)}
+.diagram{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#091120;padding:12px}.diagram svg{display:block;margin:auto;max-width:100%;height:auto}.caption{text-align:center;color:#8190b4;font-size:.8rem;margin-top:8px}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px}.table th,.table td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.table th{color:#bed0f2;background:#111c32}.table td{color:#c8d2e8}
+.quiz{border:1px dashed #3f5680}.q{margin-bottom:18px}.q:last-child{margin-bottom:0}.q-title{font-weight:700;margin-bottom:9px}.option{display:block;margin:7px 0;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#101a2f;cursor:pointer}.option:hover{border-color:#587db7}.result{margin-top:12px;padding:10px 12px;border-radius:12px;background:#101c34;display:none}.result.show{display:block}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0a1120;border:1px solid var(--line);padding:2px 7px;border-radius:6px;color:#dbe6ff}
+.footer{margin-top:35px;padding:22px;border-top:1px solid var(--line);color:#8190b4;font-size:.88rem}.source-note{font-size:.78rem;color:#7483a5}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:auto}.nav{grid-template-columns:repeat(2,1fr)}.modules{grid-template-columns:repeat(2,1fr)}.hero-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.container{width:min(100% - 18px,1400px)}.topbar-inner{height:auto;padding:10px 0;flex-wrap:wrap}.progress-wrap{min-width:0;width:100%}.grid-2,.grid-3{grid-template-columns:1fr}.modules{grid-template-columns:1fr}.nav{grid-template-columns:1fr}.hero{padding:20px}.lesson{padding:18px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#inicio"><span class="logo">ES</span><span>Engenharia de Software • Curso</span></a>
+    <div class="progress-wrap"><span id="progressText">0% concluído</span><div class="progress"><span id="progressBar"></span></div></div>
+  </div>
+</header>
+<div class="container layout">
+  <aside class="sidebar">
+    <h3>Roteiro</h3>
+    <nav class="nav" id="sideNav">
+      <a href="#inicio"><span class="dot"></span>Início</a>
+      <a href="#modulo1"><span class="dot"></span>01 · Fundamentos</a>
+      <a href="#modulo2"><span class="dot"></span>02 · Requisitos</a>
+      <a href="#modulo3"><span class="dot"></span>03 · Processos & Agile</a>
+      <a href="#modulo4"><span class="dot"></span>04 · Desenvolvimento & Testes</a>
+      <a href="#modulo5"><span class="dot"></span>05 · Evolução & Segurança</a>
+      <a href="#glossario"><span class="dot"></span>Glossário</a>
+      <a href="#recursos"><span class="dot"></span>Recursos citados</a>
+      <a href="#revisao"><span class="dot"></span>Revisão final</a>
+    </nav>
+    <h3 style="margin-top:22px">Como estudar</h3>
+    <div class="muted" style="font-size:.86rem">Leia a explicação → veja o diagrama → faça o passo a passo → marque a checklist → responda o quiz.</div>
+    <button class="btn" style="width:100%;margin-top:14px" onclick="resetProgress()">Resetar progresso</button>
+  </aside>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="eyebrow">Trilha progressiva • 5 módulos</div>
+      <h1>Engenharia de Software do zero à evolução do sistema</h1>
+      <p>Um curso em formato de página única, organizado para transformar suas anotações e os materiais fornecidos em uma sequência de aprendizagem: entender o software, descobrir requisitos, escolher o processo, desenvolver e testar, e finalmente manter, proteger e evoluir.</p>
+      <div class="hero-grid">
+        <div class="metric"><strong>5</strong><span>módulos progressivos</span></div>
+        <div class="metric"><strong>~40</strong><span>conceitos e práticas</span></div>
+        <div class="metric"><strong>8</strong><span>diagramas práticos</span></div>
+        <div class="metric"><strong>100%</strong><span>offline • sem dependências</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><div><h2>Mapa de aprendizagem</h2><p>A ideia é avançar do “o que é?” para o “como fazer?” e, no final, para o “como manter e proteger?”.</p></div></div>
+      <div class="modules">
+        <a class="module-card" href="#modulo1"><div class="module-number">MÓDULO 01</div><h3>Fundamentos</h3><p>Software, engenharia, processo, stakeholders, MVP, KISS e interfaces.</p><span class="tag">Base</span></a>
+        <a class="module-card" href="#modulo2"><div class="module-number">MÓDULO 02</div><h3>Requisitos & UML</h3><p>Elicitação, análise, especificação, validação, casos de uso e user stories.</p><span class="tag">Descoberta</span></a>
+        <a class="module-card" href="#modulo3"><div class="module-number">MÓDULO 03</div><h3>Processos & Agile</h3><p>Cascata, incremental, prototipação, Scrum, backlog, sprints e Story Points.</p><span class="tag">Planejamento</span></a>
+        <a class="module-card" href="#modulo4"><div class="module-number">MÓDULO 04</div><h3>Desenvolvimento & Testes</h3><p>Stack, arquitetura, boas práticas, Git, testes, mocks e performance.</p><span class="tag">Construção</span></a>
+        <a class="module-card" href="#modulo5"><div class="module-number">MÓDULO 05</div><h3>Evolução & Segurança</h3><p>Manutenção, deprecated, vulnerabilidades, dados, LGPD, logs e auditoria.</p><span class="tag">Avançado</span></a>
+      </div>
+    </section>
+
+    <section id="modulo1" class="section">
+      <div class="section-title"><div><h2>01 · Fundamentos de Engenharia de Software</h2><p>Comece entendendo o produto e o processo antes de falar de ferramentas.</p></div><button class="btn primary" onclick="completeModule(1)">Marcar módulo concluído</button></div>
+      <article class="lesson">
+        <div class="lesson-head"><div><span class="eyebrow">Aula 1</span><h3>O que é software?</h3><div class="summary">Software não é apenas o código: o material fornecido o apresenta como programa de computador + documentação associada, com determinada funcionalidade.</div></div></div>
+        <div class="grid-2" style="margin-top:17px">
+          <div class="card"><h4>Software genérico</h4><p>É desenvolvido para atender uma classe de usuários ou necessidades. Exemplos do material: processadores de texto, editores de imagem, bancos de dados e sistemas de controle de estoque.</p></div>
+          <div class="card"><h4>Software personalizado</h4><p>É desenvolvido para uma necessidade mais específica. Exemplos do material: sistemas de escritórios de advocacia, tribunais, softwares policiais e jogos.</p></div>
+        </div>
+        <div class="concept"><strong>Ideia-chave</strong><span class="muted">O usuário não precisa conhecer a implementação interna. Ele precisa conseguir realizar seu objetivo com o sistema.</span></div>
+        <div class="steps" style="margin-top:18px">
+          <div class="step"><div><strong>Identifique o problema</strong><p>Qual necessidade o software deve resolver?</p></div></div>
+          <div class="step"><div><strong>Identifique o usuário</strong><p>Quem utilizará a solução e quem mais será afetado por ela?</p></div></div>
+          <div class="step"><div><strong>Defina a funcionalidade</strong><p>O que precisa acontecer para que a necessidade seja atendida?</p></div></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <div class="lesson-head"><div><span class="eyebrow">Aula 2</span><h3>Engenharia de Software e processo de software</h3><div class="summary">O material define Engenharia de Software como a disciplina da engenharia preocupada com os aspectos da produção de software.</div></div></div>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 260" role="img" aria-label="Ciclo geral do processo de software">
+            <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#63a4ff"/></marker></defs>
+            <g font-family="Arial" font-size="18" text-anchor="middle">
+              <rect x="30" y="90" width="200" height="80" rx="16" fill="#172d52" stroke="#4b79bd"/><text x="130" y="124" fill="#fff">Especificação</text><text x="130" y="149" fill="#aab6d3">entender o que fazer</text>
+              <rect x="270" y="90" width="200" height="80" rx="16" fill="#21214b" stroke="#6258bc"/><text x="370" y="124" fill="#fff">Desenvolvimento</text><text x="370" y="149" fill="#aab6d3">construir</text>
+              <rect x="510" y="90" width="200" height="80" rx="16" fill="#193d35" stroke="#3aa985"/><text x="610" y="124" fill="#fff">Validação</text><text x="610" y="149" fill="#aab6d3">verificar</text>
+              <rect x="750" y="90" width="200" height="80" rx="16" fill="#493522" stroke="#bd8f4b"/><text x="850" y="124" fill="#fff">Evolução</text><text x="850" y="149" fill="#aab6d3">manter e ampliar</text>
+              <path d="M230 130 H265" stroke="#63a4ff" stroke-width="3" marker-end="url(#arrow)"/><path d="M470 130 H505" stroke="#63a4ff" stroke-width="3" marker-end="url(#arrow)"/><path d="M710 130 H745" stroke="#63a4ff" stroke-width="3" marker-end="url(#arrow)"/>
+              <path d="M850 185 C850 230, 130 230, 130 180" fill="none" stroke="#63a4ff" stroke-width="3" marker-end="url(#arrow)"/>
+              <text x="500" y="220" fill="#8190b4">feedback e mudanças fazem o ciclo se repetir</text>
+            </g>
+          </svg>
+          <div class="caption">Visão geral: especificar → desenvolver → validar → evoluir.</div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <div class="lesson-head"><div><span class="eyebrow">Aula 3</span><h3>Conceitos de produto: MVP, KISS e Happy Path</h3></div></div>
+        <div class="grid-3">
+          <div class="card"><h4>MVP</h4><p><b>Minimum Viable Product</b>: versão simples e funcional do software capaz de resolver a dor principal do usuário. A ideia é entregar algo utilizável cedo e aprender com o uso.</p></div>
+          <div class="card"><h4>KISS</h4><p><b>Keep It Simple, Stupid</b>: priorize simplicidade. Evite complexidade que não seja necessária para resolver o problema.</p></div>
+          <div class="card"><h4>Happy Path</h4><p>É o caminho de cenário ideal, em que tudo ocorre conforme esperado. Ele é útil como referência, mas não representa os erros, exceções e situações reais do sistema.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <div class="lesson-head"><div><span class="eyebrow">Aula 4</span><h3>Stakeholder, usuário, UI, UX e GUI</h3></div></div>
+        <div class="grid-2">
+          <div class="card"><h4>Usuário × Stakeholder</h4><p>Usuário é quem utiliza o sistema. Stakeholder é qualquer parte interessada no sistema. Assim, um usuário é um stakeholder, mas um stakeholder pode não utilizar diretamente o software.</p></div>
+          <div class="card"><h4>UI × UX × GUI</h4><p><b>UI</b> é a interface e seus elementos visuais; <b>UX</b> é a experiência global, fluxos e facilidade para atingir objetivos; <b>GUI</b> é a interface gráfica do usuário.</p></div>
+        </div>
+        <div class="callout" style="margin-top:15px"><b>CMD / Terminal:</b> interface textual em que comandos são digitados. É importante para automação, servidores e ferramentas de desenvolvimento.</div>
+      </article>
+
+      <article class="lesson">
+        <div class="lesson-head"><div><span class="eyebrow">Aula 5 • Prática</span><h3>Checklist do módulo</h3></div></div>
+        <div class="checklist" data-check-group="m1">
+          <label class="check"><input type="checkbox">Consigo explicar software sem dizer apenas “é código”.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar software genérico e personalizado.</label>
+          <label class="check"><input type="checkbox">Sei explicar especificação, desenvolvimento, validação e evolução.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar usuário de stakeholder.</label>
+          <label class="check"><input type="checkbox">Consigo explicar MVP, KISS e Happy Path com exemplos.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar UI, UX e GUI.</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="modulo2" class="section">
+      <div class="section-title"><div><h2>02 · Engenharia de Requisitos e Modelagem</h2><p>A etapa em que uma necessidade vira algo que a equipe consegue entender, discutir, modelar e validar.</p></div><button class="btn primary" onclick="completeModule(2)">Marcar módulo concluído</button></div>
+      <article class="lesson">
+        <span class="eyebrow">Aula 1</span><h3>Elicitação → análise → especificação → validação</h3>
+        <p class="summary">O material apresenta especificação de software (ou engenharia de requisitos) como o processo de identificação das necessidades do sistema e divide sua especificação em elicitação/análise, especificação e validação.</p>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 300" role="img" aria-label="Fluxo de engenharia de requisitos">
+            <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#63a4ff"/></marker></defs>
+            <g font-family="Arial" text-anchor="middle">
+              <rect x="30" y="95" width="200" height="90" rx="15" fill="#172d52" stroke="#4b79bd"/><text x="130" y="130" fill="#fff" font-size="18">Elicitação</text><text x="130" y="157" fill="#aab6d3" font-size="15">entrevistas + descoberta</text>
+              <rect x="270" y="95" width="200" height="90" rx="15" fill="#2a224c" stroke="#6a5dcc"/><text x="370" y="130" fill="#fff" font-size="18">Análise</text><text x="370" y="157" fill="#aab6d3" font-size="15">conflitos + viabilidade</text>
+              <rect x="510" y="95" width="200" height="90" rx="15" fill="#203f39" stroke="#42ae8e"/><text x="610" y="130" fill="#fff" font-size="18">Especificação</text><text x="610" y="157" fill="#aab6d3" font-size="15">documentar claramente</text>
+              <rect x="750" y="95" width="200" height="90" rx="15" fill="#4a3526" stroke="#c08d55"/><text x="850" y="130" fill="#fff" font-size="18">Validação</text><text x="850" y="157" fill="#aab6d3" font-size="15">conferir com o desejado</text>
+              <path d="M230 140 H265" stroke="#63a4ff" stroke-width="3" marker-end="url(#a2)"/><path d="M470 140 H505" stroke="#63a4ff" stroke-width="3" marker-end="url(#a2)"/><path d="M710 140 H745" stroke="#63a4ff" stroke-width="3" marker-end="url(#a2)"/>
+              <path d="M850 190 C850 255, 130 255, 130 190" fill="none" stroke="#7c8eb5" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#a2)"/>
+              <text x="500" y="285" fill="#8190b4" font-size="15">feedback pode levar a novas entrevistas e refinamentos</text>
+            </g>
+          </svg>
+          <div class="caption">O processo de requisitos é iterativo: novas informações podem gerar revisões.</div>
+        </div>
+        <div class="steps" style="margin-top:16px">
+          <div class="step"><div><strong>Prepare a entrevista</strong><p>Tenha uma pré-seleção de ideias ou hipóteses para validar, em vez de assumir que já sabe tudo.</p></div></div>
+          <div class="step"><div><strong>Converse e demonstre</strong><p>Converse com o cliente e, quando possível, mostre um exemplo/protótipo para descobrir o que realmente é desejado.</p></div></div>
+          <div class="step"><div><strong>Analise e registre</strong><p>Transforme respostas em requisitos claros, sem depender de memória informal.</p></div></div>
+          <div class="step"><div><strong>Valide</strong><p>Volte ao cliente para confirmar que o documento corresponde ao sistema necessário.</p></div></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 2</span><h3>Requisitos de usuário e requisitos do sistema</h3>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Tipo</th><th>Foco</th><th>Exemplo</th></tr></thead><tbody>
+          <tr><td>Requisito de usuário</td><td>Necessidade expressa do ponto de vista de quem usa/precisa do sistema.</td><td>“Como cliente, quero acompanhar meu pedido.”</td></tr>
+          <tr><td>Requisito do sistema</td><td>Forma mais detalhada e técnica do comportamento esperado.</td><td>“O sistema deve exibir status, data e histórico do pedido.”</td></tr>
+        </tbody></table></div>
+        <div class="concept"><strong>Validação de requisitos</strong><span class="muted">No material, essa etapa serve para descobrir e corrigir erros no documento de requisitos. O foco é verificar se o que foi definido corresponde ao que o cliente deseja e necessita.</span></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 3</span><h3>UML e diagrama de casos de uso</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 430" role="img" aria-label="Exemplo de diagrama de caso de uso com fronteira do sistema">
+            <defs><marker id="a3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#9ab2d8"/></marker></defs>
+            <g font-family="Arial" fill="#fff">
+              <rect x="300" y="40" width="560" height="330" rx="12" fill="#101b31" stroke="#6b85ad" stroke-width="3"/><text x="580" y="73" font-size="21" text-anchor="middle">SISTEMA</text>
+              <ellipse cx="580" cy="140" rx="115" ry="35" fill="#1a2c4d" stroke="#5d88ca"/><text x="580" y="147" font-size="17" text-anchor="middle">Cadastrar usuário</text>
+              <ellipse cx="580" cy="225" rx="115" ry="35" fill="#2a2550" stroke="#7266c4"/><text x="580" y="232" font-size="17" text-anchor="middle">Realizar compra</text>
+              <ellipse cx="580" cy="310" rx="115" ry="35" fill="#1f3c36" stroke="#55ae91"/><text x="580" y="317" font-size="17" text-anchor="middle">Consultar pedido</text>
+              <circle cx="150" cy="170" r="23" fill="none" stroke="#d9e5ff" stroke-width="3"/><line x1="150" y1="193" x2="150" y2="250" stroke="#d9e5ff" stroke-width="3"/><line x1="118" y1="214" x2="182" y2="214" stroke="#d9e5ff" stroke-width="3"/><line x1="150" y1="250" x2="122" y2="305" stroke="#d9e5ff" stroke-width="3"/><line x1="150" y1="250" x2="178" y2="305" stroke="#d9e5ff" stroke-width="3"/>
+              <text x="150" y="340" font-size="18" text-anchor="middle">Cliente</text>
+              <line x1="178" y1="220" x2="465" y2="150" stroke="#9ab2d8" stroke-width="2"/><line x1="178" y1="235" x2="465" y2="226" stroke="#9ab2d8" stroke-width="2"/><line x1="178" y1="250" x2="465" y2="307" stroke="#9ab2d8" stroke-width="2"/>
+              <rect x="40" y="72" width="205" height="63" rx="12" fill="#151e30" stroke="#3f5376"/><text x="142" y="98" font-size="15" text-anchor="middle" fill="#aab6d3">Ator</text><text x="142" y="120" font-size="14" text-anchor="middle" fill="#dce7ff">interage com o sistema</text>
+              <text x="580" y="402" font-size="15" text-anchor="middle" fill="#8190b4">Tudo dentro do quadrado representa elementos do sistema; o limite desenha a fronteira.</text>
+            </g>
+          </svg>
+          <div class="caption">Em casos de uso, a fronteira do sistema delimita o que é representado como parte dele; isso não é sinônimo de “escopo do projeto”.</div>
+        </div>
+        <div class="callout" style="margin-top:15px"><b>Conexão com MVP:</b> nas anotações, a funcionalidade crítica do MVP pode ser destacada no diagrama de casos de uso para deixar visível o que precisa ser entregue primeiro.</div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 4 • Prática</span><h3>Transformando uma entrevista em caso de uso</h3>
+        <div class="steps">
+          <div class="step"><div><strong>Frase do cliente</strong><p>“Quero vender produtos e acompanhar o pedido.”</p></div></div>
+          <div class="step"><div><strong>Identifique os atores</strong><p>Cliente, atendente, administrador ou outros envolvidos — conforme o sistema estudado.</p></div></div>
+          <div class="step"><div><strong>Liste objetivos</strong><p>Comprar produto, consultar pedido, cadastrar usuário, etc.</p></div></div>
+          <div class="step"><div><strong>Desenhe a fronteira</strong><p>Coloque os casos de uso dentro do sistema e os atores fora dele.</p></div></div>
+          <div class="step"><div><strong>Valide com o stakeholder</strong><p>Pergunte: “É exatamente isso que você espera que aconteça?”</p></div></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 5 • Checklist</span><h3>Domínio do módulo</h3>
+        <div class="checklist" data-check-group="m2">
+          <label class="check"><input type="checkbox">Sei explicar elicitação, análise, especificação e validação.</label>
+          <label class="check"><input type="checkbox">Sei por que entrevistar o cliente várias vezes pode ser necessário.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar requisito de usuário e requisito do sistema.</label>
+          <label class="check"><input type="checkbox">Sei desenhar ator, sistema e caso de uso.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar fronteira do sistema de escopo.</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="modulo3" class="section">
+      <div class="section-title"><div><h2>03 · Modelos de Processo, Prototipação e Agile</h2><p>Agora você decide como o trabalho será organizado e como as entregas serão feitas.</p></div><button class="btn primary" onclick="completeModule(3)">Marcar módulo concluído</button></div>
+      <article class="lesson">
+        <span class="eyebrow">Aula 1</span><h3>Modelo em Cascata × Desenvolvimento Incremental</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Cascata</h4><p>O material descreve o modelo como dividido em fases, com plano de atividades antes da programação. O resultado de cada etapa é uma série de documentos aprovados, e a fase seguinte deveria iniciar após a anterior.</p></div>
+          <div class="card"><h4>Incremental</h4><p>Começa com um protótipo ou versão inicial, recebe feedback e evolui em várias versões. Desenvolvimento e validação se alternam; o material relaciona esse modelo ao desenvolvimento ágil.</p></div>
+        </div>
+        <div class="diagram" style="margin-top:16px">
+          <svg viewBox="0 0 1000 420" role="img" aria-label="Comparação visual entre cascata e incremental">
+            <g font-family="Arial">
+              <text x="250" y="35" fill="#fff" font-size="22" text-anchor="middle">Cascata</text>
+              <rect x="70" y="65" width="360" height="55" rx="12" fill="#19304f" stroke="#5b85be"/><text x="250" y="100" fill="#fff" text-anchor="middle">Requisitos</text>
+              <rect x="70" y="135" width="360" height="55" rx="12" fill="#24244e" stroke="#6b61bd"/><text x="250" y="170" fill="#fff" text-anchor="middle">Projeto</text>
+              <rect x="70" y="205" width="360" height="55" rx="12" fill="#254d40" stroke="#50a986"/><text x="250" y="240" fill="#fff" text-anchor="middle">Implementação</text>
+              <rect x="70" y="275" width="360" height="55" rx="12" fill="#4b3827" stroke="#bc8c52"/><text x="250" y="310" fill="#fff" text-anchor="middle">Validação</text>
+              <rect x="70" y="345" width="360" height="40" rx="10" fill="#1e2638" stroke="#4e5b74"/><text x="250" y="371" fill="#aab6d3" text-anchor="middle">Entrega</text>
+              <text x="750" y="35" fill="#fff" font-size="22" text-anchor="middle">Incremental</text>
+              <g transform="translate(520,70)">
+                <circle cx="115" cy="65" r="48" fill="#172d52" stroke="#5b85be"/><text x="115" y="70" fill="#fff" text-anchor="middle">Versão 1</text>
+                <circle cx="270" cy="145" r="48" fill="#24244e" stroke="#6b61bd"/><text x="270" y="150" fill="#fff" text-anchor="middle">Versão 2</text>
+                <circle cx="115" cy="225" r="48" fill="#254d40" stroke="#50a986"/><text x="115" y="230" fill="#fff" text-anchor="middle">Versão 3</text>
+                <circle cx="270" cy="305" r="48" fill="#4b3827" stroke="#bc8c52"/><text x="270" y="310" fill="#fff" text-anchor="middle">Produto</text>
+                <path d="M160 93 Q215 100 230 120" fill="none" stroke="#63a4ff" stroke-width="3"/>
+                <path d="M230 165 Q185 185 160 198" fill="none" stroke="#63a4ff" stroke-width="3"/>
+                <path d="M160 250 Q215 260 230 277" fill="none" stroke="#63a4ff" stroke-width="3"/>
+                <text x="390" y="175" fill="#8190b4" font-size="15">feedback</text><text x="390" y="198" fill="#8190b4" font-size="15">entre versões</text>
+              </g>
+            </g>
+          </svg>
+          <div class="caption">O material destaca que o incremental facilita feedback, reduz custo de mudanças e permite entrega antecipada do MVP.</div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 2</span><h3>Prototipação e Entrega Incremental</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Prototipação</h4><p>Um protótipo é uma versão inicial do sistema. Pode ser usado enquanto outras versões são desenvolvidas e geralmente envolve uma GUI. O processo se encerra com a avaliação do protótipo.</p></div>
+          <div class="card"><h4>Entrega incremental</h4><p>Pequenas partes do sistema são entregues ao cliente para uso e validação. Os incrementos podem ser telas, tabelas de banco ou funcionalidades.</p></div>
+        </div>
+        <div class="concept"><strong>Por que isso ajuda?</strong><span class="muted">Quanto mais cedo o cliente vê algo funcionando, mais cedo o time descobre se está seguindo a direção desejada.</span></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 3</span><h3>RUP, integração/configuração e ferramentas de desenvolvimento</h3>
+        <div class="grid-2">
+          <div class="card"><h4>RUP — Rational Unified Process</h4><p>No material, RUP é apresentado como um processo que reúne elementos dos modelos Cascata, Incremental e Integração/Configuração. Ele ajuda a organizar disciplinas, papéis e iterações de um projeto.</p></div>
+          <div class="card"><h4>Integração e configuração</h4><p>Software frequentemente reaproveita código e componentes existentes. O material cita <b>standalone</b>, <b>libraries</b> e <b>web services</b> como tipos envolvidos nesse reaproveitamento.</p></div>
+        </div>
+        <div class="grid-3" style="margin-top:15px">
+          <div class="card"><h4>Modelagem gráfica</h4><p>Ferramentas podem apoiar a criação de modelos e diagramas.</p></div>
+          <div class="card"><h4>Geração / tradução</h4><p>Ferramentas podem gerar código a partir de modelos e traduzir linguagens de programação.</p></div>
+          <div class="card"><h4>Depuração / GUI</h4><p>Ferramentas também ajudam na depuração de programas e na geração de interfaces gráficas.</p></div>
+        </div>
+        <div class="concept"><strong>Como estudar esse tópico</strong><span class="muted">Pense nas ferramentas como apoio ao processo: elas não substituem requisitos, arquitetura, validação ou decisões da equipe.</span></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 4</span><h3>Agile, Scrum, backlog e sprint</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="Ciclo de sprint Scrum simplificado">
+            <defs><marker id="a4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#63a4ff"/></marker></defs>
+            <g font-family="Arial" text-anchor="middle">
+              <circle cx="500" cy="180" r="92" fill="#172b4d" stroke="#6297df" stroke-width="3"/><text x="500" y="174" fill="#fff" font-size="22">Sprint</text><text x="500" y="201" fill="#aab6d3" font-size="15">incremento</text>
+              <rect x="105" y="145" width="190" height="70" rx="14" fill="#1e2748" stroke="#6a62be"/><text x="200" y="174" fill="#fff" font-size="18">Backlog</text><text x="200" y="196" fill="#aab6d3" font-size="14">priorização</text>
+              <rect x="705" y="145" width="190" height="70" rx="14" fill="#1f4038" stroke="#50a98b"/><text x="800" y="174" fill="#fff" font-size="18">Review</text><text x="800" y="196" fill="#aab6d3" font-size="14">feedback</text>
+              <rect x="405" y="40" width="190" height="58" rx="13" fill="#463526" stroke="#bd8d53"/><text x="500" y="75" fill="#fff" font-size="18">Planning</text>
+              <rect x="405" y="262" width="190" height="58" rx="13" fill="#18243c" stroke="#506685"/><text x="500" y="297" fill="#fff" font-size="18">Daily / Stand-up</text>
+              <path d="M295 180 H402" stroke="#63a4ff" stroke-width="3" marker-end="url(#a4)"/><path d="M598 180 H698" stroke="#63a4ff" stroke-width="3" marker-end="url(#a4)"/><path d="M800 215 Q720 320 605 291" fill="none" stroke="#63a4ff" stroke-width="3" marker-end="url(#a4)"/><path d="M395 291 Q250 320 160 225" fill="none" stroke="#63a4ff" stroke-width="3" marker-end="url(#a4)"/><path d="M410 70 Q335 85 220 140" fill="none" stroke="#63a4ff" stroke-width="2" stroke-dasharray="7 7"/>
+              <text x="500" y="347" fill="#8190b4" font-size="14">o ciclo se repete conforme novas necessidades entram no backlog</text>
+            </g>
+          </svg>
+          <div class="caption">Representação didática das relações entre backlog, planejamento, sprint, daily e revisão.</div>
+        </div>
+        <div class="grid-3" style="margin-top:15px">
+          <div class="card"><h4>Backlog</h4><p>Lista priorizada do trabalho que pode ser desenvolvido.</p></div>
+          <div class="card"><h4>Sprint</h4><p>Período de trabalho focado em um conjunto de objetivos e entregas.</p></div>
+          <div class="card"><h4>Daily / Stand-up</h4><p>Reunião frequente do time para alinhar andamento, impedimentos e próximos passos.</p></div>
+        </div>
+        <div class="callout" style="margin-top:15px"><b>Referência das anotações:</b> o exemplo de Agile usa ciclos de aproximadamente <b>2 semanas</b>; na prática, a duração depende do processo adotado pela equipe.</div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 5</span><h3>Story Points e Fibonacci</h3>
+        <div class="table-wrap"><table class="table"><thead><tr><th>SP</th><th>Interpretação das anotações</th><th>Exemplo</th></tr></thead><tbody>
+          <tr><td>1</td><td>Tarefa extremamente simples e rápida.</td><td>Alterar a cor de um botão.</td></tr>
+          <tr><td>2–3</td><td>Complexidade baixa a média.</td><td>Tela de login simples.</td></tr>
+          <tr><td>5–8</td><td>Demanda moderada, com regras de negócio ou integrações.</td><td>Fluxo envolvendo serviços.</td></tr>
+          <tr><td>13–20</td><td>Demanda grande, complexa ou incerta; vale quebrar quando possível.</td><td>Reformular um checkout inteiro.</td></tr>
+        </tbody></table></div>
+        <div class="callout" style="margin-top:15px"><b>Atenção:</b> Story Point não é “hora de trabalho”. É uma medida relativa de tamanho, complexidade e incerteza para comparar demandas.</div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 6 • Prática</span><h3>Montando uma sprint de exemplo</h3>
+        <div class="steps">
+          <div class="step"><div><strong>1. Comece pelo backlog</strong><p>Liste tudo o que o produto precisa.</p></div></div>
+          <div class="step"><div><strong>2. Priorize</strong><p>Coloque primeiro o que gera valor e reduz incerteza.</p></div></div>
+          <div class="step"><div><strong>3. Estime</strong><p>Atribua Story Points usando uma escala relativa como 1, 2, 3, 5, 8, 13, 20.</p></div></div>
+          <div class="step"><div><strong>4. Quebre itens grandes</strong><p>Uma história de 20 SP pode indicar que existe trabalho demais ou incerteza demais.</p></div></div>
+          <div class="step"><div><strong>5. Planeje e execute</strong><p>Escolha o conjunto possível para a sprint e acompanhe diariamente.</p></div></div>
+        </div>
+      </article>
+
+      <article class="lesson"><span class="eyebrow">Aula 7 • Checklist</span><h3>Domínio do módulo</h3>
+        <div class="checklist" data-check-group="m3">
+          <label class="check"><input type="checkbox">Sei explicar a lógica do modelo em Cascata.</label>
+          <label class="check"><input type="checkbox">Sei explicar por que o incremental favorece feedback e mudanças.</label>
+          <label class="check"><input type="checkbox">Sei diferenciar protótipo de produto final.</label>
+          <label class="check"><input type="checkbox">Sei explicar backlog, sprint, daily e review.</label>
+          <label class="check"><input type="checkbox">Consigo atribuir Story Points de forma relativa.</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="modulo4" class="section">
+      <div class="section-title"><div><h2>04 · Desenvolvimento, Arquitetura e Validação</h2><p>Depois de saber o que fazer e como organizar, é hora de construir e testar.</p></div><button class="btn primary" onclick="completeModule(4)">Marcar módulo concluído</button></div>
+      <article class="lesson">
+        <span class="eyebrow">Aula 1</span><h3>Definição da stack e padronização</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Linguagem / Framework</h4><p>Escolha a tecnologia necessária para implementar as funcionalidades.</p></div>
+          <div class="card"><h4>Banco de dados</h4><p>Defina o SGBD e as convenções que todos do projeto utilizarão.</p></div>
+          <div class="card"><h4>Ambiente / Nuvem</h4><p>Padronize ferramentas, IDEs, plugins e serviços como infraestrutura de nuvem quando aplicável.</p></div>
+        </div>
+        <div class="concept"><strong>Padronizar o ambiente</strong><span class="muted">A anotação destaca a necessidade de definir o que toda a equipe utilizará (sistema operacional, IDE, plugins e SGBD), reduzindo diferenças desnecessárias entre ambientes.</span></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 2</span><h3>Arquitetura: como as partes do sistema se organizam</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 430" role="img" aria-label="Diagrama simplificado de arquitetura MVC com API e banco">
+            <defs><marker id="a5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#63a4ff"/></marker></defs>
+            <g font-family="Arial" text-anchor="middle">
+              <rect x="55" y="120" width="220" height="80" rx="15" fill="#172d52" stroke="#5e8bc6"/><text x="165" y="154" fill="#fff" font-size="20">View</text><text x="165" y="180" fill="#aab6d3">UI / interface</text>
+              <rect x="390" y="60" width="220" height="80" rx="15" fill="#272149" stroke="#7268c5"/><text x="500" y="94" fill="#fff" font-size="20">Controller</text><text x="500" y="120" fill="#aab6d3">fluxo da requisição</text>
+              <rect x="390" y="180" width="220" height="80" rx="15" fill="#25473c" stroke="#51a98b"/><text x="500" y="214" fill="#fff" font-size="20">Model</text><text x="500" y="240" fill="#aab6d3">dados / regras</text>
+              <rect x="725" y="120" width="220" height="80" rx="15" fill="#4b3827" stroke="#bf9056"/><text x="835" y="154" fill="#fff" font-size="20">API / Serviço</text><text x="835" y="180" fill="#aab6d3">integração</text>
+              <rect x="390" y="330" width="220" height="60" rx="14" fill="#172237" stroke="#506685"/><text x="500" y="366" fill="#fff" font-size="18">Banco / SGBD</text>
+              <path d="M275 160 H380" stroke="#63a4ff" stroke-width="3" marker-end="url(#a5)"/><path d="M500 140 V172" stroke="#63a4ff" stroke-width="3" marker-end="url(#a5)"/><path d="M610 220 H715" stroke="#63a4ff" stroke-width="3" marker-end="url(#a5)"/><path d="M500 260 V320" stroke="#63a4ff" stroke-width="3" marker-end="url(#a5)"/><path d="M610 95 C680 88 695 110 725 135" fill="none" stroke="#8190b4" stroke-width="2" stroke-dasharray="7 7"/>
+              <text x="500" y="415" fill="#8190b4" font-size="14">Exemplo didático: arquitetura MVC + integração externa + persistência.</text>
+            </g>
+          </svg>
+          <div class="caption">MVC é um modelo de organização. Serviços, APIs externas, mensageria e segurança podem fazer parte de arquiteturas reais mais amplas.</div>
+        </div>
+        <div class="grid-3" style="margin-top:15px"><div class="card"><h4>API externa</h4><p>Integração com outro sistema por uma interface de comunicação definida.</p></div><div class="card"><h4>Mensageria</h4><p>Permite trocar mensagens entre partes do sistema, inclusive desacoplando produtores e consumidores.</p></div><div class="card"><h4>Segurança</h4><p>Deve atravessar a arquitetura: identidade, acesso, dados e integrações precisam ser considerados.</p></div></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 3</span><h3>Boas práticas de desenvolvimento</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Clean Code / Code Style</h4><p>Estruture o código para que outras pessoas consigam entender e manter o sistema.</p></div>
+          <div class="card"><h4>Git / GitHub Workflow</h4><p>Versione o trabalho, revise alterações e mantenha um fluxo de colaboração consistente.</p></div>
+          <div class="card"><h4>GitHub Actions</h4><p>Automatize tarefas do processo, como validações, testes e pipelines definidos pela equipe.</p></div>
+          <div class="card"><h4>Padrões de commit</h4><p>Mensagens consistentes ajudam a entender o histórico e facilitam a rastreabilidade das mudanças.</p></div>
+          <div class="card"><h4>Cobertura de testes</h4><p>Indica quanto do código está sendo exercitado por testes; não substitui qualidade dos cenários.</p></div>
+          <div class="card"><h4>Refatoração</h4><p>Alterar a estrutura interna para facilitar leitura e manutenção, mantendo o comportamento externo observável.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 4</span><h3>Validação e estratégia de testes</h3>
+        <p class="summary">O material orienta que validação envolve testar o programa por simulações, usar testes pequenos e independentes e, em softwares personalizados, considerar dados reais para testes.</p>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 480" role="img" aria-label="Pirâmide de testes">
+            <g font-family="Arial" text-anchor="middle">
+              <polygon points="500,55 420,180 580,180" fill="#1c3558" stroke="#5e8fc7" stroke-width="3"/><text x="500" y="130" fill="#fff" font-size="18">E2E / Aceitação</text>
+              <polygon points="420,180 580,180 660,305 340,305" fill="#2a274d" stroke="#6b62be" stroke-width="3"/><text x="500" y="250" fill="#fff" font-size="19">Integração</text>
+              <polygon points="340,305 660,305 780,435 220,435" fill="#1c433a" stroke="#50a98d" stroke-width="3"/><text x="500" y="380" fill="#fff" font-size="21">Unitário</text>
+              <text x="770" y="98" fill="#aab6d3" font-size="14" text-anchor="start">Poucos, mais amplos</text>
+              <text x="780" y="390" fill="#aab6d3" font-size="14" text-anchor="start">Muitos, rápidos e focados</text>
+            </g>
+          </svg>
+          <div class="caption">Pirâmide didática: use testes unitários pequenos e rápidos em grande quantidade, complementados por integração e cenários mais amplos.</div>
+        </div>
+        <div class="grid-3" style="margin-top:15px">
+          <div class="card"><h4>Unitário</h4><p>Foca uma função, classe ou unidade pequena. Ex.: validação de cadastro de usuário.</p></div>
+          <div class="card"><h4>Integração</h4><p>Verifica a comunicação entre componentes, como aplicação + banco ou serviço + API.</p></div>
+          <div class="card"><h4>Performance / Carga</h4><p>Avalia como o sistema se comporta sob diferentes níveis de uso e carga.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 5</span><h3>Mocks e testes isolados</h3>
+        <div class="concept"><strong>Mock</strong><span class="muted">É um componente falso controlado que imita o comportamento de uma dependência real, como banco, API externa ou arquivo. Ele permite testar uma unidade sem depender da infraestrutura real.</span></div>
+        <div class="steps">
+          <div class="step"><div><strong>Escolha a unidade</strong><p>Ex.: serviço de cadastro.</p></div></div>
+          <div class="step"><div><strong>Identifique a dependência</strong><p>Ex.: banco de dados.</p></div></div>
+          <div class="step"><div><strong>Substitua por mock</strong><p>Defina a resposta esperada da dependência.</p></div></div>
+          <div class="step"><div><strong>Execute o teste</strong><p>Verifique apenas o comportamento da unidade testada.</p></div></div>
+        </div>
+      </article>
+
+      <article class="lesson"><span class="eyebrow">Aula 6 • Checklist</span><h3>Domínio do módulo</h3>
+        <div class="checklist" data-check-group="m4">
+          <label class="check"><input type="checkbox">Sei o que entra em uma stack tecnológica.</label>
+          <label class="check"><input type="checkbox">Consigo explicar MVC e o papel de uma API externa.</label>
+          <label class="check"><input type="checkbox">Sei por que padrões e workflows ajudam a equipe.</label>
+          <label class="check"><input type="checkbox">Sei explicar o objetivo de teste unitário, integração e performance.</label>
+          <label class="check"><input type="checkbox">Sei explicar o que é um mock.</label>
+          <label class="check"><input type="checkbox">Sei explicar refatoração.</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="modulo5" class="section">
+      <div class="section-title"><div><h2>05 · Evolução, Manutenção, Dados e Segurança</h2><p>O software foi entregue. Agora começa outra etapa importante: manter, corrigir, proteger e evoluir.</p></div><button class="btn primary" onclick="completeModule(5)">Marcar módulo concluído</button></div>
+      <article class="lesson">
+        <span class="eyebrow">Aula 1</span><h3>Evolução e manutenção</h3>
+        <p class="summary">No material, evolução envolve manutenção e adição de novas funcionalidades. O software é mais fácil de modificar do que hardware, mas mudanças aumentam custos.</p>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 300" role="img" aria-label="Ciclo de evolução e manutenção">
+            <defs><marker id="a6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#63a4ff"/></marker></defs>
+            <g font-family="Arial" text-anchor="middle">
+              <circle cx="500" cy="150" r="62" fill="#1c304f" stroke="#5e8bc7" stroke-width="3"/><text x="500" y="145" fill="#fff" font-size="18">Software</text><text x="500" y="169" fill="#aab6d3" font-size="14">em produção</text>
+              <rect x="100" y="110" width="180" height="70" rx="14" fill="#2d234a" stroke="#7164c3"/><text x="190" y="140" fill="#fff">Correção</text><text x="190" y="162" fill="#aab6d3" font-size="13">bugs / falhas</text>
+              <rect x="720" y="110" width="180" height="70" rx="14" fill="#1f4036" stroke="#4fa98b"/><text x="810" y="140" fill="#fff">Evolução</text><text x="810" y="162" fill="#aab6d3" font-size="13">novas funcionalidades</text>
+              <rect x="410" y="30" width="180" height="60" rx="14" fill="#4a3526" stroke="#bf8e55"/><text x="500" y="66" fill="#fff">Mudança</text>
+              <rect x="410" y="210" width="180" height="60" rx="14" fill="#172238" stroke="#506685"/><text x="500" y="246" fill="#fff">Validação</text>
+              <path d="M280 145 H425" stroke="#63a4ff" stroke-width="3" marker-end="url(#a6)"/><path d="M575 145 H710" stroke="#63a4ff" stroke-width="3" marker-end="url(#a6)"/><path d="M810 105 Q740 55 610 60" fill="none" stroke="#63a4ff" stroke-width="3" marker-end="url(#a6)"/><path d="M500 90 V202" stroke="#63a4ff" stroke-width="3" marker-end="url(#a6)"/><path d="M410 240 Q300 245 240 180" fill="none" stroke="#8190b4" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#a6)"/>
+            </g>
+          </svg>
+          <div class="caption">Correções e novas funcionalidades alimentam ciclos de mudança e nova validação.</div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 2</span><h3>Bibliotecas obsoletas e “deprecated”</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Por que bibliotecas ficam obsoletas?</h4><p>Nas anotações, o principal motivo destacado é a descoberta de vulnerabilidades e problemas de segurança. Também pode ocorrer evolução da tecnologia, substituição por soluções mais atuais ou perda de suporte.</p></div>
+          <div class="card"><h4>O que significa “deprecated”?</h4><p>É uma indicação de que determinada API, biblioteca, recurso ou abordagem não deve ser adotada em novos desenvolvimentos e pode ser substituída/removida em versões futuras.</p></div>
+        </div>
+        <div class="callout" style="margin-top:15px"><b>Passo a passo ao encontrar um recurso deprecated:</b> descubra por que ele foi descontinuado → consulte a alternativa indicada → avalie impacto → migre → rode testes → remova dependências antigas.</div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 3</span><h3>Hard Delete × Soft Delete</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="Comparação entre hard delete e soft delete">
+            <g font-family="Arial" text-anchor="middle">
+              <rect x="70" y="80" width="360" height="220" rx="18" fill="#152438" stroke="#5f82ad"/><text x="250" y="118" fill="#fff" font-size="23">Hard Delete</text><text x="250" y="152" fill="#aab6d3">DELETE</text><rect x="150" y="185" width="200" height="60" rx="12" fill="#422831" stroke="#a85e6d"/><text x="250" y="222" fill="#fff">registro removido</text><text x="250" y="275" fill="#8190b4" font-size="14">definitivo no banco</text>
+              <rect x="570" y="80" width="360" height="220" rx="18" fill="#17352f" stroke="#51a78a"/><text x="750" y="118" fill="#fff" font-size="23">Soft Delete</text><text x="750" y="152" fill="#aab6d3">UPDATE</text><rect x="650" y="185" width="200" height="60" rx="12" fill="#203a4b" stroke="#5e86aa"/><text x="750" y="222" fill="#fff">deleted_at / status</text><text x="750" y="275" fill="#8190b4" font-size="14">registro permanece armazenado</text>
+            </g>
+          </svg>
+          <div class="caption">A escolha depende do objetivo do dado, histórico, auditoria, recuperação e requisitos de retenção.</div>
+        </div>
+        <div class="table-wrap" style="margin-top:16px"><table class="table"><thead><tr><th>Aspecto</th><th>Hard Delete</th><th>Soft Delete</th></tr></thead><tbody>
+          <tr><td>Operação típica</td><td>DELETE</td><td>UPDATE</td></tr>
+          <tr><td>Registro</td><td>Removido</td><td>Permanece marcado como excluído/inativo</td></tr>
+          <tr><td>Recuperação</td><td>Depende de backup/outros meios</td><td>Mais simples</td></tr>
+          <tr><td>Consultas</td><td>Não há dado ativo depois da remoção</td><td>É necessário filtrar registros inativos quando apropriado</td></tr>
+          <tr><td>Histórico</td><td>Pode ser perdido</td><td>Pode ser preservado</td></tr>
+        </tbody></table></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 4</span><h3>Logs, auditoria e rastreabilidade</h3>
+        <p class="summary">Para logs, a anotação diferencia o tratamento de dados operacionais: o histórico de eventos, acessos ou erros deve ser tratado com uma política de retenção. Um padrão apresentado nas notas é não usar soft delete para logs e realizar limpeza automatizada por tempo, conforme política definida.</p>
+        <div class="grid-3">
+          <div class="card"><h4>Log</h4><p>Registro de um evento: acesso, erro, ação, alteração, comunicação etc.</p></div>
+          <div class="card"><h4>Auditoria</h4><p>Capacidade de reconstruir o que ocorreu e acompanhar alterações relevantes.</p></div>
+          <div class="card"><h4>Rastreabilidade</h4><p>Ligação entre requisito, alteração, teste, versão e comportamento entregue.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 5</span><h3>PII, LGPD, NDA e Encoding</h3>
+        <div class="grid-2">
+          <div class="card"><h4>PII</h4><p><b>Personally Identifiable Information</b>: informações que podem identificar uma pessoa direta ou indiretamente. Nas anotações aparecem CPF, RG e e-mail como exemplos.</p></div>
+          <div class="card"><h4>LGPD</h4><p>Lei Geral de Proteção de Dados. Ao lidar com informações pessoais, o sistema precisa respeitar as regras aplicáveis de tratamento, segurança, acesso e retenção.</p></div>
+          <div class="card"><h4>NDA</h4><p><b>Non-Disclosure Agreement</b>: acordo de confidencialidade usado para limitar divulgação de determinadas informações.</p></div>
+          <div class="card"><h4>Encoding</h4><p>Forma de representar caracteres em bytes. A codificação correta evita problemas de acentuação e compatibilidade, inclusive em conteúdos como pt-BR e pt-PT.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 6</span><h3>Software off-the-shelf e teste beta</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Off-the-shelf / COTS</h4><p>Software comercial pronto para uso, comprado ou assinado em vez de desenvolvido de forma totalmente personalizada. O material cita exemplos como Microsoft 365, Google Workspace, Salesforce e plataformas prontas.</p></div>
+          <div class="card"><h4>Teste beta</h4><p>Um grupo menor de pessoas utiliza o software antes de uma disponibilização mais ampla para identificar problemas e fornecer avaliações/feedback.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Aula 7 • Estudo de caso</span><h3>Em Queda Livre: O Caso da Boeing</h3>
+        <p class="summary">Use o documentário indicado nas anotações como exercício de Engenharia de Software: observe como decisões de requisitos, desenvolvimento, validação, segurança, comunicação e gestão podem produzir efeitos sistêmicos.</p>
+        <div class="checklist">
+          <div class="check"><span>🔎</span><div><b>Requisitos:</b> quais necessidades, restrições ou riscos deveriam estar claros?</div></div>
+          <div class="check"><span>🧪</span><div><b>Validação:</b> quais evidências de testes seriam necessárias antes da entrega?</div></div>
+          <div class="check"><span>🧩</span><div><b>Integração:</b> quais sistemas, componentes e pessoas precisam funcionar juntos?</div></div>
+          <div class="check"><span>🛡️</span><div><b>Segurança:</b> quais falhas poderiam ser reduzidas por processos de engenharia?</div></div>
+          <div class="check"><span>📋</span><div><b>Auditoria:</b> que registros permitiriam reconstruir as decisões e mudanças?</div></div>
+        </div>
+      </article>
+
+      <article class="lesson"><span class="eyebrow">Aula 8 • Checklist</span><h3>Domínio do módulo</h3>
+        <div class="checklist" data-check-group="m5">
+          <label class="check"><input type="checkbox">Sei explicar evolução e manutenção.</label>
+          <label class="check"><input type="checkbox">Sei explicar por que dependências podem ficar obsoletas.</label>
+          <label class="check"><input type="checkbox">Sei explicar deprecated.</label>
+          <label class="check"><input type="checkbox">Sei comparar hard delete e soft delete.</label>
+          <label class="check"><input type="checkbox">Sei relacionar logs, auditoria e rastreabilidade.</label>
+          <label class="check"><input type="checkbox">Sei explicar PII, LGPD, NDA e encoding.</label>
+          <label class="check"><input type="checkbox">Sei definir software off-the-shelf e teste beta.</label>
+        </div>
+      </article>
+    </section>
+
+    <section id="glossario" class="section">
+      <div class="section-title"><div><h2>Glossário rápido</h2><p>Use esta área para revisão antes de provas, trabalhos ou apresentações.</p></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Termo</th><th>Significado</th><th>Onde aparece na trilha</th></tr></thead><tbody>
+        <tr><td>Software</td><td>Programa de computador + documentação associada.</td><td>Módulo 1</td></tr>
+        <tr><td>Engenharia de Software</td><td>Disciplina da engenharia voltada aos aspectos da produção de software.</td><td>Módulo 1</td></tr>
+        <tr><td>MVP</td><td>Produto mínimo viável: versão simples e funcional que resolve a dor principal.</td><td>Módulos 1 e 3</td></tr>
+        <tr><td>KISS</td><td>Princípio de manter a solução simples e evitar complexidade desnecessária.</td><td>Módulo 1</td></tr>
+        <tr><td>Happy Path</td><td>Caminho ideal em que tudo funciona conforme esperado.</td><td>Módulo 1</td></tr>
+        <tr><td>Stakeholder</td><td>Parte interessada no sistema.</td><td>Módulos 1 e 2</td></tr>
+        <tr><td>Elicitação</td><td>Descoberta/levantamento das necessidades e requisitos.</td><td>Módulo 2</td></tr>
+        <tr><td>UML</td><td>Linguagem/modelagem usada para representar aspectos de sistemas.</td><td>Módulo 2</td></tr>
+        <tr><td>Casos de uso</td><td>Representam objetivos e interações de atores com o sistema.</td><td>Módulo 2</td></tr>
+        <tr><td>Fronteira</td><td>Limite representado do sistema em um diagrama de caso de uso.</td><td>Módulo 2</td></tr>
+        <tr><td>Story Point</td><td>Medida relativa de tamanho, complexidade e incerteza.</td><td>Módulo 3</td></tr>
+        <tr><td>Backlog</td><td>Lista de trabalhos que podem ser realizados no produto.</td><td>Módulo 3</td></tr>
+        <tr><td>Sprint</td><td>Ciclo de trabalho do Scrum para produzir um incremento.</td><td>Módulo 3</td></tr>
+        <tr><td>Mock</td><td>Dependência simulada usada em testes controlados.</td><td>Módulo 4</td></tr>
+        <tr><td>Refatoração</td><td>Mudança estrutural interna para melhorar manutenção sem mudar comportamento externo.</td><td>Módulo 4</td></tr>
+        <tr><td>Deprecated</td><td>Recurso desaconselhado/legado que possui alternativa ou pode ser removido.</td><td>Módulo 5</td></tr>
+        <tr><td>PII</td><td>Informação que pode identificar pessoa direta ou indiretamente.</td><td>Módulo 5</td></tr>
+        <tr><td>NDA</td><td>Acordo de confidencialidade / não divulgação.</td><td>Módulo 5</td></tr>
+        <tr><td>Hard Delete</td><td>Remoção permanente do registro.</td><td>Módulo 5</td></tr>
+        <tr><td>Soft Delete</td><td>Marcação do registro como excluído/inativo sem removê-lo fisicamente.</td><td>Módulo 5</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="recursos" class="section">
+      <div class="section-title"><div><h2>Recursos citados nas anotações</h2><p>Referências que apareceram no seu material e podem ser usadas como complemento ao estudo.</p></div></div>
+      <article class="lesson">
+        <div class="grid-2">
+          <div class="card"><h4>Mano Deyuin</h4><p>Canal do YouTube citado nas anotações. Use como recurso complementar para rever conceitos de programação e desenvolvimento.</p></div>
+          <div class="card"><h4>Boddle / jogo de programação</h4><p>Recurso citado como atividade voltada ao terminal/programação. Pode ser usado para praticar comandos e lógica de forma interativa.</p></div>
+        </div>
+        <div class="concept"><strong>Como usar</strong><span class="muted">Primeiro entenda o conceito nesta trilha; depois use os recursos externos para praticar. Os nomes foram mantidos conforme as anotações fornecidas.</span></div>
+      </article>
+    </section>
+
+    <section id="revisao" class="section">
+      <div class="section-title"><div><h2>Revisão final</h2><p>Faça este quiz sem olhar as respostas. Depois reveja os módulos em que errou.</p></div></div>
+      <article class="lesson quiz" id="quiz">
+        <div class="q"><div class="q-title">1. Qual sequência representa o fluxo geral estudado?</div><label class="option"><input type="radio" name="q1" value="a"> Especificação → Desenvolvimento → Validação → Evolução</label><label class="option"><input type="radio" name="q1" value="b"> Design → Banco → Deploy → Entrevista</label><label class="option"><input type="radio" name="q1" value="c"> Teste → Código → Requisito → MVP</label></div>
+        <div class="q"><div class="q-title">2. Qual afirmação sobre stakeholder está correta?</div><label class="option"><input type="radio" name="q2" value="a"> Stakeholder é sempre quem programa o sistema.</label><label class="option"><input type="radio" name="q2" value="b"> Todo usuário é stakeholder, mas stakeholder pode não ser usuário.</label><label class="option"><input type="radio" name="q2" value="c"> Usuário e stakeholder são exatamente a mesma coisa.</label></div>
+        <div class="q"><div class="q-title">3. Em Story Points, 13 ou 20 tende a indicar:</div><label class="option"><input type="radio" name="q3" value="a"> Uma tarefa trivial.</label><label class="option"><input type="radio" name="q3" value="b"> Uma tarefa grande, complexa ou incerta.</label><label class="option"><input type="radio" name="q3" value="c"> Exatamente 20 horas.</label></div>
+        <div class="q"><div class="q-title">4. Qual opção descreve um mock?</div><label class="option"><input type="radio" name="q4" value="a"> Uma cópia de backup da produção.</label><label class="option"><input type="radio" name="q4" value="b"> Um componente falso controlado que simula uma dependência.</label><label class="option"><input type="radio" name="q4" value="c"> Um tipo de banco de dados.</label></div>
+        <div class="q"><div class="q-title">5. Qual é a ideia central do soft delete?</div><label class="option"><input type="radio" name="q5" value="a"> Remover fisicamente o registro.</label><label class="option"><input type="radio" name="q5" value="b"> Apagar o backup automaticamente.</label><label class="option"><input type="radio" name="q5" value="c"> Marcar o registro como excluído/inativo mantendo-o armazenado.</label></div>
+        <button class="btn primary" onclick="gradeQuiz()">Corrigir quiz</button>
+        <div class="result" id="quizResult"></div>
+      </article>
+
+      <article class="lesson">
+        <span class="eyebrow">Projeto final sugerido</span>
+        <h3>Construir um pequeno sistema aplicando os 5 módulos</h3>
+        <div class="steps">
+          <div class="step"><div><strong>Módulo 1 — problema</strong><p>Escolha uma dor real e defina usuário, stakeholders e MVP.</p></div></div>
+          <div class="step"><div><strong>Módulo 2 — requisitos</strong><p>Faça entrevista, escreva requisitos, crie user stories e um diagrama de casos de uso.</p></div></div>
+          <div class="step"><div><strong>Módulo 3 — processo</strong><p>Escolha um modelo de desenvolvimento, monte backlog, estime Story Points e planeje uma sprint.</p></div></div>
+          <div class="step"><div><strong>Módulo 4 — implementação</strong><p>Defina stack, arquitetura, versionamento, testes unitários, integração e mocks.</p></div></div>
+          <div class="step"><div><strong>Módulo 5 — evolução</strong><p>Defina política de manutenção, logs, tratamento de dados, dependências, segurança e auditoria.</p></div></div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <b>Base do curso:</b> anotações fornecidas pelo usuário + “Introdução à Engenharia de Software” e “Processos de Software”, do material do professor Diego Oliveira/IFRN. O conteúdo foi reorganizado em formato didático sem depender de bibliotecas externas.
+      <div class="source-note" style="margin-top:7px">Os tópicos de PII, LGPD, NDA, encoding, deprecated, hard/soft delete, Story Points, arquitetura, Git/GitHub, mocks e outras extensões foram incorporados a partir das anotações fornecidas, conforme o pedido de transformar todo o conteúdo em uma trilha única.</div>
+    </footer>
+  </main>
+</div>
+<script>
+const KEY='eng-soft-course-progress-v1';
+const state=JSON.parse(localStorage.getItem(KEY)||'{"modules":{},"checks":{}}');
+function save(){localStorage.setItem(KEY,JSON.stringify(state));updateProgress()}
+function completeModule(n){state.modules[n]=!state.modules[n];save();renderModuleState();}
+function renderModuleState(){document.querySelectorAll('.module-card').forEach((el,i)=>el.classList.toggle('completed',!!state.modules[i+1]));document.querySelectorAll('[onclick^="completeModule"]').forEach(btn=>{const m=Number(btn.getAttribute('onclick').match(/\d+/)[0]);btn.textContent=state.modules[m]?'✓ Módulo concluído':'Marcar módulo concluído';btn.classList.toggle('success',!!state.modules[m]);btn.classList.toggle('primary',!state.modules[m]);});document.querySelectorAll('#sideNav a').forEach((a,i)=>{if(i>=1&&i<=5){const done=!!state.modules[i];a.classList.toggle('done',done)}})}
+function bindChecks(){document.querySelectorAll('.checklist[data-check-group]').forEach(group=>{const key=group.dataset.checkGroup;group.querySelectorAll('input[type=checkbox]').forEach((cb,i)=>{const id=key+'-'+i;cb.checked=!!state.checks[id];cb.addEventListener('change',()=>{state.checks[id]=cb.checked;save();});});});}
+function updateProgress(){const totalModules=5;let doneModules=Object.values(state.modules).filter(Boolean).length;let checks=document.querySelectorAll('.checklist[data-check-group] input[type=checkbox]');let checked=Array.from(checks).filter(c=>c.checked).length;let totalChecks=checks.length;const pct=Math.round(((doneModules/totalModules)*0.5)+((totalChecks?checked/totalChecks:0)*0.5)*100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=pct+'% concluído';}
+function gradeQuiz(){const ans={q1:'a',q2:'b',q3:'b',q4:'b',q5:'c'};let score=0;Object.keys(ans).forEach(q=>{const chosen=document.querySelector('input[name="'+q+'"]:checked');if(chosen&&chosen.value===ans[q])score++;});const box=document.getElementById('quizResult');box.classList.add('show');box.innerHTML='<b>Resultado: '+score+'/5.</b> '+(score===5?'Excelente. Você fechou a revisão com 100%.':score>=3?'Boa base. Revise os conceitos das questões que errou.':'Volte aos módulos 1–5 e refaça as checklists antes de tentar novamente.');}
+function resetProgress(){if(confirm('Resetar o progresso salvo nesta página?')){localStorage.removeItem(KEY);location.reload();}}
+bindChecks();renderModuleState();updateProgress();
+</script>
+</body>
+</html>
