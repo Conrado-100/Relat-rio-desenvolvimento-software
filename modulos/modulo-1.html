@@ -1,1 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Comece pelo vocabulário e pela visão de conjunto: o que é software, o que é Engenharia de Software, como um produto evolui e quais pessoas participam das decisões.">
+  <meta name="theme-color" content="#1769aa">
+  <title>Fundamentos de Engenharia de Software | Engenharia de Software</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Proteção temporária dos diagramas enquanto o css/style.css é montado. */
+    .diagram { overflow-x:auto; overflow-y:visible; width:100%; padding:1rem 0; }
+    .diagram svg { display:block; width:100%; min-width:680px; height:auto; overflow:visible; }
+    .diagram svg text, .diagram svg tspan { fill:#111827 !important; color:#111827 !important; font-family:Arial, Helvetica, sans-serif; }
+    .module-page { min-height:100vh; background:#f5f9fc; color:#243746; }
+    .module-shell { max-width:1100px; margin:0 auto; padding:20px; }
+    .module-header { background:#fff; border:1px solid #dbe6ed; border-radius:22px; padding:28px; box-shadow:0 8px 28px rgba(26,60,85,.07); margin-bottom:24px; }
+    .eyebrow { color:#1769aa; font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:.8rem; }
+    .module-header h1 { margin:.35rem 0 .5rem; font-size:clamp(1.8rem,4vw,2.7rem); line-height:1.1; }
+    .module-lead { color:#536978; max-width:850px; font-size:1.05rem; line-height:1.7; margin:0; }
+    .module-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:7px 11px; border-radius:999px; background:#eef7fd; color:#155d91; border:1px solid #d7eaf8; font-weight:700; font-size:.88rem; }
+    .progress-panel { margin-top:20px; padding:14px 16px; background:#f8fbfd; border:1px solid #dbe6ed; border-radius:14px; }
+    .progress-row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.92rem; font-weight:800; margin-bottom:8px; }
+    .progress-track { height:10px; background:#e6eef3; border-radius:999px; overflow:hidden; }
+    .progress-fill { display:block; height:100%; width:0; background:#2180c4; border-radius:999px; transition:width .25s ease; }
+    .module-nav { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .module-nav a { text-decoration:none; color:#155d91; background:#fff; border:1px solid #dbe6ed; border-radius:10px; padding:9px 12px; font-weight:800; }
+    .module-nav a:hover { background:#eef7fd; }
+    .section { background:#fff; border:1px solid #dbe6ed; border-radius:18px; padding:24px; margin-bottom:18px; box-shadow:0 5px 18px rgba(26,60,85,.04); }
+    .section h2 { margin-top:0; color:#124a78; }
+    .section h3 { color:#155d91; margin-bottom:.4rem; }
+    .section p, .section li { line-height:1.72; }
+    .definition { border-left:4px solid #2180c4; background:#f3f9fd; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .example { border-left:4px solid #45a66d; background:#f3fbf7; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .attention { border-left:4px solid #d6a229; background:#fffaf0; padding:14px 16px; border-radius:0 12px 12px 0; margin:14px 0; }
+    .step-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:14px; }
+    .step { padding:15px; border:1px solid #dbe6ed; border-radius:14px; background:#fbfdfe; }
+    .step strong { display:block; color:#124a78; margin-bottom:6px; }
+    .checklist { display:grid; gap:9px; margin-top:14px; }
+    .checkitem { display:flex; gap:10px; align-items:flex-start; padding:12px; background:#fbfdfe; border:1px solid #dbe6ed; border-radius:12px; }
+    .checkitem input { margin-top:4px; accent-color:#1769aa; transform:scale(1.1); }
+    .challenge { background:linear-gradient(135deg,#eef7fd,#f7fbfd); border:1px solid #cfe3f1; border-radius:16px; padding:18px; }
+    .module-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin:26px 0 40px; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 15px; border-radius:11px; border:1px solid #c8d9e3; background:#fff; color:#155d91; text-decoration:none; font-weight:800; }
+    .btn.primary { background:#1769aa; border-color:#1769aa; color:#fff; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:700px) {
+      .module-shell { padding:12px; }
+      .module-header, .section { padding:18px; border-radius:15px; }
+      .diagram svg { min-width:560px; }
+    }
+  </style>
+</head>
+<body>
+<div class="module-page">
+  <main class="module-shell" data-module="1">
+    <div class="module-nav" aria-label="Navegação do curso">
+      <a href="../index.html">← Início do curso</a>
+      <a href="modulo-1.html">Módulo 1</a>
+      <a href="modulo-2.html">Módulo 2</a>
+      <a href="modulo-3.html">Módulo 3</a>
+      <a href="modulo-4.html">Módulo 4</a>
+      <a href="modulo-5.html">Módulo 5</a>
+    </div>
+    <header class="module-header">
+      <div class="eyebrow">Módulo 1 de 5</div>
+      <h1>Fundamentos de Engenharia de Software</h1>
+      <p class="module-lead">Comece pelo vocabulário e pela visão de conjunto: o que é software, o que é Engenharia de Software, como um produto evolui e quais pessoas participam das decisões.</p>
+      <div class="module-meta">
+        <span class="pill">🎯 Construir uma base conceitual sólida</span>
+        <span class="pill" data-module-status>Em andamento</span>
+      </div>
+      <div class="progress-panel" aria-label="Progresso do módulo">
+        <div class="progress-row"><span>Progresso</span><strong data-progress-percent>0%</strong></div>
+        <div class="progress-track"><span class="progress-fill" data-progress-fill></span></div>
+      </div>
+    </header>
 
+<section class="section">
+  <h2>1. O que é software?</h2>
+  <div class="definition"><strong>Definição:</strong> o material da disciplina apresenta software como programa de computador mais a documentação associada, com uma determinada funcionalidade.</div>
+  <p>Essa visão é importante porque um software não é apenas o código. Documentação, decisões, regras de negócio, telas e procedimentos também fazem parte do produto que precisa ser entendido, entregue e mantido.</p>
+  <h3>Software genérico x personalizado</h3>
+  <div class="step-grid">
+    <div class="step"><strong>Genérico</strong><span>Feito para um conjunto amplo de clientes, como processadores de texto, editores de imagem ou sistemas de banco de dados.</span></div>
+    <div class="step"><strong>Personalizado</strong><span>Desenvolvido para necessidades específicas de uma organização, domínio ou grupo de usuários.</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>2. O que é Engenharia de Software?</h2>
+  <div class="definition"><strong>Ideia central:</strong> é a disciplina da engenharia preocupada com os aspectos da produção de software.</div>
+  <p>O objetivo não é apenas “fazer o programa funcionar”. Engenharia de Software trata de organizar atividades, pessoas, requisitos, desenvolvimento, validação e evolução para produzir um software de forma sistemática.</p>
+  <div class="attention"><strong>Conexão com o material:</strong> o professor destaca que programação estruturada, orientação a objetos e encapsulamento surgiram/ganharam força ao longo da evolução das técnicas de desenvolvimento.</div>
+</section>
+
+<section class="section">
+  <h2>3. Processo de software</h2>
+  <p>Um processo de software é um conjunto de atividades relacionadas que leva à produção do software. As anotações e os slides citam entrevistas, design, protótipo, testes e manutenção, além das quatro atividades gerais: especificação, desenvolvimento, validação e evolução.</p>
+  <div class="diagram" role="img" aria-label="Ciclo geral de um processo de software">
+    <svg viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#1769aa"/></marker></defs>
+      <rect x="35" y="90" width="190" height="90" rx="16" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/>
+      <rect x="255" y="90" width="190" height="90" rx="16" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/>
+      <rect x="475" y="90" width="190" height="90" rx="16" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/>
+      <rect x="695" y="90" width="210" height="90" rx="16" fill="#f7f4fd" stroke="#8566b6" stroke-width="2"/>
+      <text x="130" y="125" text-anchor="middle" font-size="21" font-weight="700">Especificação</text><text x="130" y="151" text-anchor="middle" font-size="15">requisitos e escopo</text>
+      <text x="350" y="125" text-anchor="middle" font-size="21" font-weight="700">Desenvolvimento</text><text x="350" y="151" text-anchor="middle" font-size="15">projeto e código</text>
+      <text x="570" y="125" text-anchor="middle" font-size="21" font-weight="700">Validação</text><text x="570" y="151" text-anchor="middle" font-size="15">testes e conferência</text>
+      <text x="800" y="125" text-anchor="middle" font-size="21" font-weight="700">Evolução</text><text x="800" y="151" text-anchor="middle" font-size="15">manutenção e mudanças</text>
+      <path d="M225 135 H250" stroke="#1769aa" stroke-width="3" marker-end="url(#a1)"/><path d="M445 135 H470" stroke="#1769aa" stroke-width="3" marker-end="url(#a1)"/><path d="M665 135 H690" stroke="#1769aa" stroke-width="3" marker-end="url(#a1)"/>
+      <path d="M800 195 C800 250 140 250 140 195" fill="none" stroke="#1769aa" stroke-width="3" marker-end="url(#a1)"/>
+      <text x="470" y="279" text-anchor="middle" font-size="16" font-weight="700">ciclo iterativo: feedback e novas versões</text>
+    </svg>
+  </div>
+  <div class="attention"><strong>Ponto de atenção:</strong> não existe um método universal para todos os softwares. O processo varia de acordo com objetivo, usuários e contexto.</div>
+</section>
+
+<section class="section">
+  <h2>4. Conceitos que orientam um bom produto</h2>
+  <h3>KISS — Keep It Simple, Stupid</h3>
+  <p>É a ideia de manter a solução simples. Não significa produzir algo “fraco”, mas evitar complexidade que não ajuda o usuário nem resolve a necessidade principal.</p>
+  <h3>MVP — Minimum Viable Product</h3>
+  <p>É a versão mínima funcional capaz de resolver a dor principal do usuário. Serve para entregar valor cedo, aprender com o uso e evitar gastar esforço em funcionalidades secundárias antes de validar o essencial.</p>
+  <h3>Happy Path</h3>
+  <p>É o fluxo ideal em que tudo ocorre como esperado. Ele é útil para explicar o comportamento principal, mas não representa sozinho um sistema real, pois sistemas também precisam considerar erros, entradas inválidas, indisponibilidade, cancelamentos e outros cenários.</p>
+</section>
+
+<section class="section">
+  <h2>5. Pessoas: usuário e stakeholder</h2>
+  <p><strong>Usuário</strong> é quem utiliza o sistema. <strong>Stakeholder</strong> é qualquer parte interessada que influencia ou é afetada pelo sistema. Portanto, um usuário pode ser stakeholder, mas um stakeholder também pode ser gestor, dono do produto, auditor, equipe jurídica, suporte ou outra parte interessada.</p>
+</section>
+
+<section class="section">
+  <h2>6. Interface: GUI, UI, UX e CMD</h2>
+  <div class="step-grid">
+    <div class="step"><strong>GUI</strong><span>Interface gráfica: elementos visuais usados para interação com o programa.</span></div>
+    <div class="step"><strong>UI</strong><span>Como a interface é apresentada: botões, cores, ícones, fontes, menus e layout.</span></div>
+    <div class="step"><strong>UX</strong><span>Como a experiência funciona: fluxo, facilidade de uso, pesquisa, eficiência e compreensão.</span></div>
+    <div class="step"><strong>CMD / Terminal</strong><span>Interface textual para executar comandos e apoiar automação, desenvolvimento e servidores.</span></div>
+  </div>
+  <div class="diagram">
+    <svg viewBox="0 0 900 270" xmlns="http://www.w3.org/2000/svg">
+      <rect x="55" y="55" width="230" height="155" rx="18" fill="#eef7fd" stroke="#2180c4" stroke-width="2"/>
+      <rect x="335" y="55" width="230" height="155" rx="18" fill="#f3fbf7" stroke="#45a66d" stroke-width="2"/>
+      <rect x="615" y="55" width="230" height="155" rx="18" fill="#fffaf0" stroke="#d6a229" stroke-width="2"/>
+      <text x="170" y="93" text-anchor="middle" font-size="23" font-weight="700">UI</text>
+      <text x="170" y="124" text-anchor="middle" font-size="16">visual e tangível</text>
+      <text x="170" y="148" text-anchor="middle" font-size="16">botões • cores • layout</text>
+      <text x="450" y="93" text-anchor="middle" font-size="23" font-weight="700">UX</text>
+      <text x="450" y="124" text-anchor="middle" font-size="16">experiência e fluxo</text>
+      <text x="450" y="148" text-anchor="middle" font-size="16">facilidade • eficiência</text>
+      <text x="730" y="93" text-anchor="middle" font-size="23" font-weight="700">CMD</text>
+      <text x="730" y="124" text-anchor="middle" font-size="16">interface textual</text>
+      <text x="730" y="148" text-anchor="middle" font-size="16">comandos • automação</text>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <h2>7. Passo a passo de aprendizagem</h2>
+  <div class="checklist">
+    <label class="checkitem" data-lesson="1"><input type="checkbox"><span><strong>Identifique o software</strong><br>Explique com suas palavras a diferença entre programa e software como produto.</span></label>
+    <label class="checkitem" data-lesson="2"><input type="checkbox"><span><strong>Explique Engenharia de Software</strong><br>Defina a disciplina sem confundi-la com “programar”.</span></label>
+    <label class="checkitem" data-lesson="3"><input type="checkbox"><span><strong>Reconheça o processo</strong><br>Diga quais são especificação, desenvolvimento, validação e evolução.</span></label>
+    <label class="checkitem" data-lesson="4"><input type="checkbox"><span><strong>Use KISS, MVP e Happy Path</strong><br>Descreva quando cada ideia ajuda na construção de um sistema.</span></label>
+    <label class="checkitem" data-lesson="5"><input type="checkbox"><span><strong>Separe usuário de stakeholder</strong><br>Dê um exemplo em que o stakeholder não usa diretamente o software.</span></label>
+    <label class="checkitem" data-lesson="6"><input type="checkbox"><span><strong>Diferencie UI, UX, GUI e CMD</strong><br>Explique o papel de cada conceito em um projeto.</span></label>
+  </div>
+</section>
+
+<section class="section challenge">
+  <h2>Desafio prático</h2>
+  <p>Imagine um sistema para uma pequena loja. Escreva uma frase com a <strong>dor principal</strong>, proponha um <strong>MVP</strong> com 2 ou 3 funcionalidades e descreva o <strong>Happy Path</strong> de uma compra.</p>
+</section>
+
+    <div class="module-footer">
+      <a class="btn" href="../index.html">← Voltar ao início</a>
+      
+      <a class="btn primary" href="modulo-2.html">Próximo: Requisitos →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/progress.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CourseProgress) CourseProgress.setupPage(1);
+  });
+</script>
+</body>
+</html>
