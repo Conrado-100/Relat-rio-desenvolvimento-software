@@ -15,10 +15,7 @@
       options.forEach(option => {
         option.setAttribute("aria-pressed", "false");
         option.addEventListener("click", () => {
-          options.forEach(item => {
-            item.classList.remove("is-selected");
-            item.setAttribute("aria-pressed", "false");
-          });
+          options.forEach(item => { item.classList.remove("is-selected"); item.setAttribute("aria-pressed", "false"); });
           option.classList.add("is-selected");
           option.setAttribute("aria-pressed", "true");
         });
@@ -28,77 +25,25 @@
     submit.addEventListener("click", () => {
       let correct = 0;
       let answered = 0;
-
       questions.forEach(question => {
-        const expected =
-          String(question.dataset.answer || "").toLowerCase();
-
-        const selected =
-          question.querySelector("[data-option].is-selected");
-
-        question
-          .querySelectorAll("[data-option]")
-          .forEach(option => {
-            option.classList.remove("is-correct", "is-wrong");
-          });
-
+        const expected = String(question.dataset.answer || "").toLowerCase();
+        const selected = question.querySelector("[data-option].is-selected");
+        question.querySelectorAll("[data-option]").forEach(option => option.classList.remove("is-correct", "is-wrong"));
         if (!selected) return;
-
         answered++;
-
-        const ok =
-          String(selected.dataset.option || "").toLowerCase() ===
-          expected;
-
-        selected.classList.add(
-          ok ? "is-correct" : "is-wrong"
-        );
-
+        const ok = String(selected.dataset.option || "").toLowerCase() === expected;
+        selected.classList.add(ok ? "is-correct" : "is-wrong");
         if (ok) correct++;
       });
 
       const total = questions.length;
-      const percent =
-        total ? Math.round((correct / total) * 100) : 0;
-
-      if (result) {
-        result.textContent =
-          `${correct}/${total} corretas (${percent}%). ` +
-          `${answered < total ? `Respondidas: ${answered}/${total}.` : ""}`.trim();
-      }
-
-      quiz.dispatchEvent(
-        new CustomEvent("quiz:completed", {
-          bubbles: true,
-          detail: {
-            correct,
-            total,
-            answered,
-            percent
-          }
-        })
-      );
+      const percent = total ? Math.round((correct / total) * 100) : 0;
+      if (result) result.textContent = `${correct}/${total} corretas (${percent}%). ${answered < total ? `Respondidas: ${answered}/${total}.` : ""}`.trim();
+      quiz.dispatchEvent(new CustomEvent("quiz:completed", { bubbles: true, detail: { correct, total, answered, percent } }));
     });
   }
 
-  function init() {
-    document
-      .querySelectorAll("[data-quiz]")
-      .forEach(setupQuiz);
-  }
-
-  window.CourseQuiz = {
-    init,
-    setupQuiz
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      init,
-      { once: true }
-    );
-  } else {
-    init();
-  }
+  function init() { document.querySelectorAll("[data-quiz]").forEach(setupQuiz); }
+  window.CourseQuiz = { init, setupQuiz };
+  document.addEventListener("DOMContentLoaded", init);
 })();
