@@ -1,6 +1,64 @@
 (() => {
   "use strict";
 
+  const THEME_KEY = "theme";
+
+  function getStoredTheme() {
+    try {
+      const stored = localStorage.getItem(THEME_KEY);
+      if (stored === "light" || stored === "dark") return stored;
+    } catch (error) {
+      console.warn("Não foi possível ler a preferência de tema.", error);
+    }
+
+    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function setTheme(theme) {
+    const resolvedTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.style.colorScheme = resolvedTheme;
+
+    const toggle = document.querySelector("[data-theme-toggle]");
+    if (toggle) {
+      const dark = resolvedTheme === "dark";
+      toggle.textContent = dark ? "☀️ Modo claro" : "🌙 Modo escuro";
+      toggle.setAttribute("aria-label", dark ? "Ativar modo claro" : "Ativar modo escuro");
+      toggle.setAttribute("aria-pressed", String(dark));
+    }
+  }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (error) {
+      console.warn("Não foi possível salvar a preferência de tema.", error);
+    }
+  }
+
+  function setupTheme() {
+    setTheme(getStoredTheme());
+
+    const host = document.querySelector(".module-nav, .topbar-inner");
+    if (!host) return;
+
+    let toggle = document.querySelector("[data-theme-toggle]");
+    if (!toggle) {
+      toggle = document.createElement("button");
+      toggle.className = "theme-toggle";
+      toggle.type = "button";
+      toggle.dataset.themeToggle = "true";
+      host.append(toggle);
+    }
+
+    toggle.addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      saveTheme(nextTheme);
+      setTheme(nextTheme);
+    });
+    setTheme(document.documentElement.dataset.theme || getStoredTheme());
+  }
+
   function setupQuiz(quiz) {
     if (quiz.dataset.quizBound === "true") return;
     const questions = Array.from(quiz.querySelectorAll("[data-question]"));
@@ -77,7 +135,10 @@
     }
   }
 
-  function init() { document.querySelectorAll("[data-quiz]").forEach(setupQuiz); }
+  function init() {
+    setupTheme();
+    document.querySelectorAll("[data-quiz]").forEach(setupQuiz);
+  }
   window.CourseQuiz = { init, setupQuiz };
   document.addEventListener("DOMContentLoaded", init);
 })();
