@@ -5,6 +5,7 @@
     if (quiz.dataset.quizBound === "true") return;
     const questions = Array.from(quiz.querySelectorAll("[data-question]"));
     const submit = quiz.querySelector("[data-quiz-submit]");
+    const reset = quiz.querySelector("[data-quiz-reset]");
     const result = quiz.querySelector("[data-quiz-result]");
     if (!questions.length || !submit) return;
 
@@ -41,6 +42,18 @@
       if (result) result.textContent = `${correct}/${total} corretas (${percent}%). ${answered < total ? `Respondidas: ${answered}/${total}.` : ""}`.trim();
       quiz.dispatchEvent(new CustomEvent("quiz:completed", { bubbles: true, detail: { correct, total, answered, percent } }));
     });
+
+    if (reset) {
+      reset.addEventListener("click", () => {
+        questions.forEach(question => {
+          question.querySelectorAll("[data-option]").forEach(option => {
+            option.classList.remove("is-selected", "is-correct", "is-wrong");
+            option.setAttribute("aria-pressed", "false");
+          });
+        });
+        if (result) result.textContent = "";
+      });
+    }
   }
 
   function init() { document.querySelectorAll("[data-quiz]").forEach(setupQuiz); }
