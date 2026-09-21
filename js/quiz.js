@@ -16,7 +16,11 @@
       options.forEach(option => {
         option.setAttribute("aria-pressed", "false");
         option.addEventListener("click", () => {
-          options.forEach(item => { item.classList.remove("is-selected"); item.setAttribute("aria-pressed", "false"); });
+          options.forEach(item => {
+            item.classList.remove("is-selected", "is-correct", "is-incorrect", "is-wrong");
+            item.removeAttribute("aria-label");
+            item.setAttribute("aria-pressed", "false");
+          });
           option.classList.add("is-selected");
           option.setAttribute("aria-pressed", "true");
         });
@@ -29,11 +33,27 @@
       questions.forEach(question => {
         const expected = String(question.dataset.answer || "").toLowerCase();
         const selected = question.querySelector("[data-option].is-selected");
-        question.querySelectorAll("[data-option]").forEach(option => option.classList.remove("is-correct", "is-wrong"));
+        const correctOption = Array.from(question.querySelectorAll("[data-option]")).find(
+          option => String(option.dataset.option || "").toLowerCase() === expected
+        );
+        question.querySelectorAll("[data-option]").forEach(option => {
+          option.classList.remove("is-correct", "is-incorrect", "is-wrong");
+          option.removeAttribute("aria-label");
+        });
         if (!selected) return;
         answered++;
         const ok = String(selected.dataset.option || "").toLowerCase() === expected;
-        selected.classList.add(ok ? "is-correct" : "is-wrong");
+        if (ok) {
+          selected.classList.add("is-correct");
+          selected.setAttribute("aria-label", "Resposta correta.");
+        } else {
+          selected.classList.add("is-incorrect");
+          selected.setAttribute("aria-label", "Resposta incorreta.");
+          if (correctOption) {
+            correctOption.classList.add("is-correct");
+            correctOption.setAttribute("aria-label", "Resposta correta.");
+          }
+        }
         if (ok) correct++;
       });
 
@@ -47,7 +67,8 @@
       reset.addEventListener("click", () => {
         questions.forEach(question => {
           question.querySelectorAll("[data-option]").forEach(option => {
-            option.classList.remove("is-selected", "is-correct", "is-wrong");
+            option.classList.remove("is-selected", "is-correct", "is-incorrect", "is-wrong");
+            option.removeAttribute("aria-label");
             option.setAttribute("aria-pressed", "false");
           });
         });

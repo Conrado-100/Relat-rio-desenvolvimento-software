@@ -702,6 +702,41 @@ img { max-width: 100%; }
   .module-page .module-footer .btn { justify-content:center; }
 }
 
+  /* --------------------------- Feedback do quiz --------------------------- */
+  .module-page [data-quiz] [data-option] {
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+
+  .module-page [data-quiz] [data-option].is-selected {
+    border-color: #1769aa;
+    box-shadow: 0 0 0 2px rgba(23, 105, 170, .16);
+  }
+
+  .module-page [data-quiz] [data-option].is-correct {
+    border-color: #45a66d;
+    background: #f3fbf7;
+    color: #17633f;
+    box-shadow: 0 0 0 2px rgba(69, 166, 109, .18);
+  }
+
+  .module-page [data-quiz] [data-option].is-correct::before {
+    content: "✓ ";
+    font-weight: 900;
+  }
+
+  .module-page [data-quiz] [data-option].is-incorrect {
+    border-color: #a63a3a;
+    background: #fdeeee;
+    color: #8d3030;
+    box-shadow: 0 0 0 2px rgba(166, 58, 58, .16);
+  }
+
+  .module-page [data-quiz] [data-option].is-incorrect::before {
+    content: "✕ ";
+    font-weight: 900;
+  }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior:auto; }
   *, *::before, *::after { transition:none !important; }
